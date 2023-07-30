@@ -1,0 +1,72 @@
+.bgLoginRight {
+  background-color: #fff;
+  position: relative;
+}
+.bgLoginLeft {
+  background-color: rgba(246, 246, 246, 1);
+  height: 100vh;
+}
+.imageLogo {
+  margin: 50px 0px 0px 213px;
+}
+.ImageLoginRight {
+  margin: 70px 0px 0px 110px;
+}
+.textRight {
+  position: absolute;
+  margin: -250px 0px 0px 388px;
+}
+.Text_Right_System {
+  font-size: 30px;
+  font-style: normal;
+  color: #ff7506;
+  font-family: "Nunito";
+  font-weight: 400;
+}
+.ManagerRating {
+  font-size: 32px !important;
+  font-weight: 1200;
+  margin-top: -3px !important;
+  font-style: normal;
+  color: #ff7506 !important;
+  font-family: "Nunito";
+}
+.IPLogin {
+  margin-top: 60px;
+  margin-left: 100px;
+}
+.PasswordLogin,
+.UserNameLogin {
+  width: 75%;
+  margin-top: 5px;
+  display: block;
+}
+.IPPassword {
+  margin-top: 10px;
+}
+
+.btnLogin {
+  margin-left: 200px;
+  margin-top: 20px;
+  background-color: #ff9138;
+  color: white;
+  font-family: "Nunito";
+  font-weight: 700;
+  font-size: 13px;
+  padding: 4px 30px 5px;
+  border-radius: 8px;
+  border: none;
+  box-shadow: 0px 0px 6px 0px #e7e9f2;
+}
+.forgot {
+  margin-top: 4px;
+}
+.forgotPassword {
+  margin-left: 100px;
+  color: #e73f3f;
+  font-family: "Nunito";
+  text-decoration: none;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+}

@@ -1,0 +1,48 @@
+.imageLogoForgot {
+  margin: 50px 0px 0px 200px;
+}
+.bgForgotRight {
+  position: relative;
+}
+.ImageForgotRight {
+  margin: 100px 0px 0px 30px;
+}
+.IPForgot {
+  margin-top: 60px;
+}
+.dlmk {
+  margin-left: 200px;
+  font-size: 20px;
+}
+.textForgot {
+  font-size: 15px;
+  margin-left: 80px;
+}
+.formForgot {
+  width: 72%;
+  margin-left: 80px;
+}
+.btnForgot {
+  margin-top: 40px;
+  margin-left: 110px;
+}
+.btnNext {
+  border-radius: 8px;
+  border: 1px solid #ff9138;
+  box-shadow: 0px 0px 6px 0px #e7e9f2;
+  padding: 4px 50px;
+  color: #fff;
+  background-color: #ff9138;
+  font-family: "Nunito";
+  text-decoration: none;
+}
+.btnCancel {
+  border-radius: 8px;
+  text-decoration: none;
+  font-family: "Nunito";
+  border: 1px solid #ff9138;
+  box-shadow: 0px 0px 6px 0px #e7e9f2;
+  padding: 4px 50px;
+  color: #ff9138;
+  margin-right: 30px;
+}
