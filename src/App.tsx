@@ -1,13 +1,12 @@
 import React from "react";
 import "./App.css";
-import AltaLogin from "./layouts/login/login";
 import Routess from "./routes/routes";
+import Altalogin from "./layouts/login/login";
 
 function App() {
   return (
     <div>
       <Routess />
-      <AltaLogin />
     </div>
   );
 }

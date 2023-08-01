@@ -23,10 +23,10 @@ function AltaForgotPassword() {
           </p>
           <Input className="formForgot" />
           <div className="btnForgot">
-            <Link className="btnCancel" to="/login">
+            <Link className="btnCancel" to="/">
               Huỷ
             </Link>
-            <Link to="" className="btnNext">
+            <Link to="/ResetNewPassword" className="btnNext">
               Tiếp tục
             </Link>
           </div>

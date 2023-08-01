@@ -4,7 +4,7 @@ import LoginImageRight from "../../assets/img/login/LoginImage.png";
 import LogoLogin from "../../assets/img/login/Logo alta.svg";
 import { Image, Input, Typography } from "antd";
 import { Link } from "react-router-dom";
-function AltaLogin() {
+function Altalogin() {
   return (
     <div className="row">
       <div className="col-lg-5 bgLoginLeft">
@@ -23,7 +23,14 @@ function AltaLogin() {
           </div>
           <div className="IPPassword">
             <label htmlFor="">Mật khẩu *</label>
-            <Input type="password" className="PasswordLogin" />
+            <div
+              style={{
+                marginTop: "5px",
+                width: "75%",
+              }}
+            >
+              <Input.Password />
+            </div>
           </div>
         </div>
         <div className="forgot">
@@ -31,7 +38,15 @@ function AltaLogin() {
             Quên mật khẩu?
           </Link>
         </div>
-        <button className="btnLogin">Đăng nhập</button>
+        <div
+          style={{
+            marginTop: "20px",
+          }}
+        >
+          <Link to="/dashboard" className="btnLogin">
+            Đăng nhập
+          </Link>
+        </div>
       </div>
       <div className="col-lg-7 bgLoginRight">
         <Image
@@ -53,4 +68,4 @@ function AltaLogin() {
   );
 }
 
-export default AltaLogin;
+export default Altalogin;

@@ -47,16 +47,16 @@
 
 .btnLogin {
   margin-left: 200px;
-  margin-top: 20px;
   background-color: #ff9138;
   color: white;
   font-family: "Nunito";
   font-weight: 700;
   font-size: 13px;
-  padding: 4px 30px 5px;
+  padding: 10px 30px 10px;
   border-radius: 8px;
   border: none;
   box-shadow: 0px 0px 6px 0px #e7e9f2;
+  text-decoration: none;
 }
 .forgot {
   margin-top: 4px;
