@@ -7,15 +7,15 @@ import AddDevicev from "../../assets/img/device/ThemThietBiMoi.svg";
 import search from "../../assets/img/device/search.svg";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "../../store";
 import {
-  fetchData,
+  FetchDataLevelNumber,
   selectData,
   selectError,
   selectLoading,
-} from "../../feature/actionDevice";
-import { AppDispatch } from "../../store";
+} from "../../feature/levelNumber";
 
-const AltaDevice = () => {
+const AltaLevelNumber = () => {
   const data = useSelector(selectData);
   const loading = useSelector(selectLoading);
   const error = useSelector(selectError);
@@ -25,45 +25,31 @@ const AltaDevice = () => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [isFullServiceUsed, setIsFullServiceUsed] = useState(false);
   useEffect(() => {
-    dispatch(fetchData());
+    dispatch(FetchDataLevelNumber());
   }, [dispatch]);
 
   // Tim kiem và phân trang
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchKeyword(event.target.value);
-  };
-  const filteredData = data.filter((item) => {
-    const isActiveMatch =
-      activeStatus === "Tất cả" || item.statusActive === activeStatus;
-    const isConnectMatch =
-      connectStatus === "Tất cả" || item.statusConnect === connectStatus;
-    const isSearchMatch =
-      searchKeyword.trim() === "" ||
-      item.idDevice.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-      item.nameDevice.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-      item.addressIp.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-      item.statusActive.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-      item.statusConnect.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-      item.serviceUsed.toLowerCase().includes(searchKeyword.toLowerCase());
-    return isActiveMatch && isConnectMatch && isSearchMatch;
-  });
+  //   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //     setSearchKeyword(event.target.value);
+  //   };
+  //   const filteredData = data.filter((item) => {
+  //     const isActiveMatch =
+  //       activeStatus === "Tất cả" || item.statusActive === activeStatus;
+  //     const isConnectMatch =
+  //       connectStatus === "Tất cả" || item.statusConnect === connectStatus;
+  //     const isSearchMatch =
+  //       searchKeyword.trim() === "" ||
+  //       item.idDevice.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+  //       item.nameDevice.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+  //       item.addressIp.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+  //       item.statusActive.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+  //       item.statusConnect.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+  //       item.serviceUsed.toLowerCase().includes(searchKeyword.toLowerCase());
+  //     return isActiveMatch && isConnectMatch && isSearchMatch;
+  //   });
   //
   // gioi han dich vu
-  const handleServiceUsedClick = () => {
-    setIsFullServiceUsed((prevState) => !prevState);
-  };
-  //
-  if (loading) {
-    return (
-      <div
-        style={{
-          margin: "250px 0px 0px 610px",
-        }}
-      >
-        <Spin size="large" />
-      </div>
-    );
-  }
+
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -125,26 +111,7 @@ const AltaDevice = () => {
       title: "Dịch vụ sử dụng",
       dataIndex: "serviceUsed",
       value: "serviceUsed",
-      render: (serviceUsed: string) => (
-        <span>
-          {isFullServiceUsed
-            ? serviceUsed
-            : serviceUsed.length > 24
-            ? `${serviceUsed.substring(0, 24)}...`
-            : serviceUsed}
-          {serviceUsed.length > 24 && (
-            <>
-              <br />
-              <button
-                className="custom-read-more-button" // Thêm lớp CSS vào đây
-                onClick={handleServiceUsedClick}
-              >
-                Xem thêm
-              </button>
-            </>
-          )}
-        </span>
-      ),
+
       key: "serviceUsed",
     },
     {
@@ -275,7 +242,6 @@ const AltaDevice = () => {
                   className="IPSearch"
                   placeholder="Nhập từ khóa"
                   value={searchKeyword}
-                  onChange={handleSearchChange}
                 />
                 <button className="btnSearchDevice">
                   <Image src={search} preview={false} />
@@ -291,7 +257,7 @@ const AltaDevice = () => {
             <Table
               className="ms-4 mt-2"
               columns={columns}
-              dataSource={filteredData}
+              dataSource={data}
               style={{
                 width: "74%",
                 position: "absolute",
@@ -316,4 +282,4 @@ const AltaDevice = () => {
   );
 };
 
-export default AltaDevice;
+export default AltaLevelNumber;

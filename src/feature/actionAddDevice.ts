@@ -28,13 +28,11 @@ export const addDevices = createAsyncThunk(
   "AddData/addDevice",
   async (device: AddDevice, thunkAPI) => {
     try {
-      // Thêm trạng thái mặc định cho statusActive và statusConnect
       const newDevice: AddDevice = {
         ...device,
-        statusActive: "Hoạt động", // Trạng thái mặc định là "Hoạt động"
-        statusConnect: "Kết nối", // Trạng thái mặc định là "Kết nối"
+        statusActive: "Hoạt động",
+        statusConnect: "Kết nối",
       };
-
       const docRef = await db.collection("device").add(newDevice);
       const id = docRef.id;
       return id;

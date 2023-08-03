@@ -33,11 +33,17 @@ function SlideMenu() {
         <Image src={ImageDevice} preview={false} className="ImageDashboard" />
         <Typography className="TextSlideDashboard">Thiết bị</Typography>
       </NavLink>
-      <NavLink to={""} className="d-flex text-decoration-none ServiceNavLink">
+      <NavLink
+        to="/service"
+        className="d-flex text-decoration-none ServiceNavLink"
+      >
         <Image src={ImageService} preview={false} className="ImageDashboard" />
         <Typography className="TextSlideDashboard">Dịch vụ</Typography>
       </NavLink>
-      <NavLink to={""} className="d-flex text-decoration-none LevelNoNavLink">
+      <NavLink
+        to="/levelNumber"
+        className="d-flex text-decoration-none LevelNoNavLink"
+      >
         <Image src={ImageLevelNo} preview={false} className="ImageDashboard" />
         <Typography className="TextSlideDashboard">Cấp số</Typography>
       </NavLink>

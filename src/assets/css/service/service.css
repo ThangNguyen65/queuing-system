@@ -1,0 +1,19 @@
+.thService > th {
+  padding: 10px 45px;
+}
+.IPServiceSearch {
+  margin: 6px 0px 0px 136px;
+  width: 305px;
+  border-radius: 8px;
+  border: 1.5px solid #d4d4d7;
+  outline: none;
+  padding: 5px 10px;
+}
+.lbSearchService{
+  margin: 20px 0px 0px 136px;
+  font-family: "Nunito";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+}
