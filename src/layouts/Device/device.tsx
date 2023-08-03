@@ -216,7 +216,12 @@ const AltaDevice = () => {
               </label>
               <Select
                 defaultValue="Tất cả"
-                style={{ width: "100%", margin: "5px 0px 0px 30px" }}
+                style={{
+                  width: "100%",
+                  margin: "5px 0px 0px 30px",
+                  border: "1.5px solid #D4D4D7",
+                  borderRadius: "8px",
+                }}
                 placeholder="Tất cả"
                 id="#SelectActive"
                 options={[

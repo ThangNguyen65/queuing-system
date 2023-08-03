@@ -1,0 +1,41 @@
+.lbSearchManagerRole {
+  margin: 10px 0px 0px 740px;
+  font-family: "Nunito";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+}
+.IPSearchManagerRole {
+  margin: 6px 0px 0px 740px;
+  width: 230px;
+  border-radius: 8px;
+  border: 1.5px solid #d4d4d7;
+  outline: none;
+  padding: 5px 10px;
+}
+.addManagerUser {
+  background-color: rgba(255, 242, 231, 1);
+  padding: 10px 20px;
+  width: 7.5%;
+  height: 15.6vh;
+  margin-left: 980px;
+  margin-top: 0px;
+  position: absolute;
+}
+.lbSearchManagerUser{
+  margin: 10px 0px 0px 550px;
+  font-family: "Nunito";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+}
+.IPSearchManagerUser {
+  margin: 6px 0px 0px 550px;
+  width: 230px;
+  border-radius: 8px;
+  border: 1.5px solid #d4d4d7;
+  outline: none;
+  padding: 5px 10px;
+}

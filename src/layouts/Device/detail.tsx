@@ -98,7 +98,9 @@ const AltaDetailDevice = () => {
                   >
                     Mã thiết bị:
                   </Typography>
-                  <Typography className="ms-5">{DeviceData.idDevice}</Typography>
+                  <Typography className="ms-5">
+                    {DeviceData.idDevice}
+                  </Typography>
                 </div>
                 <div className="col-6 d-flex">
                   <Typography
@@ -139,7 +141,9 @@ const AltaDetailDevice = () => {
                   >
                     Tên đăng nhập:
                   </Typography>
-                  <Typography className="ms-5">{DeviceData.username}</Typography>
+                  <Typography className="ms-5">
+                    {DeviceData.username}
+                  </Typography>
                 </div>
               </div>
               {/*  */}

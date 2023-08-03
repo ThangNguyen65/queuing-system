@@ -10,8 +10,19 @@ import ImageSetting from "../../assets/img/slide/CaiDatHeThong.svg";
 import IconArrowRight from "../../assets/img/slide/iconArrowrRight.svg";
 import ThreeSetting from "../../assets/img/slide/ThreeChamSetting.svg";
 import "../../assets/css/slide/slide.css";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logoutSuccess } from "../../feature/login";
 function SlideMenu() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    // Dispatch action to update Redux store
+    dispatch(logoutSuccess());
+
+    // Redirect to login page or any other appropriate page after logout
+    navigate("/");
+  };
   return (
     <div>
       <Image src={Logo} preview={false} width={"40%"} className="ImageSlide" />
@@ -61,24 +72,26 @@ function SlideMenu() {
           width={"7%"}
         />
         <div className="DropdownSetting">
-          <Typography className="DropdownText">Quản lý vai trò</Typography>
-          <Typography className="DropdownTextUserName">
+          <NavLink to="/roleManager" className="DropdownText">
+            Quản lý vai trò
+          </NavLink>
+          <NavLink to="/userManager" className="DropdownTextUserName">
             Quản lý tài khoản
-          </Typography>
-          <Typography className="DropdownTextUser">
+          </NavLink>
+          <NavLink to="/roleManager" className="DropdownTextUser">
             Nhật ký người dùng
-          </Typography>
+          </NavLink>
         </div>
       </NavLink>
       <div>
-        <Link to="/" className="btnSlide">
+        <button className="btnSlide" onClick={handleLogout}>
           <Image
             src={IconArrowRight}
             className="ImageBtnSlide"
             preview={false}
           />
           <Typography className="TextBtnSlide">Đăng xuất</Typography>
-        </Link>
+        </button>
       </div>
     </div>
   );

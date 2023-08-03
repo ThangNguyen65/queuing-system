@@ -60,6 +60,7 @@ export const fetchData = createAsyncThunk("data/fetchData", async () => {
   });
   return Datalist;
 });
+
 export const updateDevice = createAsyncThunk(
   "data/updateDevice",
   async (deviceData: Device) => {

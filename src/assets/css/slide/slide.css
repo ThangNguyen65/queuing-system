@@ -54,7 +54,7 @@
   position: absolute;
   margin-left: 179px;
   margin-top: -9.4px;
-  width: 101%;
+  width: 102%;
   display: none;
   padding-right: 0px;
   border-top-right-radius: 20px;
@@ -83,7 +83,10 @@
   margin: -11px -15px;
   padding-bottom: 7px;
   padding-left: 20px;
-  padding-right: 20px;
+  /* padding-right: 30px; */
+  display: block;
+  text-decoration: none;
+  color: rgba(169, 169, 176, 1);
 }
 .DropdownTextUserName {
   margin-top: 11px;

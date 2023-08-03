@@ -1,42 +1,30 @@
 import React, { useEffect, useState } from "react";
 import SlideMenu from "../../components/slide/slide";
 import AltaNavbar from "../../components/navbarRight/navbar";
-import {
-  Badge,
-  Image,
-  Select,
-  Space,
-  Table,
-  Typography,
-  Spin,
-  DatePicker,
-} from "antd";
+import { Image, Table, Typography, Spin, Select, Space, Badge } from "antd";
 import "../../assets/css/device/device.css";
 import AddDevicev from "../../assets/img/device/ThemThietBiMoi.svg";
 import search from "../../assets/img/device/search.svg";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../store";
+
+import "../../assets/css/manager/managerRole.css";
 import {
-  fetchDataService,
+  fetchDataManagerUser,
   selectData,
   selectError,
   selectLoading,
-} from "../../feature/service";
-import "../../assets/css/service/service.css";
-const { RangePicker } = DatePicker;
-const AltaService = () => {
-  const dataSv = useSelector(selectData);
+} from "../../feature/userManager";
+const AltaManagerUser = () => {
+  const dataMgRl = useSelector(selectData);
   const loading = useSelector(selectLoading);
   const error = useSelector(selectError);
   const dispatch: AppDispatch = useDispatch();
-  const [activeStatus, setActiveStatus] = useState("Tất cả");
   const [searchKeyword, setSearchKeyword] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-
+  const [activeStatus, setActiveStatus] = useState("Tất cả");
   useEffect(() => {
-    dispatch(fetchDataService());
-    setCurrentPage(1);
+    dispatch(fetchDataManagerUser());
   }, [dispatch]);
   const getRowClassName = (_record: any, index: number) => {
     return index % 2 !== 0 ? "bg-pink" : "";
@@ -44,43 +32,57 @@ const AltaService = () => {
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchKeyword(event.target.value);
   };
-  const filteredData = dataSv.filter((item) => {
+  const filteredData = dataMgRl.filter((item) => {
     const isActiveMatch =
       activeStatus === "Tất cả" || item.StatusActive === activeStatus;
     const isSearchMatch =
       searchKeyword.trim() === "" ||
-      item.IdService.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-      item.NameService.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-      item.DescribeService.toLowerCase().includes(
+      item.UserNameManagerUser.toLowerCase().includes(
         searchKeyword.toLowerCase()
       ) ||
+      item.NameUser.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+      item.Email.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+      item.Role.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+      item.Phone.toString().includes(searchKeyword.toLowerCase()) ||
       item.StatusActive.toLowerCase().includes(searchKeyword.toLowerCase());
     return isActiveMatch && isSearchMatch;
   });
-
   const column = [
     {
-      title: "Mã dịch vụ",
-      dataIndex: "IdService",
-      value: "IdService",
-      key: "IdService",
+      title: "Tên đăng nhập",
+      dataIndex: "UserNameManagerUser",
+      value: "UserNameManagerUser",
+      key: "UserNameManagerUser",
     },
     {
-      title: "Tên dịch vụ",
-      dataIndex: "NameService",
-      value: "NameService",
-      key: "NameService",
+      title: "Họ tên",
+      dataIndex: "NameUser",
+      value: "NameUser",
+      key: "NameUser",
     },
     {
-      title: "Mô tả",
-      dataIndex: "DescribeService",
-      value: "DescribeService",
-      key: "DescribeService",
+      title: "Số điện thoại",
+      dataIndex: "Phone",
+      value: "Phone",
+      key: "Phone",
+    },
+    {
+      title: "Email",
+      dataIndex: "Email",
+      value: "Email",
+      key: "Email",
+    },
+    {
+      title: "Vai trò",
+      dataIndex: "Role",
+      value: "Role",
+      key: "Role",
     },
     {
       title: "Trạng thái hoạt động",
       dataIndex: "StatusActive",
       value: "StatusActive",
+      key: "StatusActive",
       render: (connectionStatus: string) => (
         <Space>
           {connectionStatus === "Hoạt động" ? (
@@ -91,27 +93,12 @@ const AltaService = () => {
           <span>{connectionStatus}</span>
         </Space>
       ),
-      key: "StatusActive",
     },
     {
-      title: " ",
-      value: "",
+      title: "",
       render: (record: any) => (
         <Link
-          to={`/detailDevice/${record.id}`}
-          style={{
-            padding: "0px 10px",
-          }}
-        >
-          Chi tiết
-        </Link>
-      ),
-    },
-    {
-      title: " ",
-      render: (record: any) => (
-        <Link
-          to={`/edit/${record.id}`}
+          to={`/editManager/${record.id}`}
           style={{
             padding: "0px 10px",
           }}
@@ -161,14 +148,14 @@ const AltaService = () => {
           }}
         >
           <div className="d-flex">
-            <Typography className="TitleDevice">Dịch vụ</Typography>
-            <Typography id="ListDevice">Danh sách dịch vụ</Typography>
+            <Typography className="TitleDevice">Cài đặt hệ thống</Typography>
+            <Typography id="ListDevice">Quản lý tài khoản</Typography>
           </div>
           <AltaNavbar />
         </div>
         <div id="bgInForUser">
           <Typography className="fs-4 listDeviceTitle">
-            Quản lý dịch vụ
+            Danh sách tài khoản
           </Typography>
           <div className="d-flex">
             <div>
@@ -203,22 +190,11 @@ const AltaService = () => {
               />
             </div>
             <div>
-              <label className="d-block lbSelectConnect">Chọn thời gian</label>
-              <RangePicker
-                style={{
-                  width: "100%",
-                  margin: "5px 0px 0px 60px",
-                  border: "1.5px solid #D4D4D7",
-                  borderRadius: "8px",
-                }}
-              />
-            </div>
-            <div>
-              <label className="d-block lbSearchService">Từ khoá</label>
+              <label className="d-block lbSearchManagerUser">Từ khoá</label>
               <div className="d-flex">
                 <input
                   type="text"
-                  className="IPServiceSearch"
+                  className="IPSearchManagerUser"
                   placeholder="Nhập từ khóa"
                   value={searchKeyword}
                   onChange={handleSearchChange}
@@ -240,16 +216,16 @@ const AltaService = () => {
                   position: "absolute",
                 }}
                 pagination={{
-                  pageSize: 4,
+                  pageSize: 2,
                 }}
                 rowClassName={getRowClassName}
               ></Table>
             </div>
-            <div className="mt-3 addDevice">
-              <Link to="/addService" className="text-decoration-none">
+            <div className="mt-3 addManagerUser">
+              <Link to="/addUserManager" className="text-decoration-none">
                 <Image src={AddDevicev} preview={false} className="ms-1" />
                 <Typography className="AddDeviceText">
-                  Thêm <br /> dịch vụ
+                  Thêm tài khoản
                 </Typography>
               </Link>
             </div>
@@ -260,4 +236,4 @@ const AltaService = () => {
   );
 };
 
-export default AltaService;
+export default AltaManagerUser;

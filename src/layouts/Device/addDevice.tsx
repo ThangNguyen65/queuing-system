@@ -284,7 +284,10 @@ const AltaAddDevice = () => {
             </div>
           </div>
           <div className="btnAddDevice">
-            <Link to="/device" className="btnCancleAddDevice">
+            <Link
+              to="/device"
+              className="btnCancleAddDevice text-decoration-none"
+            >
               Hủy bỏ
             </Link>
             <button className="btnAddDevices" onClick={handleAddData}>

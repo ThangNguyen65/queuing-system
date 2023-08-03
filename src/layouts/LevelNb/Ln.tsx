@@ -1,8 +1,17 @@
 import React, { useEffect, useState } from "react";
 import SlideMenu from "../../components/slide/slide";
 import AltaNavbar from "../../components/navbarRight/navbar";
-import { Badge, Image, Select, Space, Spin, Table, Typography } from "antd";
-import "../../assets/css/device/device.css";
+import {
+  Badge,
+  Image,
+  Select,
+  Space,
+  Spin,
+  Table,
+  Typography,
+  DatePicker,
+} from "antd";
+import "../../assets/css/levelNumber/levelNumber.css";
 import AddDevicev from "../../assets/img/device/ThemThietBiMoi.svg";
 import search from "../../assets/img/device/search.svg";
 import { Link } from "react-router-dom";
@@ -14,7 +23,7 @@ import {
   selectError,
   selectLoading,
 } from "../../feature/levelNumber";
-
+const { RangePicker } = DatePicker;
 const AltaLevelNumber = () => {
   const data = useSelector(selectData);
   const loading = useSelector(selectLoading);
@@ -58,61 +67,58 @@ const AltaLevelNumber = () => {
   };
   const columns = [
     {
-      title: "Mã thiết bị",
-      dataIndex: "idDevice",
-      value: "idDevice",
-      key: "idDevice",
+      title: "STT",
+      dataIndex: "IdLevelNum",
+      value: "IdLevelNum",
+      key: "IdLevelNum",
     },
     {
-      title: "Tên thiết bị",
-      dataIndex: "nameDevice",
-      value: "nameDevice",
-      key: "nameDevice",
+      title: "Tên khách hàng",
+      dataIndex: "NameCustomer",
+      value: "NameCustomer",
+      key: "NameCustomer",
     },
     {
-      title: "Địa chỉ IP",
-      dataIndex: "addressIp",
-      value: "addressIp",
-      key: "addressIp",
+      title: "Tên dịch vụ ",
+      dataIndex: "NameServices",
+      value: "NameServices",
+      key: "NameServices",
     },
     {
-      title: "Trạng thái hoạt động",
-      dataIndex: "statusActive",
-      value: "statusActive",
+      title: "Thời gian cấp",
+      dataIndex: "GrantTime",
+      value: "GrantTime",
+      key: "GrantTime",
+    },
+    {
+      title: "Hạn sử dụng",
+      dataIndex: "Expiry",
+      value: "Expiry",
+      key: "Expiry",
+    },
+    {
+      title: "Trạng thái",
+      dataIndex: "Status",
+      value: "Status",
       render: (connectionStatus: string) => (
         <Space>
-          {connectionStatus === "Hoạt động" ? (
-            <Badge status="success"></Badge>
+          {connectionStatus === "Đã sử dụng" ? (
+            <Badge status="default"></Badge>
+          ) : connectionStatus === "Đang chờ" ? (
+            <Badge status="processing"></Badge>
           ) : (
             <Badge status="error"></Badge>
           )}
           <span>{connectionStatus}</span>
         </Space>
       ),
-      key: "statusActive",
+      key: "Nguồn cấp",
     },
     {
-      title: "Trạng thái kết nối",
-      dataIndex: "statusConnect",
-      value: "statusConnect",
-      render: (connectionStatus: string) => (
-        <Space>
-          {connectionStatus === "Kết nối" ? (
-            <Badge status="success"></Badge>
-          ) : (
-            <Badge status="error"></Badge>
-          )}
-          <span>{connectionStatus}</span>
-        </Space>
-      ),
-      key: "statusConnect",
-    },
-    {
-      title: "Dịch vụ sử dụng",
-      dataIndex: "serviceUsed",
-      value: "serviceUsed",
-
-      key: "serviceUsed",
+      title: "Tên dịch vụ ",
+      dataIndex: "PowerSupply",
+      value: "PowerSupply",
+      key: "PowerSupply",
     },
     {
       title: "",
@@ -167,23 +173,26 @@ const AltaLevelNumber = () => {
           }}
         >
           <div className="d-flex">
-            <Typography className="TitleDevice">Thiết bị</Typography>
-            <Typography id="ListDevice">Danh sách thiết bị</Typography>
+            <Typography className="TitleDevice">Cấp số</Typography>
+            <Typography id="ListDevice">Danh sách cấp số</Typography>
           </div>
           <AltaNavbar />
         </div>
         <div id="bgInForUser">
           <Typography className="fs-4 listDeviceTitle">
-            Danh sách thiết bị
+            Quản lý cấp số
           </Typography>
           <div className="d-flex">
             <div>
-              <label className="d-block lbSelectActive">
-                Trạng thái hoạt động
-              </label>
+              <label className="d-block lbSelectActive">Tên dịch vụ</label>
               <Select
                 defaultValue="Tất cả"
-                style={{ width: "100%", margin: "5px 0px 0px 30px" }}
+                style={{
+                  width: "100%",
+                  margin: "5px 0px 0px 30px",
+                  border: "1.5px solid #D4D4D7",
+                  borderRadius: "8px",
+                }}
                 placeholder="Tất cả"
                 id="#SelectActive"
                 options={[
@@ -204,14 +213,14 @@ const AltaLevelNumber = () => {
               />
             </div>
             <div>
-              <label className="d-block lbSelectConnect">
-                Trạng thái kết nối
+              <label className="d-block lbSelectConnectStatus">
+                Trình trạng
               </label>
               <Select
                 defaultValue="Tất cả"
                 style={{
                   width: "100%",
-                  margin: "5px 0px 0px 60px",
+                  margin: "5px 0px 0px 50px",
                   border: "1.5px solid #D4D4D7",
                   borderRadius: "8px",
                 }}
@@ -235,11 +244,55 @@ const AltaLevelNumber = () => {
               />
             </div>
             <div>
+              <label className="d-block lbSelectConnectPowerSupply">
+                Nguồn cấp
+              </label>
+              <Select
+                defaultValue="Tất cả"
+                style={{
+                  width: "100%",
+                  margin: "5px 0px 0px 65px",
+                  border: "1.5px solid #D4D4D7",
+                  borderRadius: "8px",
+                }}
+                placeholder="Tất cả"
+                id="#SelectActive"
+                options={[
+                  {
+                    label: "Tất cả",
+                    value: "Tất cả",
+                  },
+                  {
+                    label: "Kết nối",
+                    value: "Kết nối",
+                  },
+                  {
+                    label: "Mất kết nối",
+                    value: "Mất kết nối",
+                  },
+                ]}
+                onChange={setConnectStatus}
+              />
+            </div>
+            <div>
+              <label className="d-block lbSelectConnectDate">
+                Chọn thời gian
+              </label>
+              <RangePicker
+                style={{
+                  width: "70%",
+                  margin: "5px 0px 0px 80px",
+                  border: "1.5px solid #D4D4D7",
+                  borderRadius: "8px",
+                }}
+              />
+            </div>
+            <div>
               <label className="d-block lbSearch">Từ khoá</label>
               <div className="d-flex">
                 <input
                   type="text"
-                  className="IPSearch"
+                  className="IPSearchLevelNumber"
                   placeholder="Nhập từ khóa"
                   value={searchKeyword}
                 />
@@ -271,7 +324,7 @@ const AltaLevelNumber = () => {
               <Link to="/addDevice" className="text-decoration-none">
                 <Image src={AddDevicev} preview={false} className="ms-1" />
                 <Typography className="AddDeviceText">
-                  Thêm <br /> thiết bị
+                  Cấp <br /> số mới
                 </Typography>
               </Link>
             </div>
