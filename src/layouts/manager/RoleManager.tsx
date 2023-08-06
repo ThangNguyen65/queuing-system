@@ -15,17 +15,20 @@ import {
   selectData,
   selectError,
   selectLoading,
-} from "../../feature/managerRole";
+} from "../../feature/manager/role/managerRole";
+import { selectManagerRoleUsersCount } from "../../app/selectorsManagerRole";
 const AltaManagerRole = () => {
   const dataMgRl = useSelector(selectData);
   const loading = useSelector(selectLoading);
   const error = useSelector(selectError);
   const dispatch: AppDispatch = useDispatch();
   const [searchKeyword, setSearchKeyword] = useState("");
+  const managerRoleUsersCount = useSelector(selectManagerRoleUsersCount);
 
   useEffect(() => {
     dispatch(fetchDataManagerRole());
   }, [dispatch]);
+
   const getRowClassName = (_record: any, index: number) => {
     return index % 2 !== 0 ? "bg-pink" : "";
   };
@@ -42,9 +45,13 @@ const AltaManagerRole = () => {
     },
     {
       title: "Số người dùng",
-      dataIndex: "NumberUser",
-      value: "NumberUser",
-      key: "NumberUser",
+      dataIndex: "0",
+      value: "0",
+      key: "0",
+      // render: (_text: any, record: any) => {
+      //   const userCount = managerRoleUsersCount[record.NameManagerRole];
+      //   return userCount !== undefined ? userCount : 0;
+      // },
     },
     {
       title: "Mô tả",
@@ -56,7 +63,7 @@ const AltaManagerRole = () => {
       title: "",
       render: (record: any) => (
         <Link
-          to={`/edit/${record.id}`}
+          to=""
           style={{
             padding: "0px 10px",
           }}
@@ -152,7 +159,7 @@ const AltaManagerRole = () => {
               <Link to="" className="text-decoration-none">
                 <Image src={AddDevicev} preview={false} className="ms-1" />
                 <Typography className="AddDeviceText">
-                  Thêm <br /> dịch vụ
+                  Thêm <br /> vai trò
                 </Typography>
               </Link>
             </div>

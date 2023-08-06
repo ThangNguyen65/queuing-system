@@ -1,10 +1,24 @@
-import { Image, Input } from "antd";
-import React from "react";
-import { Link } from "react-router-dom";
+import { Button, Image, Input } from "antd";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import LogoLogin from "../../assets/img/login/Logo alta.svg";
 import LoginImageRight from "../../assets/img/login/ForgotPassword.png";
 import "../../assets/css/login/forgot.css";
+import { auth } from "../../firebase/firebase";
+
 function AltaForgotPassword() {
+  const [email, setEmail] = useState("");
+  const navigate = useNavigate();
+
+  const handleForgot = async () => {
+    try {
+      await auth.sendPasswordResetEmail(email);
+      navigate("/ResetNewPassword", { state: { email } });
+    } catch (error) {
+      console.error("Lỗi khi gửi email xác thực:", error);
+    }
+  };
+
   return (
     <div className="row">
       <div className="col-lg-5 bgLoginLeft">
@@ -21,14 +35,18 @@ function AltaForgotPassword() {
           <p className="textForgot">
             Vui lòng đăng nhập email để đặt lại mật khẩu của bạn *
           </p>
-          <Input className="formForgot" />
+          <Input
+            className="formForgot"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
           <div className="btnForgot">
             <Link className="btnCancel" to="/">
               Huỷ
             </Link>
-            <Link to="/ResetNewPassword" className="btnNext">
+            <Button onClick={handleForgot} className="btnNext">
               Tiếp tục
-            </Link>
+            </Button>
           </div>
         </div>
       </div>

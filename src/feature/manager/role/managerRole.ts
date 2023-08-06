@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { db } from "../firebase/firebase";
-import { RootState } from "../store";
+
+import { RootState } from "../../../store";
+import { db } from "../../../firebase/firebase";
 
 export interface managerRole {
   id: string;
   NameManagerRole: string;
-  NumberUser: number;
+  Role: string;
   DescribeManagerRole: string;
 }
 interface ManagerRoleState {
@@ -28,14 +29,14 @@ export const fetchDataManagerRole = createAsyncThunk(
       const docData = doc.data();
       if (
         docData.NameManagerRole &&
-        docData.NumberUser &&
-        docData.DescribeManagerRole
+        docData.DescribeManagerRole &&
+        docData.Role
       ) {
         DataList.push({
           id: doc.id,
           NameManagerRole: docData.NameManagerRole,
-          NumberUser: docData.NumberUser,
           DescribeManagerRole: docData.DescribeManagerRole,
+          Role: docData.Role,
         });
       }
     });

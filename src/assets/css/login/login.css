@@ -69,4 +69,21 @@
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
+  transition: all 0.3s;
+}
+.login-error {
+  color: red;
+  font-size: 14px;
+}
+.login-error-text {
+  margin-top: 2px !important;
+}
+.IPLogin.error .UserNameLogin,
+.IPLogin.error .PasswordLogins {
+  border-color: red;
+}
+.forgotPassword.move-down {
+  margin-top: 70px;
+  padding-left: 115px;
+  position: absolute;
 }

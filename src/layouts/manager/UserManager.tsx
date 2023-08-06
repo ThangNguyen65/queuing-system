@@ -15,7 +15,7 @@ import {
   selectData,
   selectError,
   selectLoading,
-} from "../../feature/userManager";
+} from "../../feature/manager/user/userManager";
 const AltaManagerUser = () => {
   const dataMgRl = useSelector(selectData);
   const loading = useSelector(selectLoading);

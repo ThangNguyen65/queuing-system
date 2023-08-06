@@ -22,7 +22,7 @@ import {
   selectData,
   selectError,
   selectLoading,
-} from "../../feature/service";
+} from "../../feature/service/service";
 import "../../assets/css/service/service.css";
 const { RangePicker } = DatePicker;
 const AltaService = () => {

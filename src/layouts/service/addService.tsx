@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import TextArea from "antd/es/input/TextArea";
-import { addService, AddService } from "../../feature/addService";
+import { addService, AddService } from "../../feature/service/addService";
 
 const AltaAddService = () => {
   const [IdService, setIdService] = useState("");

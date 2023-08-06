@@ -1,6 +1,6 @@
-import { RootState } from "./../store";
+import { RootState } from "../../store";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { db } from "../firebase/firebase";
+import { db } from "../../firebase/firebase";
 
 export interface Device {
   id: string;

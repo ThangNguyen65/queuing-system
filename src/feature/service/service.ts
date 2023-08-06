@@ -1,5 +1,5 @@
-import { db } from "../firebase/firebase";
-import { RootState } from "../store";
+import { db } from "../../firebase/firebase";
+import { RootState } from "../../store";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export interface services {

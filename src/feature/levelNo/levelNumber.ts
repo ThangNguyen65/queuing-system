@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { db } from "../firebase/firebase";
-import { RootState } from "../store";
+import { RootState } from "../../store";
+import { db } from "../../firebase/firebase";
 
 export interface LevelNumber {
   id: string;

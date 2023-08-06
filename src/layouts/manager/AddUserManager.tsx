@@ -5,7 +5,11 @@ import { Input, Select, Typography } from "antd";
 import "../../assets/css/device/addDevice.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { AddManagerUser, addManagerUser } from "../../feature/AddManagerUser";
+import {
+  AddManagerUser,
+  addManagerUser,
+} from "../../feature/manager/user/AddManagerUser";
+import { auth, db } from "../../firebase/firebase";
 
 const AltaAddManagerUser = () => {
   const [UserNameManagerUser, setUserNameManagerUser] = useState("");
@@ -18,7 +22,8 @@ const AltaAddManagerUser = () => {
   const [StatusActive, setStatusActive] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const handleAddData = () => {
+
+  const handleAddData = async () => {
     if (
       UserNameManagerUser &&
       NameUser &&
@@ -29,27 +34,39 @@ const AltaAddManagerUser = () => {
       conformPassword &&
       StatusActive
     ) {
-      const newData: AddManagerUser = {
-        id: "",
-        UserNameManagerUser,
-        NameUser,
-        Phone: parseInt(Phone),
-        Email,
-        password,
-        Role,
-        conformPassword,
-        StatusActive,
-      };
-      dispatch(addManagerUser(newData) as any);
-      setUserNameManagerUser("");
-      setNameUser("");
-      setPhone("");
-      setEmail("");
-      setRole("");
-      setPassword("");
-      setconformPassword("");
-      setStatusActive("");
-      navigate("/userManager");
+      try {
+        // Step 1: Add the user data to Firestore
+        const docRef = await db.collection("managerUser").add({
+          UserNameManagerUser,
+          NameUser,
+          Phone: parseInt(Phone),
+          Email,
+          Role,
+          password,
+          conformPassword,
+          StatusActive,
+        });
+
+        await auth.createUserWithEmailAndPassword(Email, password);
+        if (auth.currentUser) {
+          await auth.currentUser.updateProfile({
+            displayName: docRef.id,
+          });
+        }
+        setUserNameManagerUser("");
+        setNameUser("");
+        setPhone("");
+        setEmail("");
+        setRole("");
+        setPassword("");
+        setconformPassword("");
+        setStatusActive("");
+        navigate("/userManager", {
+          state: { message: "Thêm người dùng thành công" },
+        });
+      } catch (error) {
+        console.error("Error adding user:", error);
+      }
     }
   };
   return (

@@ -1,6 +1,6 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { db } from "../firebase/firebase";
-import { RootState } from "../store";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { db } from "../../../firebase/firebase";
+import { RootState } from "../../../store";
 
 export interface ManagerUser {
   id: string;
@@ -82,18 +82,19 @@ export const updateManagerUser = createAsyncThunk(
 const dataManagerRole = createSlice({
   name: "data",
   initialState,
-  reducers: {},
+  reducers: {
+    setDataMgUs: (state, action: PayloadAction<ManagerUser[]>) => {
+      state.dataMgUs = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchDataManagerUser.fulfilled, (state, action) => {
-         // Kiểm tra xem dữ liệu mới đã tồn tại trong state hay chưa
-         const newData = action.payload.filter((newItem) => {
+        const newData = action.payload.filter((newItem) => {
           return !state.dataMgUs.some(
             (existingItem) => existingItem.id === newItem.id
           );
         });
-
-        // Thêm dữ liệu mới vào state
         state.dataMgUs = [...state.dataMgUs, ...newData];
         state.loading = false;
         state.error = null;
@@ -106,6 +107,7 @@ const dataManagerRole = createSlice({
       });
   },
 });
+export const { setDataMgUs } = dataManagerRole.actions;
 
 export default dataManagerRole.reducer;
 export const selectData = (state: RootState) => state.dataMgUs.dataMgUs;

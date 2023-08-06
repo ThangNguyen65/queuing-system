@@ -1,5 +1,5 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import SlideMenu from "../../components/slide/slide";
 import AltaNavbar from "../../components/navbarRight/navbar";
 import "../../assets/css/InforUser/InforUser.css";
@@ -7,14 +7,28 @@ import Em from "../../assets/img/nav/ImageEmIu.jpg";
 import Camera from "../../assets/img/infor/CameraInforUser.svg";
 import { Avatar, Image, Input, Typography } from "antd";
 import { selectCurrentUser } from "../../app/selectors";
+import { loginSuccess } from "../../feature/auth/login";
 
 function AltaInForUser() {
   const currentUser = useSelector(selectCurrentUser);
+  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    setLoading(false);
+  }, [currentUser]);
 
   if (!currentUser) {
-    return <div>Bạn chưa đăng nhập</div>;
+    const persistedCurrentUser = localStorage.getItem("currentUser");
+    if (persistedCurrentUser) {
+      dispatch(loginSuccess(JSON.parse(persistedCurrentUser)));
+      setLoading(false);
+    } else {
+      return <div>Bạn chưa đăng nhập</div>;
+    }
   }
-
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   return (
     <div className="row">
       <div className="col-lg-2" style={{ paddingRight: "0px" }}>
@@ -49,7 +63,7 @@ function AltaInForUser() {
                 </div>
 
                 <Typography className="TextInForUser">
-                  {currentUser.NameUser}
+                  {currentUser?.NameUser}
                 </Typography>
               </div>
               <div className="col-lg-4" style={{ marginLeft: "-30px" }}>
@@ -57,7 +71,7 @@ function AltaInForUser() {
                   <label>Tên người dùng</label>
                   <Input
                     className="mt-2 py-2"
-                    value={currentUser.NameUser}
+                    value={currentUser?.NameUser}
                     disabled
                   />
                 </div>
@@ -65,7 +79,7 @@ function AltaInForUser() {
                   <label>Số điện thoại</label>
                   <Input
                     className="mt-2 py-2"
-                    value={currentUser.Phone}
+                    value={currentUser?.Phone}
                     disabled
                   />
                 </div>
@@ -73,7 +87,7 @@ function AltaInForUser() {
                   <label>Email:</label>
                   <Input
                     className="mt-2 py-2"
-                    value={currentUser.Email}
+                    value={currentUser?.Email}
                     disabled
                   />
                 </div>
@@ -83,7 +97,7 @@ function AltaInForUser() {
                   <label>Tên đăng nhập</label>
                   <Input
                     className="mt-2 py-2"
-                    value={currentUser.UserNameManagerUser}
+                    value={currentUser?.UserNameManagerUser}
                     disabled
                   />
                 </div>
@@ -91,7 +105,7 @@ function AltaInForUser() {
                   <label>Mật khẩu</label>
                   <Input
                     className="mt-2 py-2"
-                    value={currentUser.password}
+                    value={currentUser?.password}
                     disabled
                   />
                 </div>
@@ -99,7 +113,7 @@ function AltaInForUser() {
                   <label>Vai trò:</label>
                   <Input
                     className="mt-2 py-2"
-                    value={currentUser.Role}
+                    value={currentUser?.Role}
                     disabled
                   />
                 </div>

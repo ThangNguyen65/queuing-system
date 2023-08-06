@@ -12,7 +12,7 @@ import {
   selectData,
   selectError,
   selectLoading,
-} from "../../feature/actionDevice";
+} from "../../feature/device/actionDevice";
 import { AppDispatch } from "../../store";
 
 const AltaDevice = () => {
@@ -32,6 +32,7 @@ const AltaDevice = () => {
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchKeyword(event.target.value);
   };
+
   const filteredData = data.filter((item) => {
     const isActiveMatch =
       activeStatus === "Tất cả" || item.statusActive === activeStatus;

@@ -9,7 +9,7 @@ import {
   fetchData,
   selectData,
   updateDevice,
-} from "../../feature/actionDevice";
+} from "../../feature/device/actionDevice";
 
 const { Option } = Select;
 

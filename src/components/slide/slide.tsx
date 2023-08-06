@@ -10,17 +10,15 @@ import ImageSetting from "../../assets/img/slide/CaiDatHeThong.svg";
 import IconArrowRight from "../../assets/img/slide/iconArrowrRight.svg";
 import ThreeSetting from "../../assets/img/slide/ThreeChamSetting.svg";
 import "../../assets/css/slide/slide.css";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { logoutSuccess } from "../../feature/login";
+import { logoutSuccess } from "../../feature/auth/login";
 function SlideMenu() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const handleLogout = () => {
-    // Dispatch action to update Redux store
-    dispatch(logoutSuccess());
 
-    // Redirect to login page or any other appropriate page after logout
+  const handleLogout = () => {
+    dispatch(logoutSuccess());
     navigate("/");
   };
   return (
@@ -58,7 +56,10 @@ function SlideMenu() {
         <Image src={ImageLevelNo} preview={false} className="ImageDashboard" />
         <Typography className="TextSlideDashboard">Cấp số</Typography>
       </NavLink>
-      <NavLink to={""} className="d-flex text-decoration-none ReportNavLink">
+      <NavLink
+        to="/report"
+        className="d-flex text-decoration-none ReportNavLink"
+      >
         <Image src={ImageReport} preview={false} className="ImageDashboard" />
         <Typography className="TextSlideDashboard">Báo cáo</Typography>
       </NavLink>
@@ -84,7 +85,13 @@ function SlideMenu() {
         </div>
       </NavLink>
       <div>
-        <button className="btnSlide" onClick={handleLogout}>
+        <button
+          className="btnSlide"
+          onClick={handleLogout}
+          style={{
+            border: "none",
+          }}
+        >
           <Image
             src={IconArrowRight}
             className="ImageBtnSlide"

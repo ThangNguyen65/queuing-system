@@ -11,7 +11,7 @@ import {
   selectData,
   selectError,
   selectLoading,
-} from "../../feature/actionDevice";
+} from "../../feature/device/actionDevice";
 import { useEffect } from "react";
 
 const AltaDetailDevice = () => {

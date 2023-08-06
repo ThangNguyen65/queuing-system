@@ -9,7 +9,7 @@ import {
   fetchDataManagerUser,
   selectData,
   updateManagerUser,
-} from "../../feature/userManager";
+} from "../../feature/manager/user/userManager";
 
 const AltaEditManagerUser = () => {
   const { id } = useParams();

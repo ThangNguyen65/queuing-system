@@ -4,7 +4,7 @@ import AltaNavbar from "../../components/navbarRight/navbar";
 import { Input, Select, Space, Typography } from "antd";
 import "../../assets/css/device/addDevice.css";
 import { Link, useNavigate } from "react-router-dom";
-import { AddDevice, addDevices } from "../../feature/actionAddDevice";
+import { AddDevice, addDevices } from "../../feature/device/actionAddDevice";
 import { useDispatch } from "react-redux";
 const { Option } = Select;
 const AltaAddDevice = () => {

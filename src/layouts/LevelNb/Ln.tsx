@@ -22,7 +22,7 @@ import {
   selectData,
   selectError,
   selectLoading,
-} from "../../feature/levelNumber";
+} from "../../feature/levelNo/levelNumber";
 const { RangePicker } = DatePicker;
 const AltaLevelNumber = () => {
   const data = useSelector(selectData);

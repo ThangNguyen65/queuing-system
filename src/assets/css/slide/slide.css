@@ -97,3 +97,11 @@
 .ThreeSetting:hover {
   display: block;
 }
+/* Định dạng cho NavLink khi nó có trạng thái "active" */
+.DashboardNavLink.active,
+.DeviceNavLink.active,
+.ServiceNavLink.active,
+.LevelNoNavLink.active,
+.ReportNavLink.active {
+  background-color: rgba(255, 117, 6, 1); 
+}

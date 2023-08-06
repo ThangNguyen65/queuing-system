@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { db } from "../../firebase/firebase";
 
 interface User {
- id: string;
+  id: string;
   UserNameManagerUser: string;
   NameUser: string;
   Phone: number;
@@ -29,14 +30,22 @@ const loginSlice = createSlice({
     loginSuccess: (state, action: PayloadAction<User>) => {
       state.isAuthenticated = true;
       state.currentUser = action.payload;
+      localStorage.setItem("currentUser", JSON.stringify(action.payload));
     },
     logoutSuccess: (state) => {
       state.isAuthenticated = false;
       state.currentUser = null;
+      localStorage.removeItem("currentUser");
     },
   },
 });
-
 export const { loginSuccess, logoutSuccess } = loginSlice.actions;
-
+export const saveUserDataToFirestore =
+  (user: User) => async (dispatch: any) => {
+    try {
+      await db.collection("users").doc(user.id).set(user);
+    } catch (error) {
+      console.error("Lỗi khi lưu thông tin người dùng vào Firestore:", error);
+    }
+  };
 export default loginSlice.reducer;

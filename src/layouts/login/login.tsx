@@ -5,44 +5,60 @@ import LogoLogin from "../../assets/img/login/Logo alta.svg";
 import { Image, Input, Typography } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { selectData } from "../../feature/userManager";
-import { loginSuccess } from "../../feature/login";
+import { fetchDataManagerUser } from "../../feature/manager/user/userManager";
+import { loginSuccess } from "../../feature/auth/login";
+import { InfoCircleOutlined } from "@ant-design/icons";
+
 function Altalogin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const dataMgUs = useSelector(selectData);
-  const dispatch: any = useDispatch();
+  const [isLoginFailed, setIsLoginFailed] = useState(false);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const dataMgUs = useSelector((state: any) => state.dataMgUs.dataMgUs);
+
   const isAuthenticated = useSelector(
     (state: any) => state.login.isAuthenticated
   );
+
   useEffect(() => {
-    if (isAuthenticated) {
+    dispatch(fetchDataManagerUser() as any);
+  }, [dispatch]);
+
+  useEffect(() => {
+    const currentUserData = localStorage.getItem("currentUser");
+    if (isAuthenticated && currentUserData) {
+      const currentUser = JSON.parse(currentUserData);
+      dispatch(loginSuccess(currentUser));
       navigate("/dashboard");
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, navigate, dispatch]);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      localStorage.removeItem("currentUser");
+    }
+  }, [isAuthenticated]);
 
   const handleLogin = () => {
-    console.log("Username:", username);
-    console.log("Password:", password);
-
     const isValidLogin = dataMgUs.some(
-      (user) =>
+      (user: any) =>
         user.UserNameManagerUser === username && user.password === password
     );
 
     if (isValidLogin) {
       const currentUser = dataMgUs.find(
-        (user) =>
+        (user: any) =>
           user.UserNameManagerUser === username && user.password === password
       );
       if (currentUser) {
-        console.log("Logged in as:", currentUser);
         dispatch(loginSuccess(currentUser));
+        localStorage.setItem("currentUser", JSON.stringify(currentUser));
         navigate("/dashboard");
       }
     } else {
-      alert("Tên đăng nhập hoặc mật khẩu không chính xác. Vui lòng thử lại.");
+      setIsLoginFailed(true);
+      setTimeout(() => setIsLoginFailed(false), 3000);
       setUsername("");
       setPassword("");
     }
@@ -59,7 +75,7 @@ function Altalogin() {
             width={"25%"}
           />
         </div>
-        <div className="IPLogin">
+        <div className={`IPLogin ${isLoginFailed ? "error" : ""}`}>
           <div>
             <label htmlFor="">Tên đăng nhập *</label>
             <Input
@@ -80,12 +96,29 @@ function Altalogin() {
               <Input.Password
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                className="PasswordLogins"
               />
             </div>
           </div>
+          {isLoginFailed && (
+            <div className="d-flex mt-2" style={{ fontSize: "12px" }}>
+              <InfoCircleOutlined
+                style={{
+                  marginTop: "5px",
+                  color: "red",
+                  marginRight: "5px",
+                }}
+              />
+              <div className="login-error">Sai mật khẩu hoặc tên đăng nhập</div>
+            </div>
+          )}
         </div>
         <div className="forgot">
-          <Link to="/forgot" className="forgotPassword">
+          <Link
+            to="/forgot"
+            className={`forgotPassword ${isLoginFailed ? "move-down" : ""}`}
+            style={{ display: "block", color: "#e73f3f" }}
+          >
             Quên mật khẩu?
           </Link>
         </div>
