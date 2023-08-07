@@ -99,21 +99,18 @@ const device = createSlice({
         state.error = action.error.message || "Loi roi dit con me may";
       })
       .addCase(fetchData.fulfilled, (state, action) => {
-        // Kiểm tra xem dữ liệu mới đã tồn tại trong state hay chưa
         const newData = action.payload.filter((newItem) => {
           return !state.data.some(
             (existingItem) => existingItem.id === newItem.id
           );
         });
 
-        // Thêm dữ liệu mới vào state
         state.data = [...state.data, ...newData];
         state.loading = false;
         state.error = null;
       })
       //
       .addCase(updateDevice.fulfilled, (state, action) => {
-        // Thực hiện cập nhật dữ liệu của thiết bị trong state sau khi cập nhật thành công
         const updatedDevice = action.payload;
         state.data = state.data.map((device) =>
           device.id === updatedDevice.id ? updatedDevice : device

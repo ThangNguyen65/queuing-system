@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import SlideMenu from "../../components/slide/slide";
 import AltaNavbar from "../../components/navbarRight/navbar";
+import arrowRight from "../../assets/img/lvNumber/arrow-right.svg";
 import {
   Badge,
   Image,
   Select,
   Space,
-  Spin,
   Table,
   Typography,
   DatePicker,
@@ -21,44 +21,61 @@ import {
   FetchDataLevelNumber,
   selectData,
   selectError,
-  selectLoading,
 } from "../../feature/levelNo/levelNumber";
+
+import { fetchDataService, selectDataSV } from "../../feature/service/service";
 const { RangePicker } = DatePicker;
 const AltaLevelNumber = () => {
   const data = useSelector(selectData);
-  const loading = useSelector(selectLoading);
   const error = useSelector(selectError);
   const dispatch: AppDispatch = useDispatch();
   const [activeStatus, setActiveStatus] = useState("Tất cả");
-  const [connectStatus, setConnectStatus] = useState("Tất cả");
+  const [nameService, setNameService] = useState("Tất cả");
+  const [powerSupply, setPowerSupply] = useState("Tất cả");
   const [searchKeyword, setSearchKeyword] = useState("");
-  const [isFullServiceUsed, setIsFullServiceUsed] = useState(false);
+  const dataService = useSelector(selectDataSV);
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchKeyword(event.target.value);
+  };
+  useEffect(() => {
+    dispatch(fetchDataService());
+  }, [dispatch]);
+  const options = dataService.map((service: any) => ({
+    label: service.NameService,
+    value: service.NameService,
+  }));
+  const filteredData = data.filter((item) => {
+    const isService =
+      nameService === "Tất cả" || item.NameServices === nameService;
+    const isStatus = activeStatus === "Tất cả" || item.Status === activeStatus;
+    const isPowerSupply =
+      powerSupply === "Tất cả" || item.PowerSupply === powerSupply;
+    const isSearchMatch =
+      searchKeyword.trim() === "" ||
+      item.IdLevelNum.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+      item.NameCustomer.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+      item.NameServices.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+      item.GrantTime.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+      item.Expiry.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+      item.Status.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+      item.PowerSupply.toLowerCase().includes(searchKeyword.toLowerCase());
+    return isService && isStatus && isPowerSupply && isSearchMatch;
+  });
+
   useEffect(() => {
     dispatch(FetchDataLevelNumber());
   }, [dispatch]);
 
-  // Tim kiem và phân trang
-  //   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //     setSearchKeyword(event.target.value);
-  //   };
-  //   const filteredData = data.filter((item) => {
-  //     const isActiveMatch =
-  //       activeStatus === "Tất cả" || item.statusActive === activeStatus;
-  //     const isConnectMatch =
-  //       connectStatus === "Tất cả" || item.statusConnect === connectStatus;
-  //     const isSearchMatch =
-  //       searchKeyword.trim() === "" ||
-  //       item.idDevice.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-  //       item.nameDevice.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-  //       item.addressIp.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-  //       item.statusActive.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-  //       item.statusConnect.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-  //       item.serviceUsed.toLowerCase().includes(searchKeyword.toLowerCase());
-  //     return isActiveMatch && isConnectMatch && isSearchMatch;
-  //   });
-  //
-  // gioi han dich vu
-
+  const renderDateTime = (date: Date) => {
+    const formattedDate = new Date(date);
+    return formattedDate.toLocaleString("vi-VN", {
+      hour: "2-digit",
+      minute: "2-digit",
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+  };
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -89,12 +106,14 @@ const AltaLevelNumber = () => {
       dataIndex: "GrantTime",
       value: "GrantTime",
       key: "GrantTime",
+      render: (date: Date) => renderDateTime(date),
     },
     {
       title: "Hạn sử dụng",
       dataIndex: "Expiry",
       value: "Expiry",
       key: "Expiry",
+      render: (date: Date) => renderDateTime(date),
     },
     {
       title: "Trạng thái",
@@ -112,10 +131,10 @@ const AltaLevelNumber = () => {
           <span>{connectionStatus}</span>
         </Space>
       ),
-      key: "Nguồn cấp",
+      key: "Status",
     },
     {
-      title: "Tên dịch vụ ",
+      title: "Nguồn cấp",
       dataIndex: "PowerSupply",
       value: "PowerSupply",
       key: "PowerSupply",
@@ -125,25 +144,12 @@ const AltaLevelNumber = () => {
       value: "",
       render: (record: any) => (
         <Link
-          to={`/detailDevice/${record.id}`}
+          to={`/DetailLvNumber/${record.id}`}
           style={{
             padding: "0px 10px",
           }}
         >
           Chi tiết
-        </Link>
-      ),
-    },
-    {
-      title: "",
-      render: (record: any) => (
-        <Link
-          to={`/edit/${record.id}`}
-          style={{
-            padding: "0px 10px",
-          }}
-        >
-          Cập nhật
         </Link>
       ),
     },
@@ -200,16 +206,9 @@ const AltaLevelNumber = () => {
                     label: "Tất cả",
                     value: "Tất cả",
                   },
-                  {
-                    label: "Hoạt động",
-                    value: "Hoạt động",
-                  },
-                  {
-                    label: "Ngưng hoạt động",
-                    value: "Ngưng hoạt động",
-                  },
+                  ...options,
                 ]}
-                onChange={setActiveStatus}
+                onChange={setNameService}
               />
             </div>
             <div>
@@ -219,7 +218,7 @@ const AltaLevelNumber = () => {
               <Select
                 defaultValue="Tất cả"
                 style={{
-                  width: "100%",
+                  width: "70%",
                   margin: "5px 0px 0px 50px",
                   border: "1.5px solid #D4D4D7",
                   borderRadius: "8px",
@@ -232,15 +231,19 @@ const AltaLevelNumber = () => {
                     value: "Tất cả",
                   },
                   {
-                    label: "Kết nối",
-                    value: "Kết nối",
+                    label: "Đang chờ",
+                    value: "Đang chờ",
                   },
                   {
-                    label: "Mất kết nối",
-                    value: "Mất kết nối",
+                    label: "Đã sử dụng",
+                    value: "Đã sử dụng",
+                  },
+                  {
+                    label: "Bỏ qua",
+                    value: "Bỏ qua",
                   },
                 ]}
-                onChange={setConnectStatus}
+                onChange={setActiveStatus}
               />
             </div>
             <div>
@@ -250,8 +253,8 @@ const AltaLevelNumber = () => {
               <Select
                 defaultValue="Tất cả"
                 style={{
-                  width: "100%",
-                  margin: "5px 0px 0px 65px",
+                  width: "70%",
+                  margin: "5px 0px 0px 35px",
                   border: "1.5px solid #D4D4D7",
                   borderRadius: "8px",
                 }}
@@ -263,38 +266,59 @@ const AltaLevelNumber = () => {
                     value: "Tất cả",
                   },
                   {
-                    label: "Kết nối",
-                    value: "Kết nối",
+                    label: "Kiosk",
+                    value: "Kiosk",
                   },
                   {
-                    label: "Mất kết nối",
-                    value: "Mất kết nối",
+                    label: "Hệ thống",
+                    value: "Hệ thống",
                   },
                 ]}
-                onChange={setConnectStatus}
+                onChange={setPowerSupply}
               />
             </div>
             <div>
               <label className="d-block lbSelectConnectDate">
                 Chọn thời gian
               </label>
-              <RangePicker
+              <div>
+                <DatePicker
+                  style={{
+                    width: "40%",
+                    margin: "5px 0px 0px 25px",
+                    border: "1.5px solid #D4D4D7",
+                    borderRadius: "8px",
+                  }}
+                />
+                <Image src={arrowRight} preview={false} />
+                <DatePicker
+                
+                  style={{
+                    width: "40%",
+                    margin: "5px 0px 0px  0px",
+                    border: "1.5px solid #D4D4D7",
+                    borderRadius: "8px",
+                  }}
+                />
+              </div>
+              {/* <RangePicker
                 style={{
                   width: "70%",
-                  margin: "5px 0px 0px 80px",
+                  margin: "5px 0px 0px 35px",
                   border: "1.5px solid #D4D4D7",
                   borderRadius: "8px",
                 }}
-              />
+              /> */}
             </div>
             <div>
-              <label className="d-block lbSearch">Từ khoá</label>
+              <label className="d-block lbSearchLvNumber">Từ khoá</label>
               <div className="d-flex">
                 <input
                   type="text"
                   className="IPSearchLevelNumber"
                   placeholder="Nhập từ khóa"
                   value={searchKeyword}
+                  onChange={handleSearchChange}
                 />
                 <button className="btnSearchDevice">
                   <Image src={search} preview={false} />
@@ -310,7 +334,7 @@ const AltaLevelNumber = () => {
             <Table
               className="ms-4 mt-2"
               columns={columns}
-              dataSource={data}
+              dataSource={filteredData}
               style={{
                 width: "74%",
                 position: "absolute",
@@ -321,7 +345,7 @@ const AltaLevelNumber = () => {
               rowClassName={getRowClassName}
             ></Table>
             <div className="addDevice">
-              <Link to="/addDevice" className="text-decoration-none">
+              <Link to="/AddLevelNumber" className="text-decoration-none">
                 <Image src={AddDevicev} preview={false} className="ms-1" />
                 <Typography className="AddDeviceText">
                   Cấp <br /> số mới

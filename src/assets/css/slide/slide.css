@@ -34,16 +34,30 @@
 .DeviceNavLink:hover,
 .ServiceNavLink:hover,
 .LevelNoNavLink:hover,
-.ReportNavLink:hover {
+.ReportNavLink:hover,
+.SettingNavLink:hover {
   background-color: rgba(255, 242, 231, 1);
+}
+.DashboardNavLink:hover .TextSlideDashboard,
+.DeviceNavLink:hover .TextSlideDashboard,
+.ServiceNavLink:hover .TextSlideDashboard,
+.LevelNoNavLink:hover .TextSlideDashboard,
+.ReportNavLink:hover .TextSlideDashboard,
+.SettingNavLink:hover .TextSlideDashboard {
+  color: rgba(255, 117, 6, 1);
+}
+.DashboardNavLink:hover .ImageDashboard,
+.DeviceNavLink:hover .ImageDashboard,
+.ServiceNavLink:hover .ImageDashboard,
+.LevelNoNavLink:hover .ImageDashboard,
+.ReportNavLink:hover .ImageDashboard,
+.SettingNavLink:hover .ImageDashboard {
+  filter: brightness(0) hue-rotate(160deg);
 }
 .SettingNavLink {
   position: relative;
   margin-top: 5px;
   padding: 10px 10px 10px 25px;
-}
-.SettingNavLink:hover {
-  background-color: rgba(255, 242, 231, 1);
 }
 .SettingNavLink:hover .DropdownSetting {
   display: block;
@@ -103,5 +117,20 @@
 .ServiceNavLink.active,
 .LevelNoNavLink.active,
 .ReportNavLink.active {
-  background-color: rgba(255, 117, 6, 1); 
+  color: #fff;
+  background-color: rgba(255, 117, 6, 1);
+}
+.DashboardNavLink.active .TextSlideDashboard,
+.DeviceNavLink.active .TextSlideDashboard,
+.ServiceNavLink.active .TextSlideDashboard,
+.LevelNoNavLink.active .TextSlideDashboard,
+.ReportNavLink.active .TextSlideDashboard {
+  color: #fff;
+}
+.DashboardNavLink.active .ImageDashboard,
+.DeviceNavLink.active .ImageDashboard,
+.ServiceNavLink.active .ImageDashboard,
+.LevelNoNavLink.active .ImageDashboard,
+.ReportNavLink.active .ImageDashboard {
+  filter: brightness(0) invert(1);
 }

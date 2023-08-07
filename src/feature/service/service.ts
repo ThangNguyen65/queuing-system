@@ -67,6 +67,6 @@ const ServiceSlice = createSlice({
 });
 export default ServiceSlice.reducer;
 
-export const selectData = (state: RootState) => state.dataSv.dataSv;
+export const selectDataSV = (state: RootState) => state.dataSv.dataSv;
 export const selectLoading = (state: RootState) => state.dataSv.loading;
 export const selectError = (state: RootState) => state.dataSv.error;

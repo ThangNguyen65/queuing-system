@@ -4,8 +4,17 @@
   font-style: normal;
   font-weight: 600;
   line-height: 24px;
-  margin: 20px 0px 0px 68px;
+  margin: 20px 0px 0px 35px;
 }
+.lbSearchLvNumber {
+  margin: 20px 0px 0px 2px;
+  font-family: "Nunito";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+}
+
 .lbSelectConnectStatus {
   font-family: "Nunito";
   font-size: 16px;
@@ -28,5 +37,57 @@
   font-style: normal;
   font-weight: 600;
   line-height: 24px;
-  margin: 20px 0px 0px 81px;
+  margin: 20px 0px 0px 27px;
+}
+.ant-modal {
+  width: 360px !important;
+  margin-top: 60px;
+}
+:where(.css-dev-only-do-not-override-txh9fw).ant-modal .ant-modal-content {
+  padding: 40px 0px 0px 0px;
+  border-radius: 19px;
+}
+:where(.css-dev-only-do-not-override-txh9fw).ant-picker-dropdown
+  .ant-picker-cell-in-view.ant-picker-cell-selected
+  .ant-picker-cell-inner,
+:where(.css-dev-only-do-not-override-txh9fw).ant-picker-dropdown
+  .ant-picker-cell-in-view.ant-picker-cell-range-start
+  .ant-picker-cell-inner,
+:where(.css-dev-only-do-not-override-txh9fw).ant-picker-dropdown
+  .ant-picker-cell-in-view.ant-picker-cell-range-end
+  .ant-picker-cell-inner {
+  background-color: rgba(255, 117, 6, 1);
+  color: rgba(255, 255, 255, 1);
+}
+.ant-picker-header-super-next-btn,
+.ant-picker-header-super-prev-btn {
+  display: none;
+}
+:where(.css-dev-only-do-not-override-txh9fw).ant-picker-dropdown
+  .ant-picker-header
+  > button {
+  color: rgba(255, 117, 6, 1);
+}
+.ant-picker-header-view {
+  color: rgba(255, 117, 6, 1);
+}
+:where(.css-dev-only-do-not-override-txh9fw).ant-picker-dropdown
+  .ant-picker-header {
+  padding: 0px 23px;
+}
+:where(.css-dev-only-do-not-override-txh9fw).ant-picker-dropdown
+  .ant-picker-date-panel
+  .ant-picker-content
+  th {
+  color: rgba(255, 117, 6, 1);
+}
+:where(.css-dev-only-do-not-override-txh9fw).ant-picker-dropdown
+  .ant-picker-panel
+  .ant-picker-footer {
+  display: none;
+}
+:where(.css-dev-only-do-not-override-txh9fw).ant-picker-dropdown
+  .ant-picker-cell-in-view.ant-picker-cell-today
+  .ant-picker-cell-inner::before {
+  border: 1px solid rgba(255, 117, 6, 1);
 }

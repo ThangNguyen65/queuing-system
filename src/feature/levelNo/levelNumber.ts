@@ -7,8 +7,8 @@ export interface LevelNumber {
   IdLevelNum: string;
   NameCustomer: string;
   NameServices: string;
-  GrantTime: Date;
-  Expiry: Date;
+  GrantTime: string;
+  Expiry: string;
   Status: string;
   PowerSupply: string;
 }
@@ -65,15 +65,13 @@ const DataLevelNumber = createSlice({
   extraReducers: (builder) => {
     builder.addCase(FetchDataLevelNumber.fulfilled, (state, action) => {
       const newData = action.payload.filter((newItem) => {
-        const newData = action.payload.filter((newItem) => {
-          return !state.dataLvNB.some(
-            (ItemLevelNumber) => ItemLevelNumber.id === newItem.id
-          );
-        });
-        state.dataLvNB = [...state.dataLvNB, ...newData];
-        state.loading = false;
-        state.error = null;
+        return !state.dataLvNB.some(
+          (ItemLevelNumber) => ItemLevelNumber.id === newItem.id
+        );
       });
+      state.dataLvNB = [...state.dataLvNB, ...newData];
+      state.loading = false;
+      state.error = null;
     });
   },
 });

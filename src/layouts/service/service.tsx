@@ -19,25 +19,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../store";
 import {
   fetchDataService,
-  selectData,
+  selectDataSV,
   selectError,
   selectLoading,
 } from "../../feature/service/service";
 import "../../assets/css/service/service.css";
 const { RangePicker } = DatePicker;
 const AltaService = () => {
-  const dataSv = useSelector(selectData);
+  const dataSv = useSelector(selectDataSV);
   const loading = useSelector(selectLoading);
   const error = useSelector(selectError);
   const dispatch: AppDispatch = useDispatch();
   const [activeStatus, setActiveStatus] = useState("Tất cả");
   const [searchKeyword, setSearchKeyword] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-
-  useEffect(() => {
-    dispatch(fetchDataService());
-    setCurrentPage(1);
-  }, [dispatch]);
+  
   const getRowClassName = (_record: any, index: number) => {
     return index % 2 !== 0 ? "bg-pink" : "";
   };
