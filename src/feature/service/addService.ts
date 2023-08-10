@@ -8,6 +8,9 @@ export interface AddService {
   NameService: string;
   DescribeService: string;
   StatusActive: string;
+  suffix: string;
+  limit: string;
+  StatusDescribe: string;
 }
 interface AddServiceState {
   dataSv: AddService[];
@@ -25,7 +28,6 @@ export const addService = createAsyncThunk(
     try {
       const newManagerUser: AddService = {
         ...service,
-        // StatusActive: "Hoạt động",
       };
       const docRef = await db.collection("service").add(newManagerUser);
       const id = docRef.id;

@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SlideMenu from "../../components/slide/slide";
 import AltaNavbar from "../../components/navbarRight/navbar";
-import { Input, Select, Space, Typography } from "antd";
+import { Input, Select, Typography } from "antd";
 import "../../assets/css/device/addDevice.css";
 import { Link, useNavigate } from "react-router-dom";
 import { AddDevice, addDevices } from "../../feature/device/actionAddDevice";
-import { useDispatch } from "react-redux";
-const { Option } = Select;
+import { useDispatch, useSelector } from "react-redux";
+import { fetchDataService, selectDataSV } from "../../feature/service/service";
+import { selectCurrentUser } from "../../app/selectors";
+import { addActivity } from "../../feature/device/actionDevice";
+
 const AltaAddDevice = () => {
   const [idDevice, setIdDevice] = useState("");
   const [nameDevice, setNameDevice] = useState("");
@@ -17,6 +20,28 @@ const AltaAddDevice = () => {
   const [categoryDevice, setCategoryDevice] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const dataService = useSelector(selectDataSV);
+  useEffect(() => {
+    dispatch(fetchDataService() as any);
+  }, [dispatch]);
+  const currentUser = useSelector(selectCurrentUser);
+  const options = dataService.map((service: any) => ({
+    label: service.NameService,
+    value: service.NameService,
+  }));
+
+  const possibleStatusDevice = ["Hoạt động", "Ngưng hoạt động"];
+  const getRandomStatusDescribe = () => {
+    const randomIndex = Math.floor(Math.random() * possibleStatusDevice.length);
+    return possibleStatusDevice[randomIndex];
+  };
+  const possibleStatusDeviceConnect = ["Kết nối", "Mất kết nối"];
+  const getRandomStatusDescribeConnect = () => {
+    const randomIndex = Math.floor(
+      Math.random() * possibleStatusDeviceConnect.length
+    );
+    return possibleStatusDeviceConnect[randomIndex];
+  };
   const handleAddData = () => {
     if (
       idDevice &&
@@ -28,24 +53,27 @@ const AltaAddDevice = () => {
       categoryDevice
     ) {
       const serviceUsedString = serviceUsed.join(", ");
-      // Tạo đối tượng AddDevice mới với các thông tin đã nhập
       const newData: AddDevice = {
-        id: "", // Id sẽ được tạo tự động bởi Firebase
+        id: "",
         idDevice,
         nameDevice,
         addressIp,
         username,
         password,
-        statusActive: "Hoạt động", // Trạng thái mặc định là "Hoạt động"
-        statusConnect: "Kết nối", // Trạng thái mặc định là "Kết nối"
+        statusActive: getRandomStatusDescribe(),
+        statusConnect: getRandomStatusDescribeConnect(),
         serviceUsed: serviceUsedString,
         categoryDevice,
       };
-
-      // Gọi action addDevices và truyền newData vào để lưu vào Firebase
       dispatch(addDevices(newData) as any);
-
-      // Reset các trường về giá trị mặc định sau khi thêm thành công
+      const newActivity = {
+        userName: currentUser?.UserNameManagerUser,
+        action: "Thêm thiết bị",
+        serviceName: serviceUsedString,
+        deviceAddress: addressIp,
+        levelNumberGrantTime: "",
+      };
+      dispatch(addActivity(newActivity));
       setIdDevice("");
       setNameDevice("");
       setAddressIp("");
@@ -249,26 +277,8 @@ const AltaAddDevice = () => {
                   optionLabelProp="label"
                   value={serviceUsed}
                   onChange={(values) => setServiceUsed(values)}
-                >
-                  <Option value="Khám tim mạch" label="Khám tim mạch">
-                    <Space>Khám tim mạch</Space>
-                  </Option>
-                  <Option value="Khám sản phụ khoa" label="Khám sản phụ khoa">
-                    <Space>Khám sản phụ khoa</Space>
-                  </Option>
-                  <Option value="Khám răng hàm mặt" label="Khám răng hàm mặt">
-                    <Space>Khám răng hàm mặt</Space>
-                  </Option>
-                  <Option value="Khám tai mũi họng" label="Khám tai mũi họng">
-                    <Space>Khám tai mũi họng</Space>
-                  </Option>
-                  <Option value="Khám hô hấp" label="Khám hô hấp">
-                    <Space>Khám hô hấp</Space>
-                  </Option>
-                  <Option value="Khám tổng quát" label="Khám tổng quát">
-                    <Space>Khám tổng quát</Space>
-                  </Option>
-                </Select>
+                  options={options}
+                ></Select>
               </div>
               <Typography className="mt-1">
                 <span

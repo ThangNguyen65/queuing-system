@@ -119,7 +119,7 @@ const AltaDetailDevice = () => {
                   </Typography>
                 </div>
               </div>
-              {/*  */}
+
               <div className="row ms-2 mt-3">
                 <div className="col-6 d-flex">
                   <Typography
@@ -198,11 +198,9 @@ const AltaDetailDevice = () => {
                   <Typography className="ms-5"></Typography>
                 </div>
               </div>
-              {/*  */}
             </div>
-            {/*  */}
             <div className="mt-3 detailDevice">
-              <Link to="" className="text-decoration-none">
+              <Link to={`/edit/$id`} className="text-decoration-none">
                 <Image src={DetailDevice} preview={false} className="ms-2" />
                 <Typography className="AddDeviceText">
                   Cập nhật thiết bị

@@ -91,3 +91,6 @@
   .ant-picker-cell-inner::before {
   border: 1px solid rgba(255, 117, 6, 1);
 }
+:where(.css-dev-only-do-not-override-txh9fw).ant-modal .ant-modal-close-x {
+  color: rgba(255, 117, 6, 1);
+}

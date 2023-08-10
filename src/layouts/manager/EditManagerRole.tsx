@@ -2,17 +2,19 @@ import SlideMenu from "../../components/slide/slide";
 import AltaNavbar from "../../components/navbarRight/navbar";
 import { Checkbox, Input, Typography } from "antd";
 import "../../assets/css/device/addDevice.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import TextArea from "antd/es/input/TextArea";
 import { useEffect, useState } from "react";
 import {
-  addManagerRole,
   fetchDataManagerRole,
-  managerRole,
+  selectDataMgRl,
+  updateManagerRole,
 } from "../../feature/manager/role/managerRole";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-const AltaAddManagerRole = () => {
+const AltaEditManagerRole = () => {
+  const { id } = useParams();
+  const dataMgRl = useSelector(selectDataMgRl);
   const [NameManagerRole, setNameManagerRole] = useState("");
   const [DescribeManagerRole, setDescribeManagerRole] = useState("");
   const navigate = useNavigate();
@@ -20,19 +22,21 @@ const AltaAddManagerRole = () => {
   useEffect(() => {
     dispatch(fetchDataManagerRole() as any);
   }, [dispatch]);
-  const handleAddData = () => {
-    if (NameManagerRole && DescribeManagerRole) {
-      const newData: managerRole = {
-        id: "",
-        NameManagerRole,
-        DescribeManagerRole,
-      };
-      dispatch(addManagerRole(newData) as any);
-      setNameManagerRole("");
-      setDescribeManagerRole("");
-
-      navigate("/roleManager");
+  useEffect(() => {
+    const DeviceData = dataMgRl.find((item) => item.id === id);
+    if (DeviceData) {
+      setNameManagerRole(DeviceData.NameManagerRole);
+      setDescribeManagerRole(DeviceData.DescribeManagerRole);
     }
+  }, [dataMgRl, id]);
+  const handleUpdateRole = () => {
+    const DeviceDataUpdated = {
+      id: id,
+      NameManagerRole: NameManagerRole,
+      DescribeManagerRole: DescribeManagerRole,
+    };
+    dispatch(updateManagerRole(DeviceDataUpdated as any) as any);
+    navigate("/roleManager");
   };
   return (
     <div className="row">
@@ -219,7 +223,7 @@ const AltaAddManagerRole = () => {
                 color: "#fff",
                 marginLeft: "20px",
               }}
-              onClick={handleAddData}
+              onClick={handleUpdateRole}
             >
               Thêm
             </button>
@@ -230,4 +234,4 @@ const AltaAddManagerRole = () => {
   );
 };
 
-export default AltaAddManagerRole;
+export default AltaEditManagerRole;

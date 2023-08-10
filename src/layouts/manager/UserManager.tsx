@@ -221,7 +221,15 @@ const AltaManagerUser = () => {
                 rowClassName={getRowClassName}
               ></Table>
             </div>
-            <div className="mt-3 addManagerUser">
+            <div
+              style={{
+                backgroundColor: "rgba(255, 242, 231, 1)",
+                padding: "10px 23px",
+                width: "8%",
+                marginLeft: "985px",
+                height: "15vh",
+              }}
+            >
               <Link to="/addUserManager" className="text-decoration-none">
                 <Image src={AddDevicev} preview={false} className="ms-1" />
                 <Typography className="AddDeviceText">

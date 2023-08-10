@@ -1,57 +1,58 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SlideMenu from "../../components/slide/slide";
 import AltaNavbar from "../../components/navbarRight/navbar";
 import { Checkbox, Input, Typography } from "antd";
 import "../../assets/css/device/addDevice.css";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import TextArea from "antd/es/input/TextArea";
-import { addService, AddService } from "../../feature/service/addService";
+import {
+  fetchDataService,
+  selectDataSV,
+  updateService,
+} from "../../feature/service/service";
 
-const AltaAddService = () => {
+const AltaEditService = () => {
+  const { id } = useParams();
   const [IdService, setIdService] = useState("");
   const [NameService, setNameService] = useState("");
   const [DescribeService, setDescribeService] = useState("");
   const [autoIncrease, setAutoIncrease] = useState(false);
   const [suffix, setSuffix] = useState("");
   const [limit, setLimit] = useState("");
+  const [StatusActive, setStatusActive] = useState("");
 
+  const dataSv = useSelector(selectDataSV);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const possibleStatusActive = ["Hoạt động", "Ngưng hoạt động"];
-  const possibleStatusDescribe = ["Đã hoàn thành", "Đang thực hiện", "Vắng"];
-  const getRandomStatusActive = () => {
-    const randomIndex = Math.floor(Math.random() * possibleStatusActive.length);
-    return possibleStatusActive[randomIndex];
-  };
-  const getRandomStatusDescribe = () => {
-    const randomIndex = Math.floor(
-      Math.random() * possibleStatusDescribe.length
-    );
-    return possibleStatusDescribe[randomIndex];
-  };
-  const handleAddData = () => {
-    if (IdService && NameService && DescribeService) {
-      const newData: AddService = {
-        id: "",
-        IdService,
-        NameService,
-        DescribeService,
-        StatusActive: getRandomStatusActive(),
-        suffix,
-        limit,
-        StatusDescribe: getRandomStatusDescribe(),
-      };
-      dispatch(addService(newData) as any);
-      setIdService("");
-      setNameService("");
-      setDescribeService("");
-      setAutoIncrease(false);
-      setSuffix("");
-      setLimit("");
-      navigate("/service");
+
+  useEffect(() => {
+    dispatch(fetchDataService() as any);
+  }, [dispatch]);
+  useEffect(() => {
+    const DeviceData = dataSv.find((item) => item.id === id);
+    if (DeviceData) {
+      setIdService(DeviceData.IdService);
+      setNameService(DeviceData.NameService);
+      setDescribeService(DeviceData.DescribeService);
+      setSuffix(DeviceData.suffix);
+      setLimit(DeviceData.limit);
+      setStatusActive(DeviceData.StatusActive);
     }
+  }, [dataSv, id]);
+  const handleUpdateDevice = () => {
+    const DeviceDataUpdated = {
+      id: id,
+      IdService: IdService,
+      NameService: NameService,
+      DescribeService: DescribeService,
+      suffix: suffix,
+      limit: limit,
+      StatusActive: StatusActive,
+    };
+    dispatch(updateService(DeviceDataUpdated as any) as any);
+    navigate("/service");
   };
   return (
     <div className="row">
@@ -78,11 +79,14 @@ const AltaAddService = () => {
           }}
         >
           <div className="d-flex">
-            <Typography className="TitleAddDevice">Cài đặt hệ thống</Typography>
+            <Typography className="TitleAddDevice">Dịch vụ</Typography>
             <Link to="/service" id="ListAddDevice">
               Danh sách dịch vụ
             </Link>
-            <Typography id="ListAddDevices">Thêm dịch vụ</Typography>
+            <Link to="/service" id="ListAddDevice">
+              Chi tiết
+            </Link>
+            <Typography id="ListAddDevices">Cập nhật</Typography>
           </div>
           <AltaNavbar />
         </div>
@@ -203,7 +207,7 @@ const AltaAddService = () => {
             >
               Hủy bỏ
             </Link>
-            <button className="btnAddDevices" onClick={handleAddData}>
+            <button className="btnAddDevices" onClick={handleUpdateDevice}>
               Thêm dịch vụ
             </button>
           </div>
@@ -213,4 +217,4 @@ const AltaAddService = () => {
   );
 };
 
-export default AltaAddService;
+export default AltaEditService;

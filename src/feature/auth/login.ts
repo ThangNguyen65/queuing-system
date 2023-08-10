@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { db } from "../../firebase/firebase";
 
-interface User {
+export interface User {
   id: string;
   UserNameManagerUser: string;
   NameUser: string;

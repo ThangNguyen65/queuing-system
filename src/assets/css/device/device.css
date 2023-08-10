@@ -114,9 +114,31 @@
 :where(.css-dev-only-do-not-override-txh9fw)[class*=" ant-table"]
   [class*=" ant-table"] {
   box-sizing: border-box;
-  border-right: 1px solid #ffe3cd;
+  /* border-right: 2px solid #ffe3cd; */
+  /* border-width: 1px; */
+  border: 1px solid #ffe3cd !important;
+  border-top: none !important;
+  border-bottom: none !important;
+  border-color: inherit;
 }
-
+:where(.css-dev-only-do-not-override-txh9fw)[class^="ant-table"]
+  [class^="ant-table"],
+:where(.css-dev-only-do-not-override-txh9fw)[class*=" ant-table"]
+  [class^="ant-table"],
+:where(.css-dev-only-do-not-override-txh9fw)[class^="ant-table"]
+  [class*=" ant-table"],
+:where(.css-dev-only-do-not-override-txh9fw)[class*=" ant-table"]
+  [class*=" ant-table"]:last-child {
+  border-right: none !important;
+}
+:where(.css-dev-only-do-not-override-txh9fw)[class^="ant-table"]
+  [class^="ant-table"]:last-child {
+  border-right: none;
+}
+:where(.css-dev-only-do-not-override-txh9fw)[class^="ant-table"]
+  [class^="ant-table"]:first-child {
+  border-left: none !important;
+}
 :where(.css-dev-only-do-not-override-txh9fw).ant-table-wrapper
   .ant-table-thead
   > tr
@@ -162,4 +184,8 @@
   position: relative;
   padding: 19px 5px;
   overflow-wrap: break-word;
+}
+:where(.css-dev-only-do-not-override-txh9fw).ant-table-wrapper
+  .ant-table-pagination.ant-pagination {
+  border: none !important;
 }

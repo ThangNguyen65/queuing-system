@@ -30,8 +30,6 @@ export const addDevices = createAsyncThunk(
     try {
       const newDevice: AddDevice = {
         ...device,
-        statusActive: "Hoạt động",
-        statusConnect: "Kết nối",
       };
       const docRef = await db.collection("device").add(newDevice);
       const id = docRef.id;

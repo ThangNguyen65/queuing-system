@@ -77,6 +77,6 @@ const DataLevelNumber = createSlice({
 });
 export default DataLevelNumber.reducer;
 
-export const selectData = (state: RootState) => state.dataLvNB.dataLvNB;
+export const selectDataLvNB = (state: RootState) => state.dataLvNB.dataLvNB;
 export const selectLoading = (state: RootState) => state.dataLvNB.loading;
 export const selectError = (state: RootState) => state.dataLvNB.error;

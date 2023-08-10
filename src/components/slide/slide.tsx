@@ -79,7 +79,7 @@ function SlideMenu() {
           <NavLink to="/userManager" className="DropdownTextUserName">
             Quản lý tài khoản
           </NavLink>
-          <NavLink to="/roleManager" className="DropdownTextUser">
+          <NavLink to="/noteActive" className="DropdownTextUser">
             Nhật ký người dùng
           </NavLink>
         </div>

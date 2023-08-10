@@ -17,6 +17,12 @@ import AltaEditManagerUser from "../layouts/manager/EditManagerUser";
 import AltaAddService from "../layouts/service/addService";
 import AltaAddLevelNumber from "../layouts/LevelNb/addLn";
 import AltaDetailLvNumber from "../layouts/LevelNb/detail";
+import AltaReport from "../layouts/report/report";
+import AltaDetailService from "../layouts/service/detailService";
+import AltaEditService from "../layouts/service/editService";
+import AltaNoteActive from "../layouts/manager/NoteActive";
+import AltaAddManagerRole from "../layouts/manager/AddManagerRole";
+import AltaEditManagerRole from "../layouts/manager/EditManagerRole";
 
 function Routess() {
   return (
@@ -30,15 +36,21 @@ function Routess() {
       <Route path="/detailDevice/:eventId" element={<AltaDetailDevice />} />
       <Route path="/edit/:id" element={<AltaEditDevice />} />
       <Route path="/service" element={<AltaService />} />
+      <Route path="/DetailService/:id" element={<AltaDetailService />} />
       <Route path="/addService" element={<AltaAddService />} />
+      <Route path="/editService/:id" element={<AltaEditService />} />
       <Route path="/levelNumber" element={<AltaLevelNumber />} />
       <Route path="/AddLevelNumber" element={<AltaAddLevelNumber />} />
       <Route path="/DetailLvNumber/:LvNumId" element={<AltaDetailLvNumber />} />
       <Route path="/roleManager" element={<AltaManagerRole />} />
+      <Route path="/AddRoleManager" element={<AltaAddManagerRole />} />
+      <Route path="/EditRoleManager/:id" element={<AltaEditManagerRole />} />
       <Route path="/userManager" element={<AltaManagerUser />} />
       <Route path="/addUserManager" element={<AltaAddManagerUser />} />
       <Route path="/editManager/:id" element={<AltaEditManagerUser />} />
       <Route path="/dashboard" element={<AltaDashboard />} />
+      <Route path="/report" element={<AltaReport />} />
+      <Route path="/noteActive" element={<AltaNoteActive />} />
     </Routes>
   );
 }

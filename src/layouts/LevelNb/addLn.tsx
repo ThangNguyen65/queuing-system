@@ -6,11 +6,16 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { fetchDataService, selectDataSV } from "../../feature/service/service";
-import { addLevelNumber } from "../../feature/levelNo/AddlevelNumber";
+import {
+  addLevelNumber,
+  selectData,
+} from "../../feature/levelNo/AddlevelNumber";
 import { LevelNumber } from "../../feature/levelNo/levelNumber";
+import { selectCurrentUser } from "../../app/selectors";
 
 const AltaAddLevelNumber = () => {
   const dataService = useSelector(selectDataSV);
+  const dataLvNB = useSelector(selectData);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchDataService() as any);
@@ -43,15 +48,14 @@ const AltaAddLevelNumber = () => {
     const year = date.getFullYear();
     return `${hours}:${minutes} ${day}/${month}/${year}`;
   };
+
   const generateIdLevelNum = () => {
-    const currentDate = new Date();
-    const year = String(currentDate.getFullYear()).slice(-2);
-    const month = String(currentDate.getMonth() + 1).padStart(2, "0");
-    const day = String(currentDate.getDate()).padStart(2, "0");
-
-    const sequentialNumber = 1;
-
-    return `20${year}${month}${day}${sequentialNumber}`;
+    const lastSequentialNumber =
+      dataLvNB.length > 0
+        ? Number(dataLvNB[dataLvNB.length - 1].IdLevelNum)
+        : 200000;
+    const newSequentialNumber = lastSequentialNumber + 1;
+    return `${newSequentialNumber}`;
   };
 
   const showModal = () => {
@@ -60,9 +64,18 @@ const AltaAddLevelNumber = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-
+  const selectedServiceModal = dataService.find(
+    (service) => service.IdService === selectedValue
+  );
+  const possibleStatusLvNumber = ["Đã sử dụng", "Đang chờ", "Bỏ qua"];
+  const getRandomStatusDescribe = () => {
+    const randomIndex = Math.floor(
+      Math.random() * possibleStatusLvNumber.length
+    );
+    return possibleStatusLvNumber[randomIndex];
+  };
   const newIdLevelNum = generateIdLevelNum();
-
+  const currentUser = useSelector(selectCurrentUser);
   const handlePrintNumber = async () => {
     const selectedService = dataService.find(
       (service) => service.IdService === selectedValue
@@ -81,11 +94,11 @@ const AltaAddLevelNumber = () => {
       const newData: LevelNumber = {
         id: "",
         IdLevelNum: generateIdLevelNum(),
-        NameCustomer: "Tên khách hàng",
+        NameCustomer: currentUser?.NameUser || "null",
         NameServices: selectedService.NameService,
         GrantTime: formattedDate,
         Expiry: formattedExpiry,
-        Status: "Đang chờ",
+        Status: getRandomStatusDescribe(),
         PowerSupply: "Kiosk",
       };
 
@@ -222,13 +235,25 @@ const AltaAddLevelNumber = () => {
                   style={{
                     fontSize: "37px",
                     fontWeight: "800",
-                    marginLeft: "84px",
+                    marginLeft: "110px",
                     color: "rgba(255, 117, 6, 1)",
                   }}
                 >
                   {newIdLevelNum}
                 </Typography>
-                <Typography
+                {selectedServiceModal && (
+                  <Typography
+                    style={{
+                      marginTop: "20px",
+                      marginLeft: "60px",
+                      width: "100%",
+                      bottom: "0",
+                    }}
+                  >
+                    DV: {selectedServiceModal.NameService} (tại quầy số 1)
+                  </Typography>
+                )}
+                {/* <Typography
                   style={{
                     marginTop: "20px",
                     marginLeft: "60px",
@@ -236,8 +261,8 @@ const AltaAddLevelNumber = () => {
                     bottom: "0",
                   }}
                 >
-                  DV: Khám răng hàm mặt (tại quầy số 1)
-                </Typography>
+                  DV:{selectedService.NameService} (tại quầy số 1)
+                </Typography> */}
                 <div
                   style={{
                     backgroundColor: "rgba(255, 145, 56, 1)",

@@ -1,5 +1,5 @@
 import { RootState } from "../../store";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { db } from "../../firebase/firebase";
 
 export interface Device {
@@ -18,11 +18,14 @@ interface DeviceState {
   data: Device[];
   loading: boolean;
   error: string | null;
+  activityHistory: any[];
+  
 }
 const initialState: DeviceState = {
   data: [],
   loading: false,
   error: null,
+  activityHistory: [],
 };
 export const fetchData = createAsyncThunk("data/fetchData", async () => {
   const querySnapshot = await db.collection("device").get();
@@ -65,14 +68,12 @@ export const updateDevice = createAsyncThunk(
   "data/updateDevice",
   async (deviceData: Device) => {
     try {
-      // Mặc định giá trị statusActive và statusConnect là "Hoạt động" và "Kết nối"
       const updatedDeviceData = {
         ...deviceData,
         statusActive: "Hoạt động",
         statusConnect: "Kết nối",
       };
 
-      // Thực hiện cập nhật dữ liệu của thiết bị vào Firebase
       await db
         .collection("device")
         .doc(updatedDeviceData.id)
@@ -87,7 +88,11 @@ export const updateDevice = createAsyncThunk(
 const device = createSlice({
   name: "data",
   initialState,
-  reducers: {},
+  reducers: {
+    addActivity: (state, action: PayloadAction<any>) => {
+      state.activityHistory.push(action.payload);
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchData.pending, (state) => {
@@ -123,3 +128,6 @@ export default device.reducer;
 export const selectData = (state: RootState) => state.data.data;
 export const selectLoading = (state: RootState) => state.data.loading;
 export const selectError = (state: RootState) => state.data.error;
+export const selectActivityHistory = (state: RootState) =>
+  state.data.activityHistory;
+export const { addActivity } = device.actions;

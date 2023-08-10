@@ -1,27 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SlideMenu from "../../components/slide/slide";
 import AltaNavbar from "../../components/navbarRight/navbar";
 import { Input, Select, Typography } from "antd";
 import "../../assets/css/device/addDevice.css";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import {
-  AddManagerUser,
-  addManagerUser,
-} from "../../feature/manager/user/AddManagerUser";
 import { auth, db } from "../../firebase/firebase";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchDataManagerRole, selectDataMgRl } from "../../feature/manager/role/managerRole";
 
 const AltaAddManagerUser = () => {
   const [UserNameManagerUser, setUserNameManagerUser] = useState("");
   const [NameUser, setNameUser] = useState("");
   const [Phone, setPhone] = useState("");
   const [Email, setEmail] = useState("");
-  const [Role, setRole] = useState("");
+  const [Role, setRole] = useState<string[]>([]);
   const [password, setPassword] = useState("");
   const [conformPassword, setconformPassword] = useState("");
   const [StatusActive, setStatusActive] = useState("");
   const navigate = useNavigate();
+  const data = useSelector(selectDataMgRl);
   const dispatch = useDispatch();
+  const options = data.map((service: any) => ({
+    label: service.NameManagerRole,
+    value: service.NameManagerRole,
+  }));
+
+  useEffect(() => {
+    dispatch(fetchDataManagerRole() as any);
+  }, [dispatch]);
 
   const handleAddData = async () => {
     if (
@@ -29,13 +35,12 @@ const AltaAddManagerUser = () => {
       NameUser &&
       Phone &&
       Email &&
-      Role &&
+      Role.length > 0 &&
       password &&
       conformPassword &&
       StatusActive
     ) {
       try {
-        // Step 1: Add the user data to Firestore
         const docRef = await db.collection("managerUser").add({
           UserNameManagerUser,
           NameUser,
@@ -57,7 +62,7 @@ const AltaAddManagerUser = () => {
         setNameUser("");
         setPhone("");
         setEmail("");
-        setRole("");
+        setRole([]);
         setPassword("");
         setconformPassword("");
         setStatusActive("");
@@ -250,32 +255,33 @@ const AltaAddManagerUser = () => {
                   value={Role}
                   placeholder="Chọn vai trò"
                   onChange={(value) => setRole(value)}
-                  options={[
-                    {
-                      label: "Kế toán",
-                      value: "Kế toán",
-                    },
-                    {
-                      label: "Bác sĩ",
-                      value: "Bác sĩ",
-                    },
-                    {
-                      label: "Lễ tân",
-                      value: "Lễ tân",
-                    },
-                    {
-                      label: "Quản lý",
-                      value: "Quản lý",
-                    },
-                    {
-                      label: "Admin",
-                      value: "Admin",
-                    },
-                    {
-                      label: "Superadmin",
-                      value: "Superadmin",
-                    },
-                  ]}
+                  options={options}
+                  // options={[
+                  //   {
+                  //     label: "Kế toán",
+                  //     value: "Kế toán",
+                  //   },
+                  //   {
+                  //     label: "Bác sĩ",
+                  //     value: "Bác sĩ",
+                  //   },
+                  //   {
+                  //     label: "Lễ tân",
+                  //     value: "Lễ tân",
+                  //   },
+                  //   {
+                  //     label: "Quản lý",
+                  //     value: "Quản lý",
+                  //   },
+                  //   {
+                  //     label: "Admin",
+                  //     value: "Admin",
+                  //   },
+                  //   {
+                  //     label: "Superadmin",
+                  //     value: "Superadmin",
+                  //   },
+                  // ]}
                 />
               </div>
               <div className="col">

@@ -10,6 +10,10 @@ import {
   selectData,
   updateManagerUser,
 } from "../../feature/manager/user/userManager";
+import {
+  fetchDataManagerRole,
+  selectDataMgRl,
+} from "../../feature/manager/role/managerRole";
 
 const AltaEditManagerUser = () => {
   const { id } = useParams();
@@ -24,6 +28,14 @@ const AltaEditManagerUser = () => {
   const [password, setPassword] = useState("");
   const [conformPassword, setconformPassword] = useState("");
   const [StatusActive, setStatusActive] = useState("");
+  const dataMgRl = useSelector(selectDataMgRl);
+  const options = dataMgRl.map((service: any) => ({
+    label: service.NameManagerRole,
+    value: service.NameManagerRole,
+  }));
+  useEffect(() => {
+    dispatch(fetchDataManagerRole() as any);
+  }, [dispatch]);
   useEffect(() => {
     dispatch(fetchDataManagerUser() as any);
   }, [dispatch]);
@@ -237,32 +249,7 @@ const AltaEditManagerUser = () => {
                   value={Role}
                   placeholder="Chọn vai trò"
                   onChange={(value) => setRole(value)}
-                  options={[
-                    {
-                      label: "Kế toán",
-                      value: "Kế toán",
-                    },
-                    {
-                      label: "Bác sĩ",
-                      value: "Bác sĩ",
-                    },
-                    {
-                      label: "Lễ tân",
-                      value: "Lễ tân",
-                    },
-                    {
-                      label: "Quản lý",
-                      value: "Quản lý",
-                    },
-                    {
-                      label: "Admin",
-                      value: "Admin",
-                    },
-                    {
-                      label: "Superadmin",
-                      value: "Superadmin",
-                    },
-                  ]}
+                  options={options}
                 />
               </div>
               <div className="col">

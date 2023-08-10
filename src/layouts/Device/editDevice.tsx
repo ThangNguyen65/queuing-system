@@ -28,7 +28,6 @@ const AltaEditDevice = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // State để lưu trữ dữ liệu hiển thị lên Input và Select
   const [idDevice, setIdDevice] = useState("");
   const [nameDevice, setNameDevice] = useState("");
   const [addressIp, setAddressIp] = useState("");
@@ -57,7 +56,6 @@ const AltaEditDevice = () => {
   }, [data, id]);
 
   const handleUpdateDevice = () => {
-    // Tạo object mới để cập nhật dữ liệu
     const DeviceDataUpdated = {
       id: id,
       idDevice: idDevice,
@@ -74,11 +72,9 @@ const AltaEditDevice = () => {
 
   const handleSelectAllServices = () => {
     if (!showAllServices) {
-      // Nếu chưa chọn tất cả thì cập nhật giá trị của serviceUsed là tất cả các dịch vụ và đánh dấu là đã chọn tất cả
       setServiceUsed(allServices);
       setShowAllServices(true);
     } else {
-      // Nếu đã chọn tất cả thì cập nhật giá trị của serviceUsed là rỗng (không chọn dịch vụ nào) và đánh dấu là chưa chọn tất cả
       setServiceUsed([]);
       setShowAllServices(false);
     }
@@ -289,7 +285,10 @@ const AltaEditDevice = () => {
             </div>
           </div>
           <div className="btnAddDevice">
-            <Link to="/device" className="btnCancleAddDevice">
+            <Link
+              to="/device"
+              className="btnCancleAddDevice text-decoration-none"
+            >
               Hủy bỏ
             </Link>
             <button className="btnAddDevices" onClick={handleUpdateDevice}>

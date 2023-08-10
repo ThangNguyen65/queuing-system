@@ -23,7 +23,7 @@
   margin-top: 0px;
   position: absolute;
 }
-.lbSearchManagerUser{
+.lbSearchManagerUser {
   margin: 10px 0px 0px 550px;
   font-family: "Nunito";
   font-size: 16px;
@@ -38,4 +38,39 @@
   border: 1.5px solid #d4d4d7;
   outline: none;
   padding: 5px 10px;
+}
+:where(.css-dev-only-do-not-override-txh9fw).ant-table-wrapper
+  .ant-table-thead
+  > tr
+  > th,
+:where(.css-dev-only-do-not-override-txh9fw).ant-table-wrapper
+  .ant-table-tbody
+  > tr
+  > th,
+:where(.css-dev-only-do-not-override-txh9fw).ant-table-wrapper
+  .ant-table-tbody
+  > tr
+  > td,
+:where(.css-dev-only-do-not-override-txh9fw).ant-table-wrapper tfoot > tr > th,
+:where(.css-dev-only-do-not-override-txh9fw).ant-table-wrapper tfoot > tr > td {
+  padding: 19px 0px;
+}
+:where(.css-dev-only-do-not-override-txh9fw).ant-table-wrapper
+  .ant-table-thead
+  > tr
+  > th,
+:where(.css-dev-only-do-not-override-txh9fw).ant-table-wrapper
+  .ant-table-tbody
+  > tr
+  > th,
+:where(.css-dev-only-do-not-override-txh9fw).ant-table-wrapper
+  .ant-table-tbody
+  > tr
+  > td,
+:where(.css-dev-only-do-not-override-txh9fw).ant-table-wrapper tfoot > tr > th,
+:where(.css-dev-only-do-not-override-txh9fw).ant-table-wrapper tfoot > tr > th {
+  padding: 10px 10px;
+}
+:where(.css-dev-only-do-not-override-txh9fw).ant-checkbox .ant-checkbox-inner{
+  border: 1px solid blue;
 }

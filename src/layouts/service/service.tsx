@@ -32,14 +32,17 @@ const AltaService = () => {
   const dispatch: AppDispatch = useDispatch();
   const [activeStatus, setActiveStatus] = useState("Tất cả");
   const [searchKeyword, setSearchKeyword] = useState("");
-  
+
+  useEffect(() => {
+    dispatch(fetchDataService());
+  }, [dispatch]);
   const getRowClassName = (_record: any, index: number) => {
     return index % 2 !== 0 ? "bg-pink" : "";
   };
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchKeyword(event.target.value);
   };
-  const filteredData = dataSv.filter((item) => {
+  const filteredData = dataSv.filter((item: any) => {
     const isActiveMatch =
       activeStatus === "Tất cả" || item.StatusActive === activeStatus;
     const isSearchMatch =
@@ -57,7 +60,9 @@ const AltaService = () => {
     {
       title: "Mã dịch vụ",
       dataIndex: "IdService",
-      value: "IdService",
+      render: (_text: any, record: any) => (
+        <span>{record.IdService + record.suffix}</span>
+      ),
       key: "IdService",
     },
     {
@@ -93,7 +98,7 @@ const AltaService = () => {
       value: "",
       render: (record: any) => (
         <Link
-          to={`/detailDevice/${record.id}`}
+          to={`/DetailService/${record.id}`}
           style={{
             padding: "0px 10px",
           }}
@@ -103,10 +108,10 @@ const AltaService = () => {
       ),
     },
     {
-      title: " ",
+      title: "",
       render: (record: any) => (
         <Link
-          to={`/edit/${record.id}`}
+          to={`/editService/${record.id}`}
           style={{
             padding: "0px 10px",
           }}
@@ -235,12 +240,22 @@ const AltaService = () => {
                   position: "absolute",
                 }}
                 pagination={{
-                  pageSize: 4,
+                  pageSize: 6,
                 }}
                 rowClassName={getRowClassName}
               ></Table>
             </div>
-            <div className="mt-3 addDevice">
+            <div
+              style={{
+                padding: "10px 26px 10px 25px",
+                width: "8%",
+                marginLeft: "981px",
+                marginTop: "4px",
+                position: "absolute",
+                height: "16vh",
+                backgroundColor: "rgba(255,242,231,1)",
+              }}
+            >
               <Link to="/addService" className="text-decoration-none">
                 <Image src={AddDevicev} preview={false} className="ms-1" />
                 <Typography className="AddDeviceText">

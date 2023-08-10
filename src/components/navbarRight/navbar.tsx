@@ -1,5 +1,5 @@
 import { Avatar, Image, Typography } from "antd";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import NavImage from "../../assets/img/nav/ImageEmIu.jpg";
 import "../../assets/css/nav/nav.css";
 import Nofication from "../../assets/img/nav/notification.svg";
@@ -16,14 +16,43 @@ function AltaNavbar() {
       dispatch(loginSuccess(JSON.parse(persistedCurrentUser)));
     }
   }, []);
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const notificationRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        notificationRef.current &&
+        !notificationRef.current.contains(event.target as Node)
+      ) {
+        handleClose();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <div>
       <div className="d-flex w-100">
         <div
           style={{
             border: "none",
-            marginRight: "50px",
+            marginRight: "30px",
+            marginLeft: "30px",
+            cursor: "pointer",
           }}
+          onClick={handleOpen}
         >
           <Image
             src={Nofication}
@@ -32,6 +61,55 @@ function AltaNavbar() {
             className="ImageNavBar"
           />
         </div>
+        {open && (
+          <div
+            ref={notificationRef}
+            style={{
+              boxShadow: "2px 2px 15px 0px rgba(70, 64, 67, 0.10)",
+              backgroundColor: "#fff",
+              borderRadius: "10px",
+              position: "absolute",
+              width: "300px",
+              height: "60vh",
+              margin: " 60px 0px 0px -10px",
+              zIndex: "1000",
+            }}
+          >
+            <div
+              style={{
+                backgroundColor: "rgba(255, 117, 6, 1)",
+                color: "#fff",
+                width: "300px",
+                height: "7vh",
+                borderTopLeftRadius: "10px",
+                borderTopRightRadius: "10px",
+                overflow: "auto",
+                padding: "7px 0px 10px 10px",
+              }}
+            >
+              Thông báo
+            </div>
+            <div
+              style={{
+                padding: "10px 15px",
+              }}
+            >
+              <Typography
+                style={{ color: "rgba(191, 88, 5, 1)", fontWeight: "600" }}
+              >
+                Người dùng: Nguyễn Thị Thùy Dung
+              </Typography>
+              <Typography style={{ padding: "6px 0px" }}>
+                Thời gian nhận số: 12h20 ngày 30/11/2021
+              </Typography>
+              <hr
+                style={{
+                  margin: "0rem",
+                }}
+              />
+            </div>
+          </div>
+        )}
         <Link to="/inFor" className="text-decoration-none d-flex">
           <Avatar size={43} src={NavImage} />
           <div className="ms-2">

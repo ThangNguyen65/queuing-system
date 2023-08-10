@@ -9,7 +9,7 @@
 
 .btnSlide {
   display: flex;
-  margin: 72px 0px 0px 20px;
+  margin: 204px 0px 0px 20px;
   background-color: rgba(255, 242, 231, 1);
   padding: 10px 20px 13px 20px;
   text-decoration: none;
@@ -117,7 +117,6 @@
 .ServiceNavLink.active,
 .LevelNoNavLink.active,
 .ReportNavLink.active {
-  color: #fff;
   background-color: rgba(255, 117, 6, 1);
 }
 .DashboardNavLink.active .TextSlideDashboard,

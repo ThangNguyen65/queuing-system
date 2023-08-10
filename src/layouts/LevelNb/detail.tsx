@@ -3,25 +3,28 @@ import AltaNavbar from "../../components/navbarRight/navbar";
 import { Badge, Image, Typography } from "antd";
 import "../../assets/css/device/addDevice.css";
 import { Link, useParams } from "react-router-dom";
-import DetailDevice from "../../assets/img/device/EditDetailDevice.svg";
+import DetailDevice from "../../assets/img/lvNumber/back.svg";
 import { useDispatch, useSelector } from "react-redux";
 import "../../assets/css/device/detailDevice.css";
 
 import { useEffect } from "react";
 import {
   FetchDataLevelNumber,
-  selectData,
+  selectDataLvNB,
 } from "../../feature/levelNo/levelNumber";
+import { selectCurrentUser } from "../../app/selectors";
 
 const AltaDetailLvNumber = () => {
   const { LvNumId } = useParams();
-  const dataLvNB = useSelector(selectData);
+  const dataLvNB = useSelector(selectDataLvNB);
   const dispatch: any = useDispatch();
   useEffect(() => {
     dispatch(FetchDataLevelNumber());
   });
   const LvNumIdData = dataLvNB.find((item) => item.id === LvNumId);
-
+  const currentUser = useSelector(selectCurrentUser);
+  const userPhone = currentUser?.Phone;
+  const userEmail = currentUser?.Email;
   return (
     <div className="row">
       <div
@@ -167,9 +170,11 @@ const AltaDetailLvNumber = () => {
                   </Typography>
                   <Typography
                     style={{
-                      marginLeft: "84px",
+                      marginLeft: "44px",
                     }}
-                  ></Typography>
+                  >
+                    {userPhone}
+                  </Typography>
                 </div>
               </div>
               <div className="row ms-2 mt-3">
@@ -199,9 +204,11 @@ const AltaDetailLvNumber = () => {
                   </Typography>
                   <Typography
                     style={{
-                      marginLeft: "84px",
+                      marginLeft: "44px",
                     }}
-                  ></Typography>
+                  >
+                    {userEmail}
+                  </Typography>
                 </div>
               </div>
 
@@ -225,11 +232,9 @@ const AltaDetailLvNumber = () => {
               </div>
             </div>
             <div className="mt-3 detailDevice">
-              <Link to="" className="text-decoration-none">
+              <Link to="/levelNumber" className="text-decoration-none">
                 <Image src={DetailDevice} preview={false} className="ms-2" />
-                <Typography className="AddDeviceText">
-                  Cập nhật thiết bị
-                </Typography>
+                <Typography className="AddDeviceText">Quay lại</Typography>
               </Link>
             </div>
           </div>

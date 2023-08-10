@@ -48,7 +48,6 @@ const AltaDevice = () => {
       item.serviceUsed.toLowerCase().includes(searchKeyword.toLowerCase());
     return isActiveMatch && isConnectMatch && isSearchMatch;
   });
-  //
   // gioi han dich vu
   const handleServiceUsedClick = () => {
     setIsFullServiceUsed((prevState) => !prevState);
@@ -279,6 +278,9 @@ const AltaDevice = () => {
                 <input
                   type="text"
                   className="IPSearch"
+                  style={{
+                    margin:"6px 0px 0px 304px"
+                  }}
                   placeholder="Nhập từ khóa"
                   value={searchKeyword}
                   onChange={handleSearchChange}
@@ -303,11 +305,20 @@ const AltaDevice = () => {
                 position: "absolute",
               }}
               pagination={{
-                pageSize: 2,
+                pageSize: 4,
               }}
               rowClassName={getRowClassName}
             ></Table>
-            <div className="addDevice">
+            <div
+              style={{
+                backgroundColor: "rgba(255, 242, 231, 1)",
+                padding: "10px 20px",
+                width: "7%",
+                marginLeft: "981px",
+                height: "15vh",
+                position: "absolute",
+              }}
+            >
               <Link to="/addDevice" className="text-decoration-none">
                 <Image src={AddDevicev} preview={false} className="ms-1" />
                 <Typography className="AddDeviceText">

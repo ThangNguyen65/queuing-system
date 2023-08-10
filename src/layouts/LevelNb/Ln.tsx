@@ -19,14 +19,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../store";
 import {
   FetchDataLevelNumber,
-  selectData,
+  selectDataLvNB,
   selectError,
 } from "../../feature/levelNo/levelNumber";
 
 import { fetchDataService, selectDataSV } from "../../feature/service/service";
-const { RangePicker } = DatePicker;
+import { selectCurrentUser } from "../../app/selectors";
 const AltaLevelNumber = () => {
-  const data = useSelector(selectData);
+  const data = useSelector(selectDataLvNB);
+  const currentUser = useSelector(selectCurrentUser);
+
   const error = useSelector(selectError);
   const dispatch: AppDispatch = useDispatch();
   const [activeStatus, setActiveStatus] = useState("Tất cả");
@@ -82,6 +84,8 @@ const AltaLevelNumber = () => {
   const getRowClassName = (_record: any, index: number) => {
     return index % 2 !== 0 ? "bg-pink" : "";
   };
+  // console.log(currentUser?.NameUser);
+
   const columns = [
     {
       title: "STT",
@@ -92,8 +96,13 @@ const AltaLevelNumber = () => {
     {
       title: "Tên khách hàng",
       dataIndex: "NameCustomer",
-      value: "NameCustomer",
       key: "NameCustomer",
+      render: (text: string, record: any) => {
+        if (record.NameCustomer === currentUser?.NameUser) {
+          return currentUser?.NameUser;
+        }
+        return text;
+      },
     },
     {
       title: "Tên dịch vụ ",
@@ -292,7 +301,6 @@ const AltaLevelNumber = () => {
                 />
                 <Image src={arrowRight} preview={false} />
                 <DatePicker
-                
                   style={{
                     width: "40%",
                     margin: "5px 0px 0px  0px",
@@ -301,14 +309,6 @@ const AltaLevelNumber = () => {
                   }}
                 />
               </div>
-              {/* <RangePicker
-                style={{
-                  width: "70%",
-                  margin: "5px 0px 0px 35px",
-                  border: "1.5px solid #D4D4D7",
-                  borderRadius: "8px",
-                }}
-              /> */}
             </div>
             <div>
               <label className="d-block lbSearchLvNumber">Từ khoá</label>
@@ -340,11 +340,21 @@ const AltaLevelNumber = () => {
                 position: "absolute",
               }}
               pagination={{
-                pageSize: 2,
+                pageSize: 7,
               }}
               rowClassName={getRowClassName}
             ></Table>
-            <div className="addDevice">
+            <div
+              style={{
+                padding: "10px 23px",
+                width: "7%",
+                marginLeft: "990px",
+                marginTop: "8px",
+                position: "absolute",
+                height: "16vh",
+                backgroundColor: "rgba(255,242,231,1)",
+              }}
+            >
               <Link to="/AddLevelNumber" className="text-decoration-none">
                 <Image src={AddDevicev} preview={false} className="ms-1" />
                 <Typography className="AddDeviceText">

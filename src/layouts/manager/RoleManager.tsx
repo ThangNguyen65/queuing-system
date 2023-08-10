@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import SlideMenu from "../../components/slide/slide";
 import AltaNavbar from "../../components/navbarRight/navbar";
-import { Image, Table, Typography, Spin } from "antd";
+import { Image, Table, Typography } from "antd";
 import "../../assets/css/device/device.css";
 import AddDevicev from "../../assets/img/device/ThemThietBiMoi.svg";
 import search from "../../assets/img/device/search.svg";
@@ -12,30 +12,44 @@ import { AppDispatch } from "../../store";
 import "../../assets/css/manager/managerRole.css";
 import {
   fetchDataManagerRole,
-  selectData,
-  selectError,
-  selectLoading,
+  selectDataMgRl,
 } from "../../feature/manager/role/managerRole";
-import { selectManagerRoleUsersCount } from "../../app/selectorsManagerRole";
+import {
+  fetchDataManagerUser,
+  selectData,
+} from "../../feature/manager/user/userManager";
 const AltaManagerRole = () => {
-  const dataMgRl = useSelector(selectData);
-  const loading = useSelector(selectLoading);
-  const error = useSelector(selectError);
+  const dataMgRl = useSelector(selectDataMgRl);
+
+  const userData = useSelector(selectData);
+
   const dispatch: AppDispatch = useDispatch();
   const [searchKeyword, setSearchKeyword] = useState("");
-  const managerRoleUsersCount = useSelector(selectManagerRoleUsersCount);
 
   useEffect(() => {
+    dispatch(fetchDataManagerUser());
     dispatch(fetchDataManagerRole());
   }, [dispatch]);
+
+  const calculateTotalUsers = (role: string) => {
+    return userData.filter((d) => d.Role === role).length;
+  };
+
+  const updatedData = dataMgRl.map((item) => {
+    const totalRoles = calculateTotalUsers(item.NameManagerRole);
+    return {
+      ...item,
+      TotalRoles: totalRoles,
+    };
+  });
 
   const getRowClassName = (_record: any, index: number) => {
     return index % 2 !== 0 ? "bg-pink" : "";
   };
+
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchKeyword(event.target.value);
   };
-
   const column = [
     {
       title: "Tên vai trò",
@@ -45,13 +59,9 @@ const AltaManagerRole = () => {
     },
     {
       title: "Số người dùng",
-      dataIndex: "0",
-      value: "0",
-      key: "0",
-      // render: (_text: any, record: any) => {
-      //   const userCount = managerRoleUsersCount[record.NameManagerRole];
-      //   return userCount !== undefined ? userCount : 0;
-      // },
+      dataIndex: "TotalRoles",
+      value: "TotalRoles",
+      key: "TotalRoles",
     },
     {
       title: "Mô tả",
@@ -63,7 +73,7 @@ const AltaManagerRole = () => {
       title: "",
       render: (record: any) => (
         <Link
-          to=""
+          to={`/EditRoleManager/${record.id}`}
           style={{
             padding: "0px 10px",
           }}
@@ -73,20 +83,6 @@ const AltaManagerRole = () => {
       ),
     },
   ];
-  if (loading) {
-    return (
-      <div
-        style={{
-          margin: "250px 0px 0px 610px",
-        }}
-      >
-        <Spin size="large" />
-      </div>
-    );
-  }
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
 
   return (
     <div className="row">
@@ -142,7 +138,7 @@ const AltaManagerRole = () => {
           <div className="d-flex">
             <div>
               <Table
-                dataSource={dataMgRl}
+                dataSource={updatedData}
                 columns={column}
                 className="ms-4 mt-2"
                 style={{
@@ -150,13 +146,21 @@ const AltaManagerRole = () => {
                   position: "absolute",
                 }}
                 pagination={{
-                  pageSize: 2,
+                  pageSize: 7,
                 }}
                 rowClassName={getRowClassName}
               ></Table>
             </div>
-            <div className="mt-3 addDevice">
-              <Link to="" className="text-decoration-none">
+            <div
+              style={{
+                backgroundColor: "rgba(255, 242, 231, 1)",
+                padding: "10px 23px",
+                width: "7%",
+                marginLeft: "1000px",
+                height: "15vh",
+              }}
+            >
+              <Link to="/AddRoleManager" className="text-decoration-none">
                 <Image src={AddDevicev} preview={false} className="ms-1" />
                 <Typography className="AddDeviceText">
                   Thêm <br /> vai trò

@@ -32,6 +32,14 @@ export const addLevelNumber = createAsyncThunk(
       const newManagerUser: LevelNumber = {
         ...service,
       };
+      const querySnapshot = await db
+        .collection("levelNumber")
+        .where("IdLevelNum", "==", newManagerUser.IdLevelNum)
+        .get();
+
+      if (querySnapshot.size > 0) {
+        return thunkAPI.rejectWithValue("Số thứ tự đã tồn tại");
+      }
 
       const docRef = await db.collection("levelNumber").add(newManagerUser);
       const id = docRef.id;
@@ -49,9 +57,16 @@ const DataLevelNumberAdd = createSlice({
   extraReducers: (builder) => {
     builder.addCase(addLevelNumber.fulfilled, (state, action) => {
       const id = action.payload;
-      state.dataLvNB = state.dataLvNB.map((item) =>
-        item.id === id ? { ...item, id } : item
-      );
+      const addedData = state.dataLvNB.find((item) => item.id === id);
+      if (addedData) {
+        const newIdLevelNum = String(Number(addedData.IdLevelNum) + 1);
+        const newData = {
+          ...addedData,
+          IdLevelNum: newIdLevelNum,
+        };
+        state.dataLvNB.push(newData);
+      }
+
       state.loading = false;
       state.error = null;
     });
