@@ -53,17 +53,17 @@ const AltaDevice = () => {
     setIsFullServiceUsed((prevState) => !prevState);
   };
   //
-  if (loading) {
-    return (
-      <div
-        style={{
-          margin: "250px 0px 0px 610px",
-        }}
-      >
-        <Spin size="large" />
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div
+  //       style={{
+  //         margin: "250px 0px 0px 610px",
+  //       }}
+  //     >
+  //       <Spin size="large" />
+  //     </div>
+  //   );
+  // }
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -305,7 +305,7 @@ const AltaDevice = () => {
                 position: "absolute",
               }}
               pagination={{
-                pageSize: 4,
+                pageSize: 6,
               }}
               rowClassName={getRowClassName}
             ></Table>

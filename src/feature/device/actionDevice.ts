@@ -1,5 +1,5 @@
 import { RootState } from "../../store";
-import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { db } from "../../firebase/firebase";
 
 export interface Device {
@@ -18,14 +18,11 @@ interface DeviceState {
   data: Device[];
   loading: boolean;
   error: string | null;
-  activityHistory: any[];
-  
 }
 const initialState: DeviceState = {
   data: [],
   loading: false,
   error: null,
-  activityHistory: [],
 };
 export const fetchData = createAsyncThunk("data/fetchData", async () => {
   const querySnapshot = await db.collection("device").get();
@@ -88,11 +85,7 @@ export const updateDevice = createAsyncThunk(
 const device = createSlice({
   name: "data",
   initialState,
-  reducers: {
-    addActivity: (state, action: PayloadAction<any>) => {
-      state.activityHistory.push(action.payload);
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchData.pending, (state) => {
@@ -109,7 +102,6 @@ const device = createSlice({
             (existingItem) => existingItem.id === newItem.id
           );
         });
-
         state.data = [...state.data, ...newData];
         state.loading = false;
         state.error = null;
@@ -128,6 +120,3 @@ export default device.reducer;
 export const selectData = (state: RootState) => state.data.data;
 export const selectLoading = (state: RootState) => state.data.loading;
 export const selectError = (state: RootState) => state.data.error;
-export const selectActivityHistory = (state: RootState) =>
-  state.data.activityHistory;
-export const { addActivity } = device.actions;

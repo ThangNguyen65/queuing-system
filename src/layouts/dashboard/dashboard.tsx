@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import SlideMenu from "../../components/slide/slide";
 import AltaNavbar from "../../components/navbarRight/navbar";
 import { Badge, Image, Progress, Typography } from "antd";
@@ -19,12 +19,13 @@ import { selectData } from "../../feature/device/actionDevice";
 import datePicker from "../../assets/img/dashboard/Date picker.svg";
 import { Area } from "@ant-design/plots";
 function AltaDashboard() {
-  const data = useSelector(selectData);
-  const totalDataDevice = data.length;
-  const totalHoatDongDevice = data.filter(
+  const [data, setData] = useState([]);
+  const data1 = useSelector(selectData);
+  const totalDataDevice = data1.length;
+  const totalHoatDongDevice = data1.filter(
     (item) => item.statusActive === "Hoạt động"
   ).length;
-  const totalNgungHoatDongDevice = data.filter(
+  const totalNgungHoatDongDevice = data1.filter(
     (item) => item.statusActive === "Ngưng hoạt động"
   ).length;
   const dataLvNB = useSelector(selectDataLvNB);
@@ -65,7 +66,28 @@ function AltaDashboard() {
   useEffect(() => {
     localStorage.setItem("levelNumber", JSON.stringify(dataLvNB));
   }, [dataLvNB]);
+  const config = {
+    data,
+    xField: "timePeriod",
+    yField: "value",
+    xAxis: {
+      range: [0, 1],
+    },
+  };
+  useEffect(() => {
+    asyncFetch();
+  }, []);
 
+  const asyncFetch = () => {
+    fetch(
+      "https://gw.alipayobjects.com/os/bmw-prod/360c3eae-0c73-46f0-a982-4746a6095010.json"
+    )
+      .then((response) => response.json())
+      .then((json) => setData(json))
+      .catch((error) => {
+        console.log("fetch data failed", error);
+      });
+  };
   return (
     <div className="row">
       <div className="col-lg-2" style={{ paddingRight: "0px" }}>
@@ -203,6 +225,9 @@ function AltaDashboard() {
                 </div>
               </div>
               {/*  */}
+              <div style={{ margin: "40px 0px 0px 20px" }}>
+                <Area {...config} />
+              </div>
             </div>
           </div>
         </div>

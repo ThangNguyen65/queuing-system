@@ -37,9 +37,18 @@ const AltaManagerRole = () => {
 
   const updatedData = dataMgRl.map((item) => {
     const totalRoles = calculateTotalUsers(item.NameManagerRole);
+    const isSearchMatch =
+      searchKeyword.trim() === "" ||
+      item.NameManagerRole.toLowerCase().includes(
+        searchKeyword.toLowerCase()
+      ) ||
+      item.DescribeManagerRole.toLowerCase().includes(
+        searchKeyword.toLowerCase()
+      );
     return {
       ...item,
       TotalRoles: totalRoles,
+      isSearchMatch,
     };
   });
 
@@ -156,7 +165,7 @@ const AltaManagerRole = () => {
                 backgroundColor: "rgba(255, 242, 231, 1)",
                 padding: "10px 23px",
                 width: "7%",
-                marginLeft: "1000px",
+                marginLeft: "980px",
                 height: "15vh",
               }}
             >

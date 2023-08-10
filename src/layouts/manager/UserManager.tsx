@@ -23,9 +23,11 @@ const AltaManagerUser = () => {
   const dispatch: AppDispatch = useDispatch();
   const [searchKeyword, setSearchKeyword] = useState("");
   const [activeStatus, setActiveStatus] = useState("Tất cả");
+  
   useEffect(() => {
     dispatch(fetchDataManagerUser());
   }, [dispatch]);
+  
   const getRowClassName = (_record: any, index: number) => {
     return index % 2 !== 0 ? "bg-pink" : "";
   };
@@ -226,7 +228,7 @@ const AltaManagerUser = () => {
                 backgroundColor: "rgba(255, 242, 231, 1)",
                 padding: "10px 23px",
                 width: "8%",
-                marginLeft: "985px",
+                marginLeft: "975px",
                 height: "15vh",
               }}
             >

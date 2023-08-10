@@ -8,23 +8,30 @@ import { Link } from "react-router-dom";
 import "../../assets/css/manager/managerRole.css";
 import arrowRight from "../../assets/img/lvNumber/arrow-right.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { selectActivityHistory, selectLoading } from "../../feature/device/actionDevice";
 import { useEffect } from "react";
+import {
+  DataActivity,
+  selectDataActivity,
+} from "../../feature/manager/note/note";
+import { AppDispatch } from "../../store";
+
 const AltaNoteActive = () => {
-  const dispatch = useDispatch();
-  const loadingHistory = useSelector(selectLoading)
+  const dispatch: AppDispatch = useDispatch();
+  const note = useSelector(selectDataActivity);
+
+  useEffect(() => {
+    dispatch(DataActivity());
+  }, [dispatch]);
+
   const getRowClassName = (_record: any, index: number) => {
     return index % 2 !== 0 ? "bg-pink" : "";
   };
-  const activityHistory = useSelector(selectActivityHistory);
-  useEffect(() => {
-    localStorage.setItem("activityHistory", JSON.stringify(activityHistory));
-  }, [activityHistory]);
-  
+
   const column = [
     {
       title: "Tên đăng nhập",
       dataIndex: "userName",
+      value: "userName",
       key: "userName",
     },
     {
@@ -35,9 +42,9 @@ const AltaNoteActive = () => {
     },
     {
       title: "IP thực hiện",
-      dataIndex: "addressIp",
-      value: "addressIp",
-      key: "addressIp",
+      dataIndex: "deviceAddress",
+      value: "deviceAddress",
+      key: "deviceAddress",
     },
     {
       title: "Thao tác thực hiện",
@@ -73,14 +80,11 @@ const AltaNoteActive = () => {
         >
           <div className="d-flex">
             <Typography className="TitleDevice">Cài đặt hệ thống</Typography>
-            <Typography id="ListDevice">Quản lý tài khoản</Typography>
+            <Typography id="ListDevice">Nhật ký hệ thống</Typography>
           </div>
           <AltaNavbar />
         </div>
         <div id="bgInForUser">
-          <Typography className="fs-4 listDeviceTitle">
-            Danh sách tài khoản
-          </Typography>
           <div className="d-flex">
             <div>
               <label className="d-block lbSelectConnectDate">
@@ -144,7 +148,7 @@ const AltaNoteActive = () => {
             <div>
               <Table
                 columns={column}
-                dataSource={activityHistory}
+                dataSource={note}
                 className="ms-4 mt-2"
                 style={{
                   width: "74%",

@@ -32,14 +32,6 @@ export const addLevelNumber = createAsyncThunk(
       const newManagerUser: LevelNumber = {
         ...service,
       };
-      const querySnapshot = await db
-        .collection("levelNumber")
-        .where("IdLevelNum", "==", newManagerUser.IdLevelNum)
-        .get();
-
-      if (querySnapshot.size > 0) {
-        return thunkAPI.rejectWithValue("Số thứ tự đã tồn tại");
-      }
 
       const docRef = await db.collection("levelNumber").add(newManagerUser);
       const id = docRef.id;
@@ -49,7 +41,6 @@ export const addLevelNumber = createAsyncThunk(
     }
   }
 );
-
 const DataLevelNumberAdd = createSlice({
   name: "dataLvNB",
   initialState,

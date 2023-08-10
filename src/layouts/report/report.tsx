@@ -6,42 +6,168 @@ import { Link } from "react-router-dom";
 import arrowRight from "../../assets/img/lvNumber/arrow-right.svg";
 import downloand from "../../assets/img/lvNumber/download.svg";
 import "../../assets/css/manager/managerRole.css";
-import { selectDataLvNB } from "../../feature/levelNo/levelNumber";
-import { useSelector } from "react-redux";
+import {
+  FetchDataLevelNumber,
+  selectDataLvNB,
+} from "../../feature/levelNo/levelNumber";
+import { useDispatch, useSelector } from "react-redux";
+import sort from "../../assets/img/report/arrow-right.jpg";
+import { useState } from "react";
+import { useRef, useEffect } from "react";
+import { utils, writeFile } from "xlsx";
 
 const AltaReport = () => {
   const data = useSelector(selectDataLvNB);
   const getRowClassName = (_record: any, index: number) => {
     return index % 2 !== 0 ? "bg-pink" : "";
   };
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(FetchDataLevelNumber() as any);
+  }, [dispatch]);
+  const [selectedOption, setSelectedOption] = useState("");
+  const [tableData, setTableData] = useState(data);
+  const [sortOption, setSortOption] = useState("default");
+  const [reportStt, setReportStt] = useState(false);
+
+  const handleReportStt = (option: string) => {
+    setReportStt(true);
+    setSelectedOption(option);
+    setSortOption(option);
+    const filteredData =
+      option === "Tất cả"
+        ? data
+        : data.filter((item) => item.IdLevelNum === option);
+    setTableData(filteredData);
+  };
+
+  const handleExportExcel = () => {
+    const dataToExport = tableData.map((item) => ({
+      "Số thứ tự": item.IdLevelNum,
+      "Tên dịch vụ": item.NameServices,
+      "Thời gian cấp": item.GrantTime,
+      "Tình trạng": item.Status,
+      "Nguồn cấp": item.PowerSupply,
+    }));
+
+    const ws = utils.json_to_sheet(dataToExport);
+    const wb = utils.book_new();
+    utils.book_append_sheet(wb, ws, "Data");
+
+    writeFile(wb, "data.xlsx", { bookType: "xlsx", type: "buffer" });
+  };
+
+  const handleCloseReportStt = () => {
+    setReportStt(false);
+  };
+
+  const options = data.map((service: any) => ({
+    label: service.IdLevelNum,
+    value: service.IdLevelNum,
+  }));
+
+  const ReportSTTRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        ReportSTTRef.current &&
+        !ReportSTTRef.current.contains(event.target as Node)
+      ) {
+        handleCloseReportStt();
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const column = [
     {
-      title: "Số thứ tự",
+      title: (
+        <>
+          <div
+            className="justify-content-between d-flex position-relative"
+            style={{ cursor: "pointer" }}
+            onClick={(event) => {
+              event.stopPropagation();
+              handleReportStt("Tất cả");
+            }}
+          >
+            <Typography style={{ color: "#fff" }}>Số thứ tự</Typography>
+            <Image
+              src={sort}
+              alt="Sort"
+              className="sort-icon"
+              preview={false}
+            />
+          </div>
+          {reportStt && (
+            <div
+              ref={ReportSTTRef}
+              style={{
+                position: "absolute",
+                backgroundColor: "#fff",
+                boxShadow: "2px 2px 15px 0px rgba(70, 64, 67, 0.10)",
+                width: "149px",
+                overflow: "auto",
+                marginLeft: "-10px",
+                marginTop: "10px",
+                height: "auto",
+                zIndex: "999",
+                borderRadius: "10px",
+              }}
+            >
+              {options.map((option1, index) => (
+                <Typography
+                  key={index}
+                  className="textReport"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    handleReportStt(option1.label);
+                  }}
+                >
+                  {option1.label}
+                </Typography>
+              ))}
+            </div>
+          )}
+        </>
+      ),
       dataIndex: "IdLevelNum",
       value: "IdLevelNum",
       key: "IdLevelNum",
-      filters: [
-        {
-          text: "Joe",
-          value: "Joe",
-        },
-      ],
     },
     {
-      title: "Tên dịch vụ",
+      title: (
+        <div className="justify-content-between d-flex">
+          <Typography style={{ color: "#fff" }}>Tên dịch vụ</Typography>
+          <Image src={sort} alt="Sort" className="sort-icon" preview={false} />
+        </div>
+      ),
       dataIndex: "NameServices",
       value: "NameServices",
       key: "NameServices",
     },
     {
-      title: "Thời gian cấp",
+      title: (
+        <div className="justify-content-between d-flex">
+          <Typography style={{ color: "#fff" }}>Thời gian cấp</Typography>
+          <Image src={sort} alt="Sort" className="sort-icon" preview={false} />
+        </div>
+      ),
       dataIndex: "GrantTime",
       value: "GrantTime",
       key: "GrantTime",
     },
     {
-      title: "Tình trạng",
+      title: (
+        <div className="justify-content-between d-flex">
+          <Typography style={{ color: "#fff" }}>Tình trạng</Typography>
+          <Image src={sort} alt="Sort" className="sort-icon" preview={false} />
+        </div>
+      ),
       dataIndex: "Status",
       value: "Status",
       render: (connectionStatus: string) => (
@@ -59,7 +185,12 @@ const AltaReport = () => {
       key: "Status",
     },
     {
-      title: "Nguồn cấp",
+      title: (
+        <div className="justify-content-between d-flex">
+          <Typography style={{ color: "#fff" }}>Nguồn cấp</Typography>
+          <Image src={sort} alt="Sort" className="sort-icon" preview={false} />
+        </div>
+      ),
       dataIndex: "PowerSupply",
       value: "PowerSupply",
       key: "PowerSupply",
@@ -125,7 +256,7 @@ const AltaReport = () => {
             <div>
               <Table
                 columns={column}
-                dataSource={data}
+                dataSource={tableData}
                 className="ms-4 mt-2"
                 style={{
                   width: "74%",
@@ -147,6 +278,7 @@ const AltaReport = () => {
                 marginLeft: "983px",
                 position: "absolute",
               }}
+              onClick={handleExportExcel}
             >
               <Link to="" className="text-decoration-none">
                 <Image src={downloand} preview={false} className="ms-1" />

@@ -23,13 +23,15 @@ const AltaAddLevelNumber = () => {
 
   const options = dataService.map((service: any) => ({
     label: service.NameService,
-    value: service.IdService,
+    value: service.NameService,
   }));
   // modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState<string | undefined>(
     undefined
   );
+  const [selectedService, setSelectedService] = useState<any>(null);
+
   const formatDateExpiry = (date: Date) => {
     const modifiedDate = new Date(date);
     modifiedDate.setHours(date.getHours() + 8);
@@ -64,9 +66,7 @@ const AltaAddLevelNumber = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-  const selectedServiceModal = dataService.find(
-    (service) => service.IdService === selectedValue
-  );
+
   const possibleStatusLvNumber = ["Đã sử dụng", "Đang chờ", "Bỏ qua"];
   const getRandomStatusDescribe = () => {
     const randomIndex = Math.floor(
@@ -78,7 +78,7 @@ const AltaAddLevelNumber = () => {
   const currentUser = useSelector(selectCurrentUser);
   const handlePrintNumber = async () => {
     const selectedService = dataService.find(
-      (service) => service.IdService === selectedValue
+      (service) => service.NameService === selectedValue
     );
 
     if (!selectedService) {
@@ -185,7 +185,12 @@ const AltaAddLevelNumber = () => {
                 margin: "10px 0px 0px 330px",
               }}
               options={options}
-              onChange={(value) => setSelectedValue(value)}
+              onChange={(value) => {
+                setSelectedService(
+                  dataService.find((service) => service.NameService === value)
+                );
+                setSelectedValue(value);
+              }}
             />
             <div
               style={{
@@ -241,7 +246,7 @@ const AltaAddLevelNumber = () => {
                 >
                   {newIdLevelNum}
                 </Typography>
-                {selectedServiceModal && (
+                {selectedService && (
                   <Typography
                     style={{
                       marginTop: "20px",
@@ -250,19 +255,9 @@ const AltaAddLevelNumber = () => {
                       bottom: "0",
                     }}
                   >
-                    DV: {selectedServiceModal.NameService} (tại quầy số 1)
+                    DV: {selectedService.NameService} (tại quầy số 1)
                   </Typography>
                 )}
-                {/* <Typography
-                  style={{
-                    marginTop: "20px",
-                    marginLeft: "60px",
-                    width: "100%",
-                    bottom: "0",
-                  }}
-                >
-                  DV:{selectedService.NameService} (tại quầy số 1)
-                </Typography> */}
                 <div
                   style={{
                     backgroundColor: "rgba(255, 145, 56, 1)",

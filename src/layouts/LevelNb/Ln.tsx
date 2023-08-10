@@ -340,7 +340,7 @@ const AltaLevelNumber = () => {
                 position: "absolute",
               }}
               pagination={{
-                pageSize: 7,
+                pageSize: 6,
               }}
               rowClassName={getRowClassName}
             ></Table>
