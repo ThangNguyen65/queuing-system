@@ -350,8 +350,8 @@ const AltaDetailService = () => {
                 className="mt-3"
                 style={{
                   backgroundColor: "rgba(255, 242, 231, 1)",
-                  padding: "10px 20px",
-                  width: "100%",
+                  padding: "10px 10px",
+                  width: "103%",
                   marginLeft: "10px",
                   height: "15vh",
                   borderBottom: "1px solid rgba(255, 227, 205, 1)",

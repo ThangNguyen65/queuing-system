@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import SlideMenu from "../../components/slide/slide";
 import AltaNavbar from "../../components/navbarRight/navbar";
-import { Badge, Image, Progress, Typography } from "antd";
+import { Badge, Image, Progress, Select, Typography } from "antd";
 import "../../assets/css/dashboard/dashboard.css";
 import SttDaCap from "../../assets/img/dashboard/SttDaCap.svg";
 import SttDaSuDung from "../../assets/img/dashboard/SttDaSuDung.svg";
@@ -18,8 +18,8 @@ import { selectDataSV } from "../../feature/service/service";
 import { selectData } from "../../feature/device/actionDevice";
 import datePicker from "../../assets/img/dashboard/Date picker.svg";
 import { Area } from "@ant-design/plots";
+import { format } from "date-fns";
 function AltaDashboard() {
-  const [data, setData] = useState([]);
   const data1 = useSelector(selectData);
   const totalDataDevice = data1.length;
   const totalHoatDongDevice = data1.filter(
@@ -66,28 +66,36 @@ function AltaDashboard() {
   useEffect(() => {
     localStorage.setItem("levelNumber", JSON.stringify(dataLvNB));
   }, [dataLvNB]);
-  const config = {
-    data,
-    xField: "timePeriod",
-    yField: "value",
-    xAxis: {
-      range: [0, 1],
-    },
-  };
-  useEffect(() => {
-    asyncFetch();
-  }, []);
+  //
+  const calculateTotalGrantTimePerDay = (data: any) => {
+    const dailyGrantTimeCountMap = new Map();
 
-  const asyncFetch = () => {
-    fetch(
-      "https://gw.alipayobjects.com/os/bmw-prod/360c3eae-0c73-46f0-a982-4746a6095010.json"
-    )
-      .then((response) => response.json())
-      .then((json) => setData(json))
-      .catch((error) => {
-        console.log("fetch data failed", error);
-      });
+    data.forEach((item: any) => {
+      const date = format(new Date(item.GrantTime), "MM/dd/yyyy");
+
+      if (dailyGrantTimeCountMap.has(date)) {
+        dailyGrantTimeCountMap.set(date, dailyGrantTimeCountMap.get(date) + 1);
+      } else {
+        dailyGrantTimeCountMap.set(date, 1);
+      }
+    });
+
+    const totalGrantTimeChartData = Array.from(
+      dailyGrantTimeCountMap,
+      ([date, count]) => ({
+        GrantTime: date,
+        Count: count,
+      })
+    );
+
+    return totalGrantTimeChartData;
   };
+
+  // Sử dụng hàm calculateTotalValuePerDay
+  const totalGrantTimeChartData = calculateTotalGrantTimePerDay(dataLvNB);
+  const [selectedRange, setSelectedRange] = useState("Ngày");
+  const tickCount =
+    selectedRange === "Tuần" ? 4 : selectedRange === "Tháng" ? 12 : 6;
   return (
     <div className="row">
       <div className="col-lg-2" style={{ paddingRight: "0px" }}>
@@ -196,7 +204,7 @@ function AltaDashboard() {
                   </div>
                 </div>
               </div>
-              <div className="col-lg-3">
+              <div className="col-lg-3" style={{ borderRadius: "20px" }}>
                 <div className="bgSttDC">
                   <div className="d-flex">
                     <Image src={SttDaBoQua} preview={false} />
@@ -225,9 +233,67 @@ function AltaDashboard() {
                 </div>
               </div>
               {/*  */}
-              <div style={{ margin: "40px 0px 0px 20px" }}>
-                <Area {...config} />
+              <div
+                style={{
+                  margin: "10px 0px 0px 13px",
+                  backgroundColor: "#fff",
+                  width: "729px",
+                  padding: "20px",
+                  height: "73vh",
+                  borderRadius: "10px",
+                }}
+              >
+                <div className="d-flex justify-content-between mb-4">
+                  <div>
+                    <Typography
+                      style={{
+                        fontSize: "16px",
+                        fontWeight: "700",
+                      }}
+                    >
+                      Bảng thống kê theo tháng
+                    </Typography>
+                    <span
+                      style={{
+                        fontSize: "12px",
+                        color: "rgba(169, 169, 176, 1)",
+                      }}
+                    >
+                      Năm 2021
+                    </span>
+                  </div>
+                  <div className="mt-2">
+                    <span className="me-2">Xem theo</span>
+                    <Select
+                      defaultValue={"Ngày"}
+                      onChange={(value) => setSelectedRange(value)}
+                      value={selectedRange}
+                      options={[
+                        { label: "Ngày", value: "Ngày" },
+                        { label: "Tuần", value: "Tuần" },
+                        { label: "Tháng", value: "Tháng" },
+                      ]}
+                    />
+                  </div>
+                </div>
+
+                <Area
+                  data={totalGrantTimeChartData}
+                  xField="GrantTime"
+                  yField="Count"
+                  style={{ height: "50vh" }}
+                  yAxis={{
+                    nice: true,
+                  }}
+                  xAxis={{
+                    range: [0, 1],
+                    tickCount: tickCount,
+                  }}
+                  smooth
+                  animation={false}
+                />
               </div>
+              {/*  */}
             </div>
           </div>
         </div>

@@ -124,8 +124,8 @@ const AltaManagerRole = () => {
           <AltaNavbar />
         </div>
         <div id="bgInForUser">
-          <Typography className="fs-4 listDeviceTitle">
-            Quản lý dịch vụ
+          <Typography className="fs-4 listDeviceTitle" style={{fontWeight:"700"}}>
+            Danh sách vai trò
           </Typography>
           <div className="d-flex">
             <div>

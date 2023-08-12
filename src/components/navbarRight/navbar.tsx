@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { selectNameUser } from "../../app/selectorsNavbar";
 import { loginSuccess } from "../../feature/auth/login";
+import { selectDataLvNB } from "../../feature/levelNo/levelNumber";
 function AltaNavbar() {
   const nameUser = useSelector(selectNameUser);
   const dispatch = useDispatch();
@@ -16,6 +17,7 @@ function AltaNavbar() {
       dispatch(loginSuccess(JSON.parse(persistedCurrentUser)));
     }
   }, []);
+  const dataLvNB = useSelector(selectDataLvNB);
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
     setOpen(true);
@@ -39,6 +41,15 @@ function AltaNavbar() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+  const formatGrantTime = (timestamp: any) => {
+    const date = new Date(timestamp);
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${hours}:${minutes} ngày ${day}/${month}/${year}`;
+  };
 
   return (
     <div>
@@ -69,6 +80,7 @@ function AltaNavbar() {
               position: "absolute",
               width: "300px",
               height: "60vh",
+              overflow: "auto",
               margin: " 60px 0px 0px -10px",
               zIndex: "1000",
             }}
@@ -81,31 +93,32 @@ function AltaNavbar() {
                 height: "7vh",
                 borderTopLeftRadius: "10px",
                 borderTopRightRadius: "10px",
-                overflow: "auto",
                 padding: "7px 0px 10px 10px",
               }}
             >
               Thông báo
             </div>
-            <div
-              style={{
-                padding: "10px 15px",
-              }}
-            >
-              <Typography
-                style={{ color: "rgba(191, 88, 5, 1)", fontWeight: "600" }}
-              >
-                Người dùng: Nguyễn Thị Thùy Dung
-              </Typography>
-              <Typography style={{ padding: "6px 0px" }}>
-                Thời gian nhận số: 12h20 ngày 30/11/2021
-              </Typography>
-              <hr
+            {dataLvNB.map((item) => (
+              <div
                 style={{
-                  margin: "0rem",
+                  padding: "10px 0px 10px 15px",
                 }}
-              />
-            </div>
+              >
+                <Typography
+                  style={{ color: "rgba(191, 88, 5, 1)", fontWeight: "600" }}
+                >
+                  Người dùng:{item.NameCustomer}
+                </Typography>
+                <Typography style={{ padding: "6px 0px" }}>
+                  Thời gian nhận số: {formatGrantTime(item.GrantTime)}
+                </Typography>
+                <hr
+                  style={{
+                    margin: "0rem",
+                  }}
+                />
+              </div>
+            ))}
           </div>
         )}
         <Link to="/inFor" className="text-decoration-none d-flex">

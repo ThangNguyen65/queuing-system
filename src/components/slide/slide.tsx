@@ -10,7 +10,7 @@ import ImageSetting from "../../assets/img/slide/CaiDatHeThong.svg";
 import IconArrowRight from "../../assets/img/slide/iconArrowrRight.svg";
 import ThreeSetting from "../../assets/img/slide/ThreeChamSetting.svg";
 import "../../assets/css/slide/slide.css";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logoutSuccess } from "../../feature/auth/login";
 function SlideMenu() {
@@ -23,7 +23,14 @@ function SlideMenu() {
   };
   return (
     <div>
-      <Image src={Logo} preview={false} width={"40%"} className="ImageSlide" />
+      <Link to="/dashboard">
+        <Image
+          src={Logo}
+          preview={false}
+          width={"40%"}
+          className="ImageSlide"
+        />
+      </Link>
       <NavLink
         to="/dashboard"
         className="d-flex mt-5 text-decoration-none DashboardNavLink"
