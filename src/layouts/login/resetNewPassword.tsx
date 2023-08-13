@@ -1,15 +1,15 @@
 import { Button, Image, Input } from "antd";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import LogoLogin from "../../assets/img/login/Logo alta.svg";
 import LoginImageRight from "../../assets/img/login/ForgotPassword.png";
 import "../../assets/css/login/resetnewpassword.css";
 import { useEffect, useState } from "react";
-import { auth, db } from "../../firebase/firebase";
+import { auth } from "../../firebase/firebase";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchDataManagerUser,
   selectData,
-  updateManagerUser,
+  updateManagerUserReSetNewPassword,
 } from "../../feature/manager/user/userManager";
 
 function ResetNewPassword() {
@@ -17,54 +17,38 @@ function ResetNewPassword() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
   const location = useLocation();
-  const [isPasswordMatch, setIsPasswordMatch] = useState(false);
-
+  const emailFromUrl = new URLSearchParams(location.search).get("email");
   const dispatch = useDispatch();
   const dataManagerUser = useSelector(selectData);
 
   useEffect(() => {
-    if (location.state && location.state.email) {
-      setEmail(location.state.email);
+    if (!emailFromUrl) {
+      navigate("/"); // Redirect if no email is provided
     }
-  }, [location]);
-
-  useEffect(() => {
-    dispatch(fetchDataManagerUser() as any);
-  }, [dispatch]);
+  }, [emailFromUrl, navigate]);
 
   const handleResetPassword = async () => {
     try {
-      if (!user) {
+      const updatedUser = dataManagerUser.find(
+        (user) => user.Email === emailFromUrl
+      );
+      if (!updatedUser) {
         console.error("Người dùng không tồn tại.");
         return;
       }
 
-      if (isPasswordMatch) {
-        const authUser = auth.currentUser;
-        if (authUser) {
-          console.log("Attempting to update password...");
-          await authUser.updatePassword(password);
-          console.log("Password updated successfully.");
-        } else {
-          throw new Error("Người dùng không tồn tại.");
-        }
-        const userRef = db.collection("managerUser").doc(email);
-        await userRef.update({ password });
-        const updatedManagerUser = {
-          id: user.id,
-          UserNameManagerUser: user.UserNameManagerUser,
-          NameUser: user.NameUser,
-          Phone: user.Phone,
-          Email: user.Email,
-          Role: user.Role,
-          StatusActive: user.StatusActive,
+      if (password === confirmPassword) {
+        const updatedUserData = {
+          ...updatedUser,
           password,
-          conformPassword: user.conformPassword,
+          conformPassword: confirmPassword,
         };
-        dispatch(updateManagerUser(updatedManagerUser) as any);
-        navigate("/login");
+        await dispatch(
+          updateManagerUserReSetNewPassword(updatedUserData) as any
+        );
+        console.log("Mật khẩu đã được cập nhật thành công.");
+        navigate("/");
       } else {
         console.error("Mật khẩu và xác nhận mật khẩu không khớp.");
       }
@@ -72,18 +56,6 @@ function ResetNewPassword() {
       console.error("Lỗi khi thay đổi mật khẩu:", error.message);
     }
   };
-
-  useEffect(() => {
-    setIsPasswordMatch(password === confirmPassword);
-  }, [password, confirmPassword]);
-
-  // Check if dataManagerUser is loaded successfully before proceeding
-  if (!dataManagerUser) {
-    return <div>Loading...</div>;
-  }
-
-  const user = dataManagerUser.find((user) => user.Email === email);
-
   return (
     <div className="row">
       <div className="col-lg-5 bgLoginLeft">

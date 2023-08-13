@@ -78,7 +78,19 @@ export const updateManagerUser = createAsyncThunk(
     }
   }
 );
-
+export const updateManagerUserReSetNewPassword = createAsyncThunk(
+  "userManager/updateManagerUser",
+  async (updatedUser: ManagerUser, thunkAPI) => {
+    try {
+      const { id, ...userData } = updatedUser;
+      const userRef = db.collection("managerUser").doc(id);
+      await userRef.update(userData);
+      return id;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 const dataManagerRole = createSlice({
   name: "data",
   initialState,
@@ -104,6 +116,14 @@ const dataManagerRole = createSlice({
         state.dataMgUs = state.dataMgUs.map((device) =>
           device.id === updatedDevice.id ? updatedDevice : device
         );
+      })
+      .addCase(updateManagerUserReSetNewPassword.fulfilled, (state, action) => {
+        const updatedUserId = action.payload;
+        state.dataMgUs = state.dataMgUs.map((user) =>
+          user.id === updatedUserId ? { ...user } : user
+        );
+        state.loading = false;
+        state.error = null;
       });
   },
 });

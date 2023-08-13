@@ -5,15 +5,18 @@ import LogoLogin from "../../assets/img/login/Logo alta.svg";
 import LoginImageRight from "../../assets/img/login/ForgotPassword.png";
 import "../../assets/css/login/forgot.css";
 import { auth } from "../../firebase/firebase";
+import { useSelector } from "react-redux";
+import { selectData } from "../../feature/manager/user/userManager";
 
 function AltaForgotPassword() {
+  const dataManagerUser = useSelector(selectData);
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
 
   const handleForgot = async () => {
     try {
       await auth.sendPasswordResetEmail(email);
-      navigate("/ResetNewPassword", { state: { email } });
+      navigate(`/ResetNewPassword?email=${email}`);
     } catch (error) {
       console.error("Lỗi khi gửi email xác thực:", error);
     }

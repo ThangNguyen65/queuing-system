@@ -42,6 +42,7 @@ const AltaAddLevelNumber = () => {
     const year = modifiedDate.getFullYear();
     return `${hours}:${minutes} ${day}/${month}/${year}`;
   };
+
   const formatDate = (date: Date) => {
     const hours = String(date.getHours()).padStart(2, "0");
     const minutes = String(date.getMinutes()).padStart(2, "0");
@@ -100,6 +101,8 @@ const AltaAddLevelNumber = () => {
         Expiry: formattedExpiry,
         Status: getRandomStatusDescribe(),
         PowerSupply: "Kiosk",
+        PhoneLvNum: currentUser?.Phone ? Number(currentUser.Phone) : -1,
+        EmailLvNum: currentUser?.Email || "null",
       };
 
       dispatch(addLevelNumber(newData as any) as any);

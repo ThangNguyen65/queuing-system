@@ -6,7 +6,10 @@ import "../../assets/css/device/addDevice.css";
 import { Link, useNavigate } from "react-router-dom";
 import { auth, db } from "../../firebase/firebase";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchDataManagerRole, selectDataMgRl } from "../../feature/manager/role/managerRole";
+import {
+  fetchDataManagerRole,
+  selectDataMgRl,
+} from "../../feature/manager/role/managerRole";
 
 const AltaAddManagerUser = () => {
   const [UserNameManagerUser, setUserNameManagerUser] = useState("");
@@ -41,6 +44,13 @@ const AltaAddManagerUser = () => {
       StatusActive
     ) {
       try {
+        // Kiểm tra xem địa chỉ email đã tồn tại trong hệ thống chưa
+        const emailExists = await checkIfEmailExists(Email);
+        if (emailExists) {
+          console.error("Địa chỉ email đã được sử dụng.");
+          return;
+        }
+
         const docRef = await db.collection("managerUser").add({
           UserNameManagerUser,
           NameUser,
@@ -51,6 +61,10 @@ const AltaAddManagerUser = () => {
           conformPassword,
           StatusActive,
         });
+        if (password !== conformPassword) {
+          console.error("Mật khẩu và xác nhận mật khẩu không khớp.");
+          return;
+        }
 
         await auth.createUserWithEmailAndPassword(Email, password);
         if (auth.currentUser) {
@@ -72,6 +86,16 @@ const AltaAddManagerUser = () => {
       } catch (error) {
         console.error("Error adding user:", error);
       }
+    }
+  };
+
+  const checkIfEmailExists = async (email: any) => {
+    try {
+      const result = await auth.fetchSignInMethodsForEmail(email);
+      return result.length > 0;
+    } catch (error) {
+      console.error("Error checking email:", error);
+      return false;
     }
   };
   return (

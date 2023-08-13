@@ -11,6 +11,8 @@ export interface LevelNumber {
   Expiry: string;
   Status: string;
   PowerSupply: string;
+  PhoneLvNum: number;
+  EmailLvNum: string;
 }
 interface LevelNumberState {
   dataLvNB: LevelNumber[];
@@ -36,7 +38,9 @@ export const FetchDataLevelNumber = createAsyncThunk(
         docData.GrantTime &&
         docData.Expiry &&
         docData.Status &&
-        docData.PowerSupply
+        docData.PowerSupply &&
+        docData.PhoneLvNum &&
+        docData.EmailLvNum
       ) {
         const newItem: LevelNumber = {
           id: doc.id,
@@ -47,6 +51,8 @@ export const FetchDataLevelNumber = createAsyncThunk(
           Expiry: docData.Expiry,
           Status: docData.Status,
           PowerSupply: docData.PowerSupply,
+          PhoneLvNum: docData.PhoneLvNum,
+          EmailLvNum: docData.EmailLvNum,
         };
         const ItemLevelNumber = DataList.find((item) => item.id === newItem.id);
         if (!ItemLevelNumber) {

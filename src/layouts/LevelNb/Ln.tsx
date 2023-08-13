@@ -42,6 +42,7 @@ const AltaLevelNumber = () => {
   useEffect(() => {
     dispatch(fetchDataService());
   }, [dispatch]);
+  
   const options = dataService.map((service: any) => ({
     label: service.NameService,
     value: service.NameService,
@@ -67,8 +68,8 @@ const AltaLevelNumber = () => {
   useEffect(() => {
     dispatch(FetchDataLevelNumber());
   }, [dispatch]);
-
   const renderDateTime = (date: Date) => {
+    console.log("Date received:", date);
     const formattedDate = new Date(date);
     return formattedDate.toLocaleString("vi-VN", {
       hour: "2-digit",
@@ -78,13 +79,13 @@ const AltaLevelNumber = () => {
       year: "numeric",
     });
   };
+
   if (error) {
     return <div>Error: {error}</div>;
   }
   const getRowClassName = (_record: any, index: number) => {
     return index % 2 !== 0 ? "bg-pink" : "";
   };
-  // console.log(currentUser?.NameUser);
 
   const columns = [
     {
@@ -115,14 +116,14 @@ const AltaLevelNumber = () => {
       dataIndex: "GrantTime",
       value: "GrantTime",
       key: "GrantTime",
-      render: (date: Date) => renderDateTime(date),
+      // render: (date: Date) => renderDateTime(date),
     },
     {
       title: "Hạn sử dụng",
       dataIndex: "Expiry",
       value: "Expiry",
       key: "Expiry",
-      render: (date: Date) => renderDateTime(date),
+      // render: (date: Date) => renderDateTime(date),
     },
     {
       title: "Trạng thái",

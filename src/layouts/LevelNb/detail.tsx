@@ -173,7 +173,7 @@ const AltaDetailLvNumber = () => {
                       marginLeft: "44px",
                     }}
                   >
-                    {userPhone}
+                  {LvNumIdData?.PhoneLvNum}
                   </Typography>
                 </div>
               </div>
@@ -207,7 +207,7 @@ const AltaDetailLvNumber = () => {
                       marginLeft: "44px",
                     }}
                   >
-                    {userEmail}
+                   {LvNumIdData?.EmailLvNum}
                   </Typography>
                 </div>
               </div>

@@ -16,7 +16,7 @@ function AltaNavbar() {
     if (persistedCurrentUser) {
       dispatch(loginSuccess(JSON.parse(persistedCurrentUser)));
     }
-  }, []);
+  }, [dispatch]);
   const dataLvNB = useSelector(selectDataLvNB);
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
@@ -110,7 +110,8 @@ function AltaNavbar() {
                   Người dùng:{item.NameCustomer}
                 </Typography>
                 <Typography style={{ padding: "6px 0px" }}>
-                  Thời gian nhận số: {formatGrantTime(item.GrantTime)}
+                  {/* Thời gian nhận số: {formatGrantTime(item.GrantTime)} */}
+                  Thời gian nhận số: {item.GrantTime}
                 </Typography>
                 <hr
                   style={{

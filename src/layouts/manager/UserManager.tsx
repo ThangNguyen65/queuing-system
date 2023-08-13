@@ -218,7 +218,7 @@ const AltaManagerUser = () => {
                   position: "absolute",
                 }}
                 pagination={{
-                  pageSize: 2,
+                  pageSize: 7,
                 }}
                 rowClassName={getRowClassName}
               ></Table>

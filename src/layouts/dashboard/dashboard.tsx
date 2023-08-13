@@ -71,12 +71,26 @@ function AltaDashboard() {
     const dailyGrantTimeCountMap = new Map();
 
     data.forEach((item: any) => {
-      const date = format(new Date(item.GrantTime), "MM/dd/yyyy");
+      const datetimeParts = item.GrantTime.split(" "); // Tách thành mảng [thời gian, ngày/tháng/năm]
+      const dateParts = datetimeParts[1].split("/"); // Tách thành mảng [ngày, tháng, năm]
 
-      if (dailyGrantTimeCountMap.has(date)) {
-        dailyGrantTimeCountMap.set(date, dailyGrantTimeCountMap.get(date) + 1);
+      const date = new Date(
+        parseInt(dateParts[2]), // Năm
+        parseInt(dateParts[1]) - 1, // Tháng (lưu ý giảm đi 1 vì tháng trong JavaScript bắt đầu từ 0)
+        parseInt(dateParts[0]), // Ngày
+        parseInt(datetimeParts[0].split(":")[0]), // Giờ
+        parseInt(datetimeParts[0].split(":")[1]) // Phút
+      );
+
+      const formattedDate = format(date, "MM/dd/yyyy");
+
+      if (dailyGrantTimeCountMap.has(formattedDate)) {
+        dailyGrantTimeCountMap.set(
+          formattedDate,
+          dailyGrantTimeCountMap.get(formattedDate) + 1
+        );
       } else {
-        dailyGrantTimeCountMap.set(date, 1);
+        dailyGrantTimeCountMap.set(formattedDate, 1);
       }
     });
 
@@ -91,7 +105,6 @@ function AltaDashboard() {
     return totalGrantTimeChartData;
   };
 
-  // Sử dụng hàm calculateTotalValuePerDay
   const totalGrantTimeChartData = calculateTotalGrantTimePerDay(dataLvNB);
   const [selectedRange, setSelectedRange] = useState("Ngày");
   const tickCount =

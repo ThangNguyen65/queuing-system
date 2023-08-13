@@ -11,6 +11,8 @@ export interface LevelNumber {
   Expiry: string;
   Status: string;
   PowerSupply: string;
+  PhoneLvNum: number;
+  EmailLvNum: string;
 }
 
 interface LevelNumberState {
