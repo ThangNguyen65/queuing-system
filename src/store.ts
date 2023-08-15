@@ -5,7 +5,7 @@ import device from "./feature/device/actionDevice";
 import service from "./feature/service/service";
 import levelNumber from "./feature/levelNo/levelNumber";
 import loginReducer from "./feature/auth/login";
-import activity from "./feature/manager/note/note"
+import activityReducer  from "./feature/manager/note/note"
 export const store = configureStore({
   reducer: {
     data: device,
@@ -14,7 +14,7 @@ export const store = configureStore({
     dataMgRl: managerRole,
     dataMgUs: managerUser,
     login: loginReducer,
-    dataNote:activity
+    dataNote:activityReducer 
   },
 });
 

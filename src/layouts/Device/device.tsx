@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import SlideMenu from "../../components/slide/slide";
 import AltaNavbar from "../../components/navbarRight/navbar";
 import { Badge, Image, Select, Space, Spin, Table, Typography } from "antd";
@@ -23,12 +23,47 @@ const AltaDevice = () => {
   const [activeStatus, setActiveStatus] = useState("Tất cả");
   const [connectStatus, setConnectStatus] = useState("Tất cả");
   const [searchKeyword, setSearchKeyword] = useState("");
-  const [isFullServiceUsed, setIsFullServiceUsed] = useState(false);
+  const [openServiceUsed, setOpenServiceUsed] = useState<{
+    [key: string]: boolean;
+  }>({});
+  const [serviceUsedChanges, setServiceUsedChanges] = useState<Record<string, boolean>>({});
+  const ServiceUsed = useRef<{
+    [key: string]: React.RefObject<HTMLDivElement>;
+  }>({});
+
+  const handleServiceUsed = (record: any) => {
+    console.log("handleServiceUsed called for record:", record);
+    setOpenServiceUsed((prevState) => ({
+      ...prevState,
+      [record.id]: true,
+    }));
+    setServiceUsedChanges((prevChanges) => ({
+      ...prevChanges,
+      [record.id]: true,
+    }));
+    if (!ServiceUsed.current[record.id]) {
+      ServiceUsed.current[record.id] = React.createRef<HTMLDivElement>();
+      console.log("Ref created for record:", record);
+    }
+
+    console.log(
+      "ServiceUsed.current[record.id]?.current for record",
+      record.id,
+      ":",
+      ServiceUsed.current[record.id]?.current
+    );
+  };
+  const handleServiceUsedClose = (record: any) => {
+    setOpenServiceUsed((prevState) => ({
+      ...prevState,
+      [record.id]: false,
+    }));
+  };
+
   useEffect(() => {
     dispatch(fetchData());
   }, [dispatch]);
 
-  // Tim kiem và phân trang
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchKeyword(event.target.value);
   };
@@ -48,22 +83,7 @@ const AltaDevice = () => {
       item.serviceUsed.toLowerCase().includes(searchKeyword.toLowerCase());
     return isActiveMatch && isConnectMatch && isSearchMatch;
   });
-  // gioi han dich vu
-  const handleServiceUsedClick = () => {
-    setIsFullServiceUsed((prevState) => !prevState);
-  };
-  //
-  // if (loading) {
-  //   return (
-  //     <div
-  //       style={{
-  //         margin: "250px 0px 0px 610px",
-  //       }}
-  //     >
-  //       <Spin size="large" />
-  //     </div>
-  //   );
-  // }
+
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -125,27 +145,30 @@ const AltaDevice = () => {
       title: "Dịch vụ sử dụng",
       dataIndex: "serviceUsed",
       value: "serviceUsed",
-      render: (serviceUsed: string) => (
+      key: "serviceUsed",
+      className: "custom-service-column",
+      render: (serviceUsed: string, record: any) => (
         <span>
-          {isFullServiceUsed
-            ? serviceUsed
-            : serviceUsed.length > 24
-            ? `${serviceUsed.substring(0, 24)}...`
-            : serviceUsed}
-          {serviceUsed.length > 24 && (
-            <>
-              <br />
-              <button
-                className="custom-read-more-button" // Thêm lớp CSS vào đây
-                onClick={handleServiceUsedClick}
+          {serviceUsed}
+          <br />
+          <span
+            className="custom-read-more-button"
+            onClick={() => handleServiceUsed(record)}
+          >
+            Xem thêm
+          </span>
+          {openServiceUsed[record.id] &&
+            serviceUsedChanges[record.id] &&
+            ServiceUsed.current[record.id]?.current && (
+              <div
+                ref={ServiceUsed.current[record.id]}
+                className="service-used-detail"
               >
-                Xem thêm
-              </button>
-            </>
-          )}
+                {serviceUsed}
+              </div>
+            )}
         </span>
       ),
-      key: "serviceUsed",
     },
     {
       title: "",
@@ -279,7 +302,7 @@ const AltaDevice = () => {
                   type="text"
                   className="IPSearch"
                   style={{
-                    margin:"6px 0px 0px 304px"
+                    margin: "6px 0px 0px 304px",
                   }}
                   placeholder="Nhập từ khóa"
                   value={searchKeyword}

@@ -18,9 +18,9 @@ import {
   fetchDataManagerUser,
   selectData,
 } from "../../feature/manager/user/userManager";
+
 const AltaManagerRole = () => {
   const dataMgRl = useSelector(selectDataMgRl);
-
   const userData = useSelector(selectData);
 
   const dispatch: AppDispatch = useDispatch();
@@ -59,23 +59,21 @@ const AltaManagerRole = () => {
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchKeyword(event.target.value);
   };
-  const column = [
+
+  const columns = [
     {
       title: "Tên vai trò",
       dataIndex: "NameManagerRole",
-      value: "NameManagerRole",
       key: "NameManagerRole",
     },
     {
       title: "Số người dùng",
       dataIndex: "TotalRoles",
-      value: "TotalRoles",
       key: "TotalRoles",
     },
     {
       title: "Mô tả",
       dataIndex: "DescribeManagerRole",
-      value: "DescribeManagerRole",
       key: "DescribeManagerRole",
     },
     {
@@ -95,27 +93,16 @@ const AltaManagerRole = () => {
 
   return (
     <div className="row">
-      <div
-        className="col-lg-2"
-        style={{
-          paddingRight: "0px",
-        }}
-      >
+      <div className="col-lg-2">
         <SlideMenu />
       </div>
       <div
         className="col-lg-10"
-        style={{
-          paddingLeft: "0px",
-          backgroundColor: "rgba(246, 246, 246, 1)",
-        }}
+        style={{ backgroundColor: "rgba(246, 246, 246, 1)" }}
       >
         <div
           className="d-flex justify-content-between py-3"
-          style={{
-            paddingRight: "80px",
-            paddingLeft: "30px",
-          }}
+          style={{ paddingRight: "80px", paddingLeft: "30px" }}
         >
           <div className="d-flex">
             <Typography className="TitleDevice">Cài đặt hệ thống</Typography>
@@ -124,7 +111,10 @@ const AltaManagerRole = () => {
           <AltaNavbar />
         </div>
         <div id="bgInForUser">
-          <Typography className="fs-4 listDeviceTitle" style={{fontWeight:"700"}}>
+          <Typography
+            className="fs-4 listDeviceTitle"
+            style={{ fontWeight: "700" }}
+          >
             Danh sách vai trò
           </Typography>
           <div className="d-flex">
@@ -147,8 +137,8 @@ const AltaManagerRole = () => {
           <div className="d-flex">
             <div>
               <Table
-                dataSource={updatedData}
-                columns={column}
+                dataSource={updatedData.filter((item) => item.isSearchMatch)}
+                columns={columns}
                 className="ms-4 mt-2"
                 style={{
                   width: "74%",

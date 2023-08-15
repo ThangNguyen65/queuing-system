@@ -4,10 +4,8 @@ import LogoLogin from "../../assets/img/login/Logo alta.svg";
 import LoginImageRight from "../../assets/img/login/ForgotPassword.png";
 import "../../assets/css/login/resetnewpassword.css";
 import { useEffect, useState } from "react";
-import { auth } from "../../firebase/firebase";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  fetchDataManagerUser,
   selectData,
   updateManagerUserReSetNewPassword,
 } from "../../feature/manager/user/userManager";
@@ -24,7 +22,7 @@ function ResetNewPassword() {
 
   useEffect(() => {
     if (!emailFromUrl) {
-      navigate("/"); // Redirect if no email is provided
+      navigate("/");
     }
   }, [emailFromUrl, navigate]);
 
@@ -49,6 +47,7 @@ function ResetNewPassword() {
         );
         console.log("Mật khẩu đã được cập nhật thành công.");
         navigate("/");
+        window.location.reload();
       } else {
         console.error("Mật khẩu và xác nhận mật khẩu không khớp.");
       }

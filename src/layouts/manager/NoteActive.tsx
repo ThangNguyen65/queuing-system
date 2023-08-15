@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import "../../assets/css/manager/managerRole.css";
 import arrowRight from "../../assets/img/lvNumber/arrow-right.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   DataActivity,
   selectDataActivity,
@@ -16,6 +16,7 @@ import {
 import { AppDispatch } from "../../store";
 
 const AltaNoteActive = () => {
+  const [searchKeyword, setSearchKeyword] = useState("");
   const dispatch: AppDispatch = useDispatch();
   const note = useSelector(selectDataActivity);
 
@@ -26,6 +27,13 @@ const AltaNoteActive = () => {
   const getRowClassName = (_record: any, index: number) => {
     return index % 2 !== 0 ? "bg-pink" : "";
   };
+  const filteredNote = note.filter(
+    (item) =>
+      item.userName.includes(searchKeyword) ||
+      item.action.includes(searchKeyword) ||
+      item.deviceAddress.includes(searchKeyword) ||
+      item.levelNumberGrantTime.includes(searchKeyword)
+  );
 
   const column = [
     {
@@ -137,6 +145,8 @@ const AltaNoteActive = () => {
                     outline: "none",
                     padding: "5px 10px",
                   }}
+                  value={searchKeyword}
+                  onChange={(e) => setSearchKeyword(e.target.value)}
                 />
                 <button className="btnSearchDevice">
                   <Image src={search} preview={false} />
@@ -148,14 +158,14 @@ const AltaNoteActive = () => {
             <div>
               <Table
                 columns={column}
-                dataSource={note}
+                dataSource={filteredNote}
                 className="ms-4 mt-2"
                 style={{
                   width: "74%",
                   position: "absolute",
                 }}
                 pagination={{
-                  pageSize: 2,
+                  pageSize: 6,
                 }}
                 rowClassName={getRowClassName}
               ></Table>

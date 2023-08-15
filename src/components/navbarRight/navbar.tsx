@@ -41,15 +41,6 @@ function AltaNavbar() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-  const formatGrantTime = (timestamp: any) => {
-    const date = new Date(timestamp);
-    const hours = String(date.getHours()).padStart(2, "0");
-    const minutes = String(date.getMinutes()).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const year = date.getFullYear();
-    return `${hours}:${minutes} ngày ${day}/${month}/${year}`;
-  };
 
   return (
     <div>
@@ -80,7 +71,7 @@ function AltaNavbar() {
               position: "absolute",
               width: "300px",
               height: "60vh",
-              overflow: "auto",
+              overflowX: "hidden",
               margin: " 60px 0px 0px -10px",
               zIndex: "1000",
             }}
@@ -107,7 +98,7 @@ function AltaNavbar() {
                 <Typography
                   style={{ color: "rgba(191, 88, 5, 1)", fontWeight: "600" }}
                 >
-                  Người dùng:{item.NameCustomer}
+                  Người dùng: {item.NameCustomer}
                 </Typography>
                 <Typography style={{ padding: "6px 0px" }}>
                   {/* Thời gian nhận số: {formatGrantTime(item.GrantTime)} */}

@@ -7,7 +7,7 @@ export interface Activity {
   id: string;
   userName: string;
   action: string;
-  serviceName: string;
+  // serviceName: string;
   deviceAddress: string;
   levelNumberGrantTime: string;
 }
@@ -42,22 +42,18 @@ export const DataActivity = createAsyncThunk("data/DataActivity", async () => {
     if (
       docData.userName &&
       docData.action &&
-      docData.serviceName &&
+      // docData.serviceName &&
       docData.deviceAddress &&
       docData.levelNumberGrantTime
     ) {
-      const newItem: Activity = {
+      Datalist.push({
         id: doc.id,
         userName: docData.userName,
         action: docData.action,
-        serviceName: docData.serviceName,
+        // serviceName: docData.serviceName,
         deviceAddress: docData.deviceAddress,
         levelNumberGrantTime: docData.levelNumberGrantTime,
-      };
-      const existingItem = Datalist.find((item) => item.id === newItem.id);
-      if (!existingItem) {
-        Datalist.push(newItem);
-      }
+      });
     }
   });
   return Datalist;
@@ -76,12 +72,8 @@ const activitySlice = createSlice({
         );
       })
       .addCase(DataActivity.fulfilled, (state, action) => {
-        const newData = action.payload.filter((newItem) => {
-          return !state.dataNote.some(
-            (existingItem) => existingItem.id === newItem.id
-          );
-        });
-        state.dataNote = [...state.dataNote, ...newData];
+        state.dataNote = action.payload;
+        console.log("Fetched activity data:", action.payload);
       });
   },
 });

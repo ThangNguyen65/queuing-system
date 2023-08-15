@@ -292,7 +292,7 @@ const AltaEditManagerUser = () => {
               Hủy bỏ
             </Link>
             <button className="btnAddDevices" onClick={handleUpdateDevice}>
-              Thêm thiết bị
+              Cập nhật
             </button>
           </div>
         </div>

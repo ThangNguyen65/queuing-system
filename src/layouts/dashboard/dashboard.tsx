@@ -19,6 +19,7 @@ import { selectData } from "../../feature/device/actionDevice";
 import datePicker from "../../assets/img/dashboard/Date picker.svg";
 import { Area } from "@ant-design/plots";
 import { format } from "date-fns";
+import { Link } from "react-router-dom";
 function AltaDashboard() {
   const data1 = useSelector(selectData);
   const totalDataDevice = data1.length;
@@ -71,15 +72,15 @@ function AltaDashboard() {
     const dailyGrantTimeCountMap = new Map();
 
     data.forEach((item: any) => {
-      const datetimeParts = item.GrantTime.split(" "); // Tách thành mảng [thời gian, ngày/tháng/năm]
-      const dateParts = datetimeParts[1].split("/"); // Tách thành mảng [ngày, tháng, năm]
+      const datetimeParts = item.GrantTime.split(" ");
+      const dateParts = datetimeParts[1].split("/");
 
       const date = new Date(
-        parseInt(dateParts[2]), // Năm
-        parseInt(dateParts[1]) - 1, // Tháng (lưu ý giảm đi 1 vì tháng trong JavaScript bắt đầu từ 0)
-        parseInt(dateParts[0]), // Ngày
-        parseInt(datetimeParts[0].split(":")[0]), // Giờ
-        parseInt(datetimeParts[0].split(":")[1]) // Phút
+        parseInt(dateParts[2]),
+        parseInt(dateParts[1]) - 1,
+        parseInt(dateParts[0]),
+        parseInt(datetimeParts[0].split(":")[0]),
+        parseInt(datetimeParts[0].split(":")[1])
       );
 
       const formattedDate = format(date, "MM/dd/yyyy");
@@ -139,28 +140,30 @@ function AltaDashboard() {
             <div className="row">
               <div className="col-lg-3">
                 <div className="bgSttDC">
-                  <div className="d-flex">
-                    <Image src={SttDaCap} preview={false} />
-                    <Typography className="ms-2">Số thứ tự đã cấp</Typography>
-                  </div>
-                  <div className="d-flex justify-content-between mt-1">
-                    <Typography className="fs-4">{totalLvNBCap}</Typography>
-                    <div
-                      className="d-flex"
-                      style={{
-                        background: "rgba(255, 149, 1, 0.15)",
-                        borderRadius: "10px",
-                        padding: "0px 10px",
-                        paddingBottom: "0px",
-                        marginTop: "14px",
-                      }}
-                    >
-                      <Image src={MuiTenTang} preview={false} />
-                      <Typography style={{ color: "rgba(255, 145, 56, 1)" }}>
-                        32,41%
-                      </Typography>
+                  <Link to="/levelNumber" className="text-decoration-none">
+                    <div className="d-flex">
+                      <Image src={SttDaCap} preview={false} />
+                      <Typography className="ms-2">Số thứ tự đã cấp</Typography>
                     </div>
-                  </div>
+                    <div className="d-flex justify-content-between mt-1">
+                      <Typography className="fs-4">{totalLvNBCap}</Typography>
+                      <div
+                        className="d-flex"
+                        style={{
+                          background: "rgba(255, 149, 1, 0.15)",
+                          borderRadius: "10px",
+                          padding: "0px 10px",
+                          paddingBottom: "0px",
+                          marginTop: "14px",
+                        }}
+                      >
+                        <Image src={MuiTenTang} preview={false} />
+                        <Typography style={{ color: "rgba(255, 145, 56, 1)" }}>
+                          32,41%
+                        </Typography>
+                      </div>
+                    </div>
+                  </Link>
                 </div>
               </div>
               <div className="col-lg-3">
@@ -369,7 +372,7 @@ function AltaDashboard() {
               <Typography
                 style={{
                   color: "rgba(255, 145, 56, 1)",
-                  fontSize: "13px",
+                  // fontSize: "13px",
                 }}
               >
                 <Image
@@ -377,7 +380,8 @@ function AltaDashboard() {
                   preview={false}
                   style={{ width: "70%" }}
                 />
-                Thiết bị
+                {/* <DesktopOutlined style={{ marginTop:"-20px" }} /> */}
+                <span>Thiết bị</span>
               </Typography>
             </div>
             <div
@@ -600,7 +604,7 @@ function AltaDashboard() {
                   style={{
                     color: "rgba(53, 199, 90, 1)",
                     fontWeight: "600",
-                    marginLeft: "45px",
+                    marginLeft: "38px",
                   }}
                 >
                   {totalDaSuDung}
@@ -617,7 +621,7 @@ function AltaDashboard() {
                   style={{
                     color: "rgba(53, 199, 90, 1)",
                     fontWeight: "600",
-                    marginLeft: "57px",
+                    marginLeft: "48px",
                   }}
                 >
                   {totalDaCho}
@@ -634,7 +638,7 @@ function AltaDashboard() {
                   style={{
                     color: "rgba(53, 199, 90, 1)",
                     fontWeight: "600",
-                    marginLeft: "74px",
+                    marginLeft: "62px",
                   }}
                 >
                   {totalBoQua}

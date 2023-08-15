@@ -189,3 +189,46 @@
   .ant-table-pagination.ant-pagination {
   border: none !important;
 }
+.custom-service-column {
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.custom-read-more-button {
+  color: blue;
+  cursor: pointer;
+}
+.service-used-detail {
+  background-color: #fff;
+  border: 1px solid orange;
+  border-radius: 8px;
+  padding: 16px 10px 0px;
+  position: absolute;
+  top: 40px;
+  height: 10vh;
+  width: 100%;
+  left: 596px;
+  z-index: 999;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+:where(.css-dev-only-do-not-override-txh9fw).ant-table-wrapper
+  .ant-table-thead
+  > tr
+  > th,
+:where(.css-dev-only-do-not-override-txh9fw).ant-table-wrapper
+  .ant-table-tbody
+  > tr
+  > th,
+:where(.css-dev-only-do-not-override-txh9fw).ant-table-wrapper
+  .ant-table-tbody
+  > tr
+  > td,
+:where(.css-dev-only-do-not-override-txh9fw).ant-table-wrapper tfoot > tr > th,
+:where(.css-dev-only-do-not-override-txh9fw).ant-table-wrapper tfoot > tr > td {
+  position: static;
+  padding: 0px;
+}
+:where(.css-dev-only-do-not-override-txh9fw).ant-table-wrapper tfoot > tr > td {
+  padding: 0px;
+}
