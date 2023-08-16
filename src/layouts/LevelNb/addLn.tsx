@@ -52,13 +52,24 @@ const AltaAddLevelNumber = () => {
     return `${hours}:${minutes} ${day}/${month}/${year}`;
   };
 
-  const generateIdLevelNum = () => {
+  const generateIdLevelNum = (): string => {
     const lastSequentialNumber =
       dataLvNB.length > 0
         ? Number(dataLvNB[dataLvNB.length - 1].IdLevelNum)
         : 200000;
-    const newSequentialNumber = lastSequentialNumber + 1;
-    return `${newSequentialNumber}`;
+
+    // Keep track of the new sequential number
+    let newSequentialNumber = lastSequentialNumber + 1;
+
+    while (
+      dataLvNB.some(
+        (item) => item.IdLevelNum === newSequentialNumber.toString()
+      )
+    ) {
+      newSequentialNumber++; // Increment the number until a unique one is found
+    }
+
+    return newSequentialNumber.toString();
   };
 
   const showModal = () => {

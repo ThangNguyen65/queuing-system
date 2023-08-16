@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SlideMenu from "../../components/slide/slide";
 import AltaNavbar from "../../components/navbarRight/navbar";
@@ -12,6 +12,21 @@ import { loginSuccess } from "../../feature/auth/login";
 function AltaInForUser() {
   const currentUser = useSelector(selectCurrentUser);
   const [loading, setLoading] = useState(true);
+  const [profileImage, setProfileImage] = useState(Em);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleAvatarClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+  const handleImageChange = (event: any) => {
+    const selectedImage = event.target.files[0];
+    if (selectedImage) {
+      const imageObjectURL = URL.createObjectURL(selectedImage);
+      setProfileImage(imageObjectURL);
+    }
+  };
   const dispatch = useDispatch();
   useEffect(() => {
     setLoading(false);
@@ -52,13 +67,24 @@ function AltaInForUser() {
           <div id="bgInFor">
             <div className="row">
               <div className="col-4">
-                <div>
-                  <Avatar src={Em} size={230} className="avtInForUser" />
+                <div className="avatar-container" onClick={handleAvatarClick}>
+                  <Avatar
+                    src={profileImage}
+                    size={230}
+                    className="avtInForUser"
+                  />
                   <Image
                     src={Camera}
                     width={"15%"}
                     preview={false}
                     className="cameraInFor"
+                  />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="input-file"
+                    onChange={handleImageChange}
+                    ref={fileInputRef}
                   />
                 </div>
 

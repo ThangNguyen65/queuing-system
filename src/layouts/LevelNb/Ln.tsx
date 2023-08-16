@@ -14,7 +14,7 @@ import {
 import "../../assets/css/levelNumber/levelNumber.css";
 import AddDevicev from "../../assets/img/device/ThemThietBiMoi.svg";
 import search from "../../assets/img/device/search.svg";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../store";
 import {
@@ -28,8 +28,12 @@ import { selectCurrentUser } from "../../app/selectors";
 const AltaLevelNumber = () => {
   const data = useSelector(selectDataLvNB);
   const currentUser = useSelector(selectCurrentUser);
-
   const error = useSelector(selectError);
+  const urlSearchParams = new URLSearchParams(window.location.search);
+  const urlStatus = urlSearchParams.get("status");
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const pendingStatus = queryParams.get("status") || "";
   const dispatch: AppDispatch = useDispatch();
   const [activeStatus, setActiveStatus] = useState("Tất cả");
   const [nameService, setNameService] = useState("Tất cả");
@@ -42,7 +46,7 @@ const AltaLevelNumber = () => {
   useEffect(() => {
     dispatch(fetchDataService());
   }, [dispatch]);
-  
+
   const options = dataService.map((service: any) => ({
     label: service.NameService,
     value: service.NameService,
@@ -53,6 +57,21 @@ const AltaLevelNumber = () => {
     const isStatus = activeStatus === "Tất cả" || item.Status === activeStatus;
     const isPowerSupply =
       powerSupply === "Tất cả" || item.PowerSupply === powerSupply;
+
+    const isStatusDB = (item: any) => {
+      if (
+        activeStatus === "Đang chờ" ||
+        item.Status === decodeURIComponent(pendingStatus) ||
+        urlStatus === "Đang chờ"
+      ) {
+        return true;
+      } else if (activeStatus === "Tất cả" || item.Status === activeStatus) {
+        return true;
+      } else {
+        return false;
+      }
+    };
+
     const isSearchMatch =
       searchKeyword.trim() === "" ||
       item.IdLevelNum.toLowerCase().includes(searchKeyword.toLowerCase()) ||
@@ -62,23 +81,14 @@ const AltaLevelNumber = () => {
       item.Expiry.toLowerCase().includes(searchKeyword.toLowerCase()) ||
       item.Status.toLowerCase().includes(searchKeyword.toLowerCase()) ||
       item.PowerSupply.toLowerCase().includes(searchKeyword.toLowerCase());
-    return isService && isStatus && isPowerSupply && isSearchMatch;
+    return (
+      isService && isStatus && isPowerSupply && isSearchMatch && isStatusDB
+    );
   });
-
+  console.log("pendingStatus:", pendingStatus);
   useEffect(() => {
     dispatch(FetchDataLevelNumber());
   }, [dispatch]);
-  const renderDateTime = (date: Date) => {
-    console.log("Date received:", date);
-    const formattedDate = new Date(date);
-    return formattedDate.toLocaleString("vi-VN", {
-      hour: "2-digit",
-      minute: "2-digit",
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    });
-  };
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -86,6 +96,9 @@ const AltaLevelNumber = () => {
   const getRowClassName = (_record: any, index: number) => {
     return index % 2 !== 0 ? "bg-pink" : "";
   };
+  const sortedData = [...filteredData].sort((a, b) =>
+    a.IdLevelNum.localeCompare(b.IdLevelNum)
+  );
 
   const columns = [
     {
@@ -116,14 +129,12 @@ const AltaLevelNumber = () => {
       dataIndex: "GrantTime",
       value: "GrantTime",
       key: "GrantTime",
-      // render: (date: Date) => renderDateTime(date),
     },
     {
       title: "Hạn sử dụng",
       dataIndex: "Expiry",
       value: "Expiry",
       key: "Expiry",
-      // render: (date: Date) => renderDateTime(date),
     },
     {
       title: "Trạng thái",
@@ -335,7 +346,7 @@ const AltaLevelNumber = () => {
             <Table
               className="ms-4 mt-2"
               columns={columns}
-              dataSource={filteredData}
+              dataSource={sortedData}
               style={{
                 width: "74%",
                 position: "absolute",

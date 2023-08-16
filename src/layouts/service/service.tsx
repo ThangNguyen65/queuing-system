@@ -55,6 +55,9 @@ const AltaService = () => {
       item.StatusActive.toLowerCase().includes(searchKeyword.toLowerCase());
     return isActiveMatch && isSearchMatch;
   });
+  const sortedDataService = [...filteredData].sort((a, b) =>
+    a.suffix.localeCompare(b.suffix)
+  );
 
   const column = [
     {
@@ -232,7 +235,7 @@ const AltaService = () => {
           <div className="d-flex">
             <div>
               <Table
-                dataSource={filteredData}
+                dataSource={sortedDataService}
                 columns={column}
                 className="ms-4 mt-2"
                 style={{

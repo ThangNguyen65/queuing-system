@@ -19,8 +19,9 @@ import { selectData } from "../../feature/device/actionDevice";
 import datePicker from "../../assets/img/dashboard/Date picker.svg";
 import { Area } from "@ant-design/plots";
 import { format } from "date-fns";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 function AltaDashboard() {
+  const navigate = useNavigate();
   const data1 = useSelector(selectData);
   const totalDataDevice = data1.length;
   const totalHoatDongDevice = data1.filter(
@@ -68,6 +69,7 @@ function AltaDashboard() {
     localStorage.setItem("levelNumber", JSON.stringify(dataLvNB));
   }, [dataLvNB]);
   //
+
   const calculateTotalGrantTimePerDay = (data: any) => {
     const dailyGrantTimeCountMap = new Map();
 
@@ -83,7 +85,7 @@ function AltaDashboard() {
         parseInt(datetimeParts[0].split(":")[1])
       );
 
-      const formattedDate = format(date, "MM/dd/yyyy");
+      const formattedDate = format(date, "dd");
 
       if (dailyGrantTimeCountMap.has(formattedDate)) {
         dailyGrantTimeCountMap.set(
@@ -107,9 +109,11 @@ function AltaDashboard() {
   };
 
   const totalGrantTimeChartData = calculateTotalGrantTimePerDay(dataLvNB);
-  const [selectedRange, setSelectedRange] = useState("Ngày");
-  const tickCount =
-    selectedRange === "Tuần" ? 4 : selectedRange === "Tháng" ? 12 : 6;
+
+  //
+  const handleStatusDangCho = () => {
+    navigate("/levelNumber/?status=Đang chờ");
+  };
   return (
     <div className="row">
       <div className="col-lg-2" style={{ paddingRight: "0px" }}>
@@ -194,7 +198,7 @@ function AltaDashboard() {
                   </div>
                 </div>
               </div>
-              <div className="col-lg-3">
+              <div className="col-lg-3" onClick={handleStatusDangCho}>
                 <div className="bgSttDC">
                   <div className="d-flex">
                     <Image src={SttDangCho} preview={false} />
@@ -282,8 +286,6 @@ function AltaDashboard() {
                     <span className="me-2">Xem theo</span>
                     <Select
                       defaultValue={"Ngày"}
-                      onChange={(value) => setSelectedRange(value)}
-                      value={selectedRange}
                       options={[
                         { label: "Ngày", value: "Ngày" },
                         { label: "Tuần", value: "Tuần" },
@@ -303,7 +305,6 @@ function AltaDashboard() {
                   }}
                   xAxis={{
                     range: [0, 1],
-                    tickCount: tickCount,
                   }}
                   smooth
                   animation={false}
@@ -329,323 +330,329 @@ function AltaDashboard() {
           >
             Tổng quan
           </Typography>
-          <div
-            className="d-flex"
-            style={{
-              backgroundColor: "#fff",
-              boxShadow: "2px 2px 15px 0px rgba(70, 64, 67, 0.10)",
-              padding: "10px 0px 10px 10px",
-              margin: "10px 0px 0px 10px",
-              width: "94%",
-            }}
-          >
-            <Progress
-              type="circle"
-              width={55}
-              strokeWidth={4}
-              percent={hoatDongPercent}
-              strokeColor={"rgba(255, 145, 56, 1)"}
+          <Link to="/device" className="text-decoration-none">
+            <div
+              className="d-flex"
               style={{
-                position: "relative",
+                backgroundColor: "#fff",
+                boxShadow: "2px 2px 15px 0px rgba(70, 64, 67, 0.10)",
+                padding: "10px 0px 10px 10px",
+                margin: "10px 0px 0px 10px",
+                width: "94%",
               }}
-            />
+            >
+              <Progress
+                type="circle"
+                width={55}
+                strokeWidth={4}
+                percent={hoatDongPercent}
+                strokeColor={"rgba(255, 145, 56, 1)"}
+                style={{
+                  position: "relative",
+                }}
+              />
 
-            <Progress
-              type="circle"
-              percent={ngungHoatDongPercent}
-              width={45}
-              showInfo={false}
-              strokeWidth={5}
-              strokeColor={"rgba(126, 125, 136, 1)"}
-              style={{
-                position: "absolute",
-                marginLeft: "5px",
-                marginTop: "5px",
-              }}
-            />
-            <div
-              style={{
-                margin: "4px 0px 0px 4px",
-              }}
-            >
-              <Typography>{totalDataDevice}</Typography>
-              <Typography
+              <Progress
+                type="circle"
+                percent={ngungHoatDongPercent}
+                width={45}
+                showInfo={false}
+                strokeWidth={5}
+                strokeColor={"rgba(126, 125, 136, 1)"}
                 style={{
-                  color: "rgba(255, 145, 56, 1)",
-                  // fontSize: "13px",
+                  position: "absolute",
+                  marginLeft: "5px",
+                  marginTop: "5px",
+                }}
+              />
+              <div
+                style={{
+                  margin: "4px 0px 0px 4px",
                 }}
               >
-                <Image
-                  src={iconDevice}
-                  preview={false}
-                  style={{ width: "70%" }}
-                />
-                {/* <DesktopOutlined style={{ marginTop:"-20px" }} /> */}
-                <span>Thiết bị</span>
-              </Typography>
-            </div>
-            <div
-              style={{
-                margin: "4px 0px 0px 4px",
-              }}
-            >
-              <Typography
-                style={{
-                  fontSize: "12px",
-                }}
-              >
-                <Badge status="warning" className="me-1" />
-                Đang hoạt động
-                <span
+                <Typography>{totalDataDevice}</Typography>
+                <Typography
                   style={{
                     color: "rgba(255, 145, 56, 1)",
-                    fontWeight: "600",
-                    marginLeft: "13px",
                   }}
                 >
-                  {totalHoatDongDevice}
-                </span>
-              </Typography>
-              <Typography
+                  <Image
+                    src={iconDevice}
+                    preview={false}
+                    style={{ width: "70%" }}
+                  />
+                  <span>Thiết bị</span>
+                </Typography>
+              </div>
+              <div
                 style={{
-                  fontSize: "12px",
+                  margin: "4px 0px 0px 4px",
                 }}
               >
-                <Badge status="default" className="me-1" />
-                Ngưng hoạt động
-                <span
-                  className="ms-1"
+                <Typography
                   style={{
-                    color: "rgba(255, 145, 56, 1)",
-                    fontWeight: "600",
+                    fontSize: "12px",
                   }}
                 >
-                  {totalNgungHoatDongDevice}
-                </span>
-              </Typography>
+                  <Badge status="warning" className="me-1" />
+                  Đang hoạt động
+                  <span
+                    style={{
+                      color: "rgba(255, 145, 56, 1)",
+                      fontWeight: "600",
+                      marginLeft: "13px",
+                    }}
+                  >
+                    {totalHoatDongDevice}
+                  </span>
+                </Typography>
+                <Typography
+                  style={{
+                    fontSize: "12px",
+                  }}
+                >
+                  <Badge status="default" className="me-1" />
+                  Ngưng hoạt động
+                  <span
+                    className="ms-1"
+                    style={{
+                      color: "rgba(255, 145, 56, 1)",
+                      fontWeight: "600",
+                    }}
+                  >
+                    {totalNgungHoatDongDevice}
+                  </span>
+                </Typography>
+              </div>
             </div>
-          </div>
-          <div
-            className="d-flex"
-            style={{
-              backgroundColor: "#fff",
-              boxShadow: "2px 2px 15px 0px rgba(70, 64, 67, 0.10)",
-              padding: "10px 0px 10px 10px",
-              margin: "10px 0px 0px 10px",
-              width: "94%",
-            }}
-          >
-            <Progress
-              type="circle"
-              width={55}
-              strokeWidth={4}
-              percent={hoatdongServicePercent}
-              strokeColor={"rgba(66, 119, 255, 1)"}
-              style={{
-                position: "relative",
-              }}
-            />
+          </Link>
 
-            <Progress
-              type="circle"
-              percent={ngunghoatdongServicePercent}
-              width={45}
-              showInfo={false}
-              strokeWidth={5}
-              strokeColor={"rgba(126, 125, 136, 1)"}
-              style={{
-                position: "absolute",
-                marginLeft: "5px",
-                marginTop: "5px",
-              }}
-            />
+          <Link to="/service" className="text-decoration-none">
             <div
+              className="d-flex"
               style={{
-                margin: "4px 0px 0px 4px",
+                backgroundColor: "#fff",
+                boxShadow: "2px 2px 15px 0px rgba(70, 64, 67, 0.10)",
+                padding: "10px 0px 10px 10px",
+                margin: "10px 0px 0px 10px",
+                width: "94%",
               }}
             >
-              <Typography>{totalDataSv}</Typography>
-              <Typography
+              <Progress
+                type="circle"
+                width={55}
+                strokeWidth={4}
+                percent={hoatdongServicePercent}
+                strokeColor={"rgba(66, 119, 255, 1)"}
                 style={{
-                  color: "rgba(66, 119, 255, 1)",
-                  fontSize: "13px",
+                  position: "relative",
+                }}
+              />
+
+              <Progress
+                type="circle"
+                percent={ngunghoatdongServicePercent}
+                width={45}
+                showInfo={false}
+                strokeWidth={5}
+                strokeColor={"rgba(126, 125, 136, 1)"}
+                style={{
+                  position: "absolute",
+                  marginLeft: "5px",
+                  marginTop: "5px",
+                }}
+              />
+              <div
+                style={{
+                  margin: "4px 0px 0px 4px",
                 }}
               >
-                <Image
-                  src={iconService}
-                  preview={false}
-                  style={{ width: "70%" }}
-                />
-                Dịch vụ
-              </Typography>
-            </div>
-            <div
-              style={{
-                margin: "4px 0px 0px 4px",
-              }}
-            >
-              <Typography
-                style={{
-                  fontSize: "12px",
-                }}
-              >
-                <Badge status="processing" className="me-1" />
-                Đang hoạt động
-                <span
+                <Typography>{totalDataSv}</Typography>
+                <Typography
                   style={{
                     color: "rgba(66, 119, 255, 1)",
-                    fontWeight: "600",
-                    marginLeft: "13px",
+                    fontSize: "13px",
                   }}
                 >
-                  {totalHoatDongService}
-                </span>
-              </Typography>
-              <Typography
+                  <Image
+                    src={iconService}
+                    preview={false}
+                    style={{ width: "70%" }}
+                  />
+                  Dịch vụ
+                </Typography>
+              </div>
+              <div
                 style={{
-                  fontSize: "12px",
+                  margin: "4px 0px 0px 4px",
                 }}
               >
-                <Badge status="default" className="me-1" />
-                Ngưng hoạt động
-                <span
-                  className="ms-1"
+                <Typography
                   style={{
-                    color: "rgba(66, 119, 255, 1)",
-                    fontWeight: "600",
+                    fontSize: "12px",
                   }}
                 >
-                  {totalNgungHoatDongService}
-                </span>
-              </Typography>
+                  <Badge status="processing" className="me-1" />
+                  Đang hoạt động
+                  <span
+                    style={{
+                      color: "rgba(66, 119, 255, 1)",
+                      fontWeight: "600",
+                      marginLeft: "13px",
+                    }}
+                  >
+                    {totalHoatDongService}
+                  </span>
+                </Typography>
+                <Typography
+                  style={{
+                    fontSize: "12px",
+                  }}
+                >
+                  <Badge status="default" className="me-1" />
+                  Ngưng hoạt động
+                  <span
+                    className="ms-1"
+                    style={{
+                      color: "rgba(66, 119, 255, 1)",
+                      fontWeight: "600",
+                    }}
+                  >
+                    {totalNgungHoatDongService}
+                  </span>
+                </Typography>
+              </div>
             </div>
-          </div>
+          </Link>
           {/*  */}
-          <div
-            className="d-flex"
-            style={{
-              backgroundColor: "#fff",
-              boxShadow: "2px 2px 15px 0px rgba(70, 64, 67, 0.10)",
-              padding: "10px 0px 10px 10px",
-              margin: "10px 0px 0px 10px",
-              width: "94%",
-            }}
-          >
-            <Progress
-              type="circle"
-              width={55}
-              strokeWidth={4}
-              percent={dasudungPercent}
-              strokeColor={"rgba(53, 199, 90, 1)"}
+          <Link to="/levelNumber" className="text-decoration-none">
+            <div
+              className="d-flex"
               style={{
-                position: "relative",
+                backgroundColor: "#fff",
+                boxShadow: "2px 2px 15px 0px rgba(70, 64, 67, 0.10)",
+                padding: "10px 0px 10px 10px",
+                margin: "10px 0px 0px 10px",
+                width: "94%",
               }}
-            />
+            >
+              <Progress
+                type="circle"
+                width={55}
+                strokeWidth={4}
+                percent={dasudungPercent}
+                strokeColor={"rgba(53, 199, 90, 1)"}
+                style={{
+                  position: "relative",
+                }}
+              />
 
-            <Progress
-              type="circle"
-              percent={dachoPercent}
-              width={45}
-              showInfo={false}
-              strokeWidth={5}
-              strokeColor={"rgba(126, 125, 136, 1)"}
-              style={{
-                position: "absolute",
-                marginLeft: "5px",
-                marginTop: "5px",
-              }}
-            />
-            <Progress
-              type="circle"
-              percent={boquaPercent}
-              width={35}
-              showInfo={false}
-              strokeWidth={5}
-              strokeColor={"rgba(126, 125, 136, 1)"}
-              style={{
-                position: "absolute",
-                marginLeft: "10px",
-                marginTop: "10px",
-              }}
-            />
-            <div
-              style={{
-                margin: "4px 0px 0px 4px",
-              }}
-            >
-              <Typography>{totalLvNBCap}</Typography>
-              <Typography
+              <Progress
+                type="circle"
+                percent={dachoPercent}
+                width={45}
+                showInfo={false}
+                strokeWidth={5}
+                strokeColor={"rgba(126, 125, 136, 1)"}
                 style={{
-                  color: "rgba(53, 199, 90, 1)",
-                  fontSize: "13px",
+                  position: "absolute",
+                  marginLeft: "5px",
+                  marginTop: "5px",
+                }}
+              />
+              <Progress
+                type="circle"
+                percent={boquaPercent}
+                width={35}
+                showInfo={false}
+                strokeWidth={5}
+                strokeColor={"rgba(126, 125, 136, 1)"}
+                style={{
+                  position: "absolute",
+                  marginLeft: "10px",
+                  marginTop: "10px",
+                }}
+              />
+              <div
+                style={{
+                  margin: "4px 0px 0px 4px",
                 }}
               >
-                <Image
-                  src={iconLevelNum}
-                  preview={false}
-                  style={{ width: "70%" }}
-                />
-                Cấp số
-              </Typography>
+                <Typography>{totalLvNBCap}</Typography>
+                <Typography
+                  style={{
+                    color: "rgba(53, 199, 90, 1)",
+                    fontSize: "13px",
+                  }}
+                >
+                  <Image
+                    src={iconLevelNum}
+                    preview={false}
+                    style={{ width: "70%" }}
+                  />
+                  Cấp số
+                </Typography>
+              </div>
+              <div
+                style={{
+                  margin: "0px 0px 0px 10px",
+                }}
+              >
+                <Typography
+                  style={{
+                    fontSize: "12px",
+                  }}
+                >
+                  <Badge status="success" className="me-1" />
+                  Đã sử dụng
+                  <span
+                    style={{
+                      color: "rgba(53, 199, 90, 1)",
+                      fontWeight: "600",
+                      marginLeft: "38px",
+                    }}
+                  >
+                    {totalDaSuDung}
+                  </span>
+                </Typography>
+                <Typography
+                  style={{
+                    fontSize: "12px",
+                  }}
+                >
+                  <Badge status="default" className="me-1" />
+                  Đang chờ
+                  <span
+                    style={{
+                      color: "rgba(53, 199, 90, 1)",
+                      fontWeight: "600",
+                      marginLeft: "48px",
+                    }}
+                  >
+                    {totalDaCho}
+                  </span>
+                </Typography>
+                <Typography
+                  style={{
+                    fontSize: "12px",
+                  }}
+                >
+                  <Badge status="error" className="me-1" />
+                  Bỏ qua
+                  <span
+                    style={{
+                      color: "rgba(53, 199, 90, 1)",
+                      fontWeight: "600",
+                      marginLeft: "62px",
+                    }}
+                  >
+                    {totalBoQua}
+                  </span>
+                </Typography>
+              </div>
             </div>
-            <div
-              style={{
-                margin: "0px 0px 0px 10px",
-              }}
-            >
-              <Typography
-                style={{
-                  fontSize: "12px",
-                }}
-              >
-                <Badge status="success" className="me-1" />
-                Đã sử dụng
-                <span
-                  style={{
-                    color: "rgba(53, 199, 90, 1)",
-                    fontWeight: "600",
-                    marginLeft: "38px",
-                  }}
-                >
-                  {totalDaSuDung}
-                </span>
-              </Typography>
-              <Typography
-                style={{
-                  fontSize: "12px",
-                }}
-              >
-                <Badge status="default" className="me-1" />
-                Đang chờ
-                <span
-                  style={{
-                    color: "rgba(53, 199, 90, 1)",
-                    fontWeight: "600",
-                    marginLeft: "48px",
-                  }}
-                >
-                  {totalDaCho}
-                </span>
-              </Typography>
-              <Typography
-                style={{
-                  fontSize: "12px",
-                }}
-              >
-                <Badge status="error" className="me-1" />
-                Bỏ qua
-                <span
-                  style={{
-                    color: "rgba(53, 199, 90, 1)",
-                    fontWeight: "600",
-                    marginLeft: "62px",
-                  }}
-                >
-                  {totalBoQua}
-                </span>
-              </Typography>
-            </div>
-          </div>
+          </Link>
+
           {/*  */}
 
           <Image

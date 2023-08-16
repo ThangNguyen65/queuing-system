@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import SlideMenu from "../../components/slide/slide";
 import AltaNavbar from "../../components/navbarRight/navbar";
-import { Badge, Image, Select, Space, Spin, Table, Typography } from "antd";
+import { Badge, Image, Select, Space, Table, Typography } from "antd";
 import "../../assets/css/device/device.css";
 import AddDevicev from "../../assets/img/device/ThemThietBiMoi.svg";
 import search from "../../assets/img/device/search.svg";
@@ -11,50 +11,31 @@ import {
   fetchData,
   selectData,
   selectError,
-  selectLoading,
 } from "../../feature/device/actionDevice";
 import { AppDispatch } from "../../store";
 
 const AltaDevice = () => {
   const data = useSelector(selectData);
-  const loading = useSelector(selectLoading);
+
   const error = useSelector(selectError);
   const dispatch: AppDispatch = useDispatch();
   const [activeStatus, setActiveStatus] = useState("Tất cả");
   const [connectStatus, setConnectStatus] = useState("Tất cả");
   const [searchKeyword, setSearchKeyword] = useState("");
-  const [openServiceUsed, setOpenServiceUsed] = useState<{
+
+  const [openServiceUsedMap, setOpenServiceUsedMap] = useState<{
     [key: string]: boolean;
-  }>({});
-  const [serviceUsedChanges, setServiceUsedChanges] = useState<Record<string, boolean>>({});
-  const ServiceUsed = useRef<{
-    [key: string]: React.RefObject<HTMLDivElement>;
   }>({});
 
   const handleServiceUsed = (record: any) => {
-    console.log("handleServiceUsed called for record:", record);
-    setOpenServiceUsed((prevState) => ({
+    setOpenServiceUsedMap((prevState) => ({
       ...prevState,
       [record.id]: true,
     }));
-    setServiceUsedChanges((prevChanges) => ({
-      ...prevChanges,
-      [record.id]: true,
-    }));
-    if (!ServiceUsed.current[record.id]) {
-      ServiceUsed.current[record.id] = React.createRef<HTMLDivElement>();
-      console.log("Ref created for record:", record);
-    }
-
-    console.log(
-      "ServiceUsed.current[record.id]?.current for record",
-      record.id,
-      ":",
-      ServiceUsed.current[record.id]?.current
-    );
   };
+
   const handleServiceUsedClose = (record: any) => {
-    setOpenServiceUsed((prevState) => ({
+    setOpenServiceUsedMap((prevState) => ({
       ...prevState,
       [record.id]: false,
     }));
@@ -88,8 +69,11 @@ const AltaDevice = () => {
     return <div>Error: {error}</div>;
   }
   const getRowClassName = (_record: any, index: number) => {
-    return index % 2 !== 0 ? "bg-pink" : "";
+    return index % 2 !== 0 ? "bg-pink" : "expanded";
   };
+  const sortedData = [...filteredData].sort((a, b) =>
+    a.idDevice.localeCompare(b.idDevice)
+  );
   const columns = [
     {
       title: "Mã thiết bị",
@@ -152,21 +136,24 @@ const AltaDevice = () => {
           {serviceUsed}
           <br />
           <span
-            className="custom-read-more-button"
+            className={`custom-read-more-button ${
+              openServiceUsedMap[record.id] ? "visible" : ""
+            }`}
             onClick={() => handleServiceUsed(record)}
           >
-            Xem thêm
+            {openServiceUsedMap[record.id] ? "Thu gọn" : "Xem thêm"}
           </span>
-          {openServiceUsed[record.id] &&
-            serviceUsedChanges[record.id] &&
-            ServiceUsed.current[record.id]?.current && (
-              <div
-                ref={ServiceUsed.current[record.id]}
-                className="service-used-detail"
+          {openServiceUsedMap[record.id] && (
+            <div className={`service-used-detail visible expanded`}>
+              {record.serviceUsed}
+              <span
+                className="custom-read-more-button"
+                onClick={() => handleServiceUsedClose(record)}
               >
-                {serviceUsed}
-              </div>
-            )}
+                Thu gọn
+              </span>
+            </div>
+          )}
         </span>
       ),
     },
@@ -322,7 +309,7 @@ const AltaDevice = () => {
             <Table
               className="ms-4 mt-2"
               columns={columns}
-              dataSource={filteredData}
+              dataSource={sortedData}
               style={{
                 width: "74%",
                 position: "absolute",

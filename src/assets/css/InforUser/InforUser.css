@@ -29,6 +29,13 @@
 .cameraInFor {
   margin: -73px 0px 0px 200px;
   z-index: 999;
+  display: block;
+  position: relative;
+  cursor: pointer;
+}
+.input-file {
+  display: none;
+  position: absolute;
 }
 .avtInForUser {
   margin-left: 30px;
