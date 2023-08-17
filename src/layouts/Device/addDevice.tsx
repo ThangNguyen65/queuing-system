@@ -39,9 +39,9 @@ const AltaAddDevice = () => {
     const randomIndex = Math.floor(Math.random() * possibleStatusDevice.length);
     return possibleStatusDevice[randomIndex];
   };
-  
+
   const possibleStatusDeviceConnect = ["Kết nối", "Mất kết nối"];
-  
+
   const getRandomStatusDescribeConnect = () => {
     const randomIndex = Math.floor(
       Math.random() * possibleStatusDeviceConnect.length
@@ -86,7 +86,7 @@ const AltaAddDevice = () => {
       dispatch(addDevices(newData) as any);
       const newActivity = {
         userName: currentUser?.UserNameManagerUser,
-        action: "Cập nhật thông tin dịch vụ " + nameDevice,
+        action: "Cập nhật thông tin thiết bị" + nameDevice,
         deviceAddress: addressIp,
         levelNumberGrantTime: formattedDate,
       };

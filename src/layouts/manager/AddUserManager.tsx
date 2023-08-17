@@ -10,6 +10,8 @@ import {
   fetchDataManagerRole,
   selectDataMgRl,
 } from "../../feature/manager/role/managerRole";
+import { addActivity } from "../../feature/manager/note/note";
+import { selectCurrentUser } from "../../app/selectors";
 
 const AltaAddManagerUser = () => {
   const [UserNameManagerUser, setUserNameManagerUser] = useState("");
@@ -27,11 +29,18 @@ const AltaAddManagerUser = () => {
     label: service.NameManagerRole,
     value: service.NameManagerRole,
   }));
-
+  const currentUser = useSelector(selectCurrentUser);
   useEffect(() => {
     dispatch(fetchDataManagerRole() as any);
   }, [dispatch]);
-
+  const formatDate = (date: Date) => {
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${hours}:${minutes} ${day}/${month}/${year}`;
+  };
   const handleAddData = async () => {
     if (
       UserNameManagerUser &&
@@ -50,7 +59,15 @@ const AltaAddManagerUser = () => {
           console.error("Địa chỉ email đã được sử dụng.");
           return;
         }
-
+        const currentDate = new Date();
+        const formattedDate = formatDate(currentDate);
+        const newActivity = {
+          userName: currentUser?.NameUser || "null",
+          action: "Cập nhật thông tin vai trò" + " " + UserNameManagerUser,
+          deviceAddress: "192.168.1.1",
+          levelNumberGrantTime: formattedDate,
+        };
+        dispatch(addActivity(newActivity as any) as any);
         const docRef = await db.collection("managerUser").add({
           UserNameManagerUser,
           NameUser,

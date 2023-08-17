@@ -112,7 +112,7 @@ const AltaDetailService = () => {
             <div
               style={{
                 backgroundColor: "#fff",
-                height: "70vh",
+                height: "92vh",
                 borderRadius: "20px",
                 width: "60%",
                 margin: "15px 0px 0px 30px",
@@ -215,7 +215,7 @@ const AltaDetailService = () => {
             <div
               style={{
                 backgroundColor: "#fff",
-                height: "70vh",
+                height: "92vh",
                 borderRadius: "20px",
                 width: "120%",
                 margin: "15px 0px 0px 30px",
@@ -336,7 +336,7 @@ const AltaDetailService = () => {
                   marginTop: "10px",
                 }}
                 pagination={{
-                  pageSize: 3,
+                  pageSize: 6,
                 }}
                 dataSource={filteredData}
               />

@@ -28,10 +28,14 @@ const AltaDevice = () => {
   }>({});
 
   const handleServiceUsed = (record: any) => {
-    setOpenServiceUsedMap((prevState) => ({
-      ...prevState,
-      [record.id]: true,
-    }));
+    setOpenServiceUsedMap((prevState) => {
+      const newState = { ...prevState };
+      Object.keys(newState).forEach((key) => {
+        newState[key] = false; // Close all other records
+      });
+      newState[record.id] = true; // Open the clicked record
+      return newState;
+    });
   };
 
   const handleServiceUsedClose = (record: any) => {

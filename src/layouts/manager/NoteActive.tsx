@@ -165,7 +165,7 @@ const AltaNoteActive = () => {
                   position: "absolute",
                 }}
                 pagination={{
-                  pageSize: 6,
+                  pageSize: 9,
                 }}
                 rowClassName={getRowClassName}
               ></Table>

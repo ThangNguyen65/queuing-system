@@ -12,6 +12,7 @@ import {
 } from "../../feature/levelNo/AddlevelNumber";
 import { LevelNumber } from "../../feature/levelNo/levelNumber";
 import { selectCurrentUser } from "../../app/selectors";
+import { addActivity } from "../../feature/manager/note/note";
 
 const AltaAddLevelNumber = () => {
   const dataService = useSelector(selectDataSV);
@@ -117,6 +118,13 @@ const AltaAddLevelNumber = () => {
       };
 
       dispatch(addLevelNumber(newData as any) as any);
+      const newActivity = {
+        userName: currentUser?.NameUser || "null",
+        action: "Cập nhật thông tin cấp số" + " " + selectedService.NameService,
+        deviceAddress: "192.168.1.1",
+        levelNumberGrantTime: formattedDate,
+      };
+      dispatch(addActivity(newActivity as any) as any);
       setIsModalOpen(false);
       showModal();
     } catch (error) {

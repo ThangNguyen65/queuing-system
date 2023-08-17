@@ -12,7 +12,6 @@ import {
   FetchDataLevelNumber,
   selectDataLvNB,
 } from "../../feature/levelNo/levelNumber";
-import { selectCurrentUser } from "../../app/selectors";
 
 const AltaDetailLvNumber = () => {
   const { LvNumId } = useParams();
@@ -22,9 +21,7 @@ const AltaDetailLvNumber = () => {
     dispatch(FetchDataLevelNumber());
   });
   const LvNumIdData = dataLvNB.find((item) => item.id === LvNumId);
-  const currentUser = useSelector(selectCurrentUser);
-  const userPhone = currentUser?.Phone;
-  const userEmail = currentUser?.Email;
+
   return (
     <div className="row">
       <div
@@ -173,7 +170,7 @@ const AltaDetailLvNumber = () => {
                       marginLeft: "44px",
                     }}
                   >
-                  {LvNumIdData?.PhoneLvNum}
+                    {LvNumIdData?.PhoneLvNum}
                   </Typography>
                 </div>
               </div>
@@ -207,7 +204,7 @@ const AltaDetailLvNumber = () => {
                       marginLeft: "44px",
                     }}
                   >
-                   {LvNumIdData?.EmailLvNum}
+                    {LvNumIdData?.EmailLvNum}
                   </Typography>
                 </div>
               </div>

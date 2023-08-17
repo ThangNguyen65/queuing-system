@@ -10,13 +10,25 @@ import {
   fetchDataManagerRole,
   managerRole,
 } from "../../feature/manager/role/managerRole";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { selectCurrentUser } from "../../app/selectors";
+import { addActivity } from "../../feature/manager/note/note";
 
 const AltaAddManagerRole = () => {
   const [NameManagerRole, setNameManagerRole] = useState("");
   const [DescribeManagerRole, setDescribeManagerRole] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const currentUser = useSelector(selectCurrentUser);
+  const formatDate = (date: Date) => {
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${hours}:${minutes} ${day}/${month}/${year}`;
+  };
+
   useEffect(() => {
     dispatch(fetchDataManagerRole() as any);
   }, [dispatch]);
@@ -27,7 +39,16 @@ const AltaAddManagerRole = () => {
         NameManagerRole,
         DescribeManagerRole,
       };
+      const currentDate = new Date();
+      const formattedDate = formatDate(currentDate);
       dispatch(addManagerRole(newData) as any);
+      const newActivity = {
+        userName: currentUser?.NameUser || "null",
+        action: "Cập nhật thông tin vai trò" + " " + NameManagerRole,
+        deviceAddress: "192.168.1.1",
+        levelNumberGrantTime: formattedDate,
+      };
+      dispatch(addActivity(newActivity as any) as any);
       setNameManagerRole("");
       setDescribeManagerRole("");
 

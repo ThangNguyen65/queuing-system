@@ -92,23 +92,33 @@ function AltaNavbar() {
             {dataLvNB.map((item) => (
               <div
                 style={{
-                  padding: "10px 0px 10px 15px",
+                  padding: "10px 0px 0px 15px",
                 }}
+                className="hoverNavBarUser"
               >
-                <Typography
-                  style={{ color: "rgba(191, 88, 5, 1)", fontWeight: "600" }}
+                <Link
+                  to={`/DetailLvNumber/${item.id}`}
+                  className="text-decoration-none"
                 >
-                  Người dùng: {item.NameCustomer}
-                </Typography>
-                <Typography style={{ padding: "6px 0px" }}>
-                  {/* Thời gian nhận số: {formatGrantTime(item.GrantTime)} */}
-                  Thời gian nhận số: {item.GrantTime}
-                </Typography>
-                <hr
+                  <div className="mbHr">
+                    <Typography
+                      style={{
+                        color: "rgba(191, 88, 5, 1)",
+                        fontWeight: "600",
+                      }}
+                    >
+                      Người dùng: {item.NameCustomer}
+                    </Typography>
+                    <Typography className="textTimeNumberNavBar">
+                      Thời gian nhận số: {item.GrantTime}
+                    </Typography>
+                  </div>
+                </Link>
+                {/* <hr
                   style={{
                     margin: "0rem",
                   }}
-                />
+                /> */}
               </div>
             ))}
           </div>

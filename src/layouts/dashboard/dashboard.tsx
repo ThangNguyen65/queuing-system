@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import SlideMenu from "../../components/slide/slide";
 import AltaNavbar from "../../components/navbarRight/navbar";
 import { Badge, Image, Progress, Select, Typography } from "antd";
@@ -307,7 +307,7 @@ function AltaDashboard() {
                     range: [0, 1],
                   }}
                   smooth
-                  animation={false}
+                  animation={true}
                 />
               </div>
               {/*  */}

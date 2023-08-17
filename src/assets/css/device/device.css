@@ -212,9 +212,7 @@
   z-index: 999;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
-.service-used-detail.expanded {
- 
-}
+
 :where(.css-dev-only-do-not-override-txh9fw).ant-table-wrapper
   .ant-table-thead
   > tr
@@ -234,4 +232,46 @@
 }
 :where(.css-dev-only-do-not-override-txh9fw).ant-table-wrapper tfoot > tr > td {
   padding: 0px;
+}
+:where(.css-dev-only-do-not-override-txh9fw).ant-select:not(
+    .ant-select-customize-input
+  )
+  .ant-select-selector {
+  position: relative;
+  background-color: #ffffff;
+  border: 1px solid #ffac6a;
+  transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+:where(.css-dev-only-do-not-override-txh9fw).ant-select:not(
+    .ant-select-disabled
+  ):not(.ant-select-customize-input):not(.ant-pagination-size-changer):hover
+  .ant-select-selector {
+  border: "1px solid #FFAC6A";
+}
+:where(.css-dev-only-do-not-override-txh9fw).ant-select-multiple
+  .ant-select-selection-item {
+  position: relative;
+  display: flex;
+  flex: none;
+  box-sizing: border-box;
+  max-width: 100%;
+  height: 24px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  line-height: 22px;
+  color: rgba(255, 255, 255, 1);
+  background: rgba(255, 172, 106, 1);
+  border-radius: 4px;
+  cursor: default;
+  transition: font-size 0.3s, line-height 0.3s, height 0.3s;
+  user-select: none;
+  margin-inline-end: 4px;
+  padding-inline-start: 8px;
+  padding-inline-end: 4px;
+}
+:where(.css-dev-only-do-not-override-txh9fw).ant-select-multiple
+  .ant-select-selection-item-remove
+  svg {
+  display: inline-block;
+  color: rgba(255, 255, 255, 1);
 }

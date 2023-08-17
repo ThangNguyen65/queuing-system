@@ -4,10 +4,12 @@ import AltaNavbar from "../../components/navbarRight/navbar";
 import { Checkbox, Input, Typography } from "antd";
 import "../../assets/css/device/addDevice.css";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import TextArea from "antd/es/input/TextArea";
 import { addService, AddService } from "../../feature/service/addService";
+import { addActivity } from "../../feature/manager/note/note";
+import { selectCurrentUser } from "../../app/selectors";
 
 const AltaAddService = () => {
   const [IdService, setIdService] = useState("");
@@ -16,7 +18,7 @@ const AltaAddService = () => {
   const [autoIncrease, setAutoIncrease] = useState(false);
   const [suffix, setSuffix] = useState("");
   const [limit, setLimit] = useState("");
-
+  const currentUser = useSelector(selectCurrentUser);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const possibleStatusActive = ["Hoạt động", "Ngưng hoạt động"];
@@ -31,6 +33,15 @@ const AltaAddService = () => {
     );
     return possibleStatusDescribe[randomIndex];
   };
+  const formatDate = (date: Date) => {
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${hours}:${minutes} ${day}/${month}/${year}`;
+  };
+
   const handleAddData = () => {
     if (IdService && NameService && DescribeService) {
       const newData: AddService = {
@@ -44,6 +55,15 @@ const AltaAddService = () => {
         StatusDescribe: getRandomStatusDescribe(),
       };
       dispatch(addService(newData) as any);
+      const currentDate = new Date();
+      const formattedDate = formatDate(currentDate);
+      const newActivity = {
+        userName: currentUser?.UserNameManagerUser,
+        action: "Cập nhật thông tin dịch vụ " + IdService, 
+        deviceAddress: "192.168.1.1", 
+        levelNumberGrantTime: formattedDate,
+      };
+      dispatch(addActivity(newActivity as any) as any);
       setIdService("");
       setNameService("");
       setDescribeService("");

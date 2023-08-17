@@ -7,7 +7,6 @@ import {
   Space,
   Badge,
   DatePicker,
-  Checkbox,
   Select,
 } from "antd";
 import "../../assets/css/device/device.css";
@@ -33,6 +32,8 @@ const AltaReport = () => {
   const [activeStatus, setActiveStatus] = useState("Tất cả");
   const [activePowerSupply, setActivePowerSupply] = useState("Tất cả");
   const [activeId, setActiveId] = useState("Tất cả");
+  const [activeNameService, setActiveNameService] = useState("Tất cả");
+  const [activeGrantTime, setActiveGrantTime] = useState("Tất cả");
   useEffect(() => {
     dispatch(FetchDataLevelNumber() as any);
   }, [dispatch]);
@@ -60,12 +61,34 @@ const AltaReport = () => {
     const isPowerSupply =
       activePowerSupply === "Tất cả" || item.PowerSupply === activePowerSupply;
     const isId = activeId === "Tất cả" || item.IdLevelNum === activeId;
-    return isActiveMatch && isPowerSupply && isId;
+    const isNameService =
+      activeNameService === "Tất cả" || item.NameServices === activeNameService;
+    const isGrantTime =
+      activeGrantTime === "Tất cả" || item.GrantTime === activeGrantTime;
+    return (
+      isActiveMatch && isPowerSupply && isId && isNameService && isGrantTime
+    );
   });
   const options = data.map((service: any) => ({
     label: service.IdLevelNum,
     value: service.IdLevelNum,
   }));
+  const uniqueServices = new Set(
+    data.map((service: any) => service.NameServices)
+  );
+  const optionsNameService = Array.from(uniqueServices).map((serviceName) => ({
+    label: serviceName,
+    value: serviceName,
+  }));
+  const uniqueServicesGrantTime = new Set(
+    data.map((service: any) => service.GrantTime)
+  );
+  const optionGrantTime = Array.from(uniqueServicesGrantTime).map(
+    (GrantTime) => ({
+      label: GrantTime,
+      value: GrantTime,
+    })
+  );
   const sortedData = [...filteredData].sort((a, b) =>
     a.IdLevelNum.localeCompare(b.IdLevelNum)
   );
@@ -86,8 +109,8 @@ const AltaReport = () => {
               style={{
                 position: "absolute",
                 opacity: "0",
-                marginLeft: "-35px",
-                marginTop: "-5px",
+                marginLeft: "-147px",
+                width: "16.7%",
               }}
               options={[
                 {
@@ -112,7 +135,28 @@ const AltaReport = () => {
             <span>Tên dịch vụ</span>
           </div>
           <div>
-            <Image src={sort} preview={false} />
+            <Image
+              src={sort}
+              preview={false}
+              style={{ cursor: "pointer", position: "relative" }}
+            />
+            <Select
+              style={{
+                position: "absolute",
+                opacity: "0",
+                marginLeft: "-190px",
+                marginTop: "0px",
+                width: "21.5%",
+              }}
+              options={[
+                {
+                  label: "Tất cả",
+                  value: "Tất cả",
+                },
+                ...optionsNameService,
+              ]}
+              onChange={setActiveNameService}
+            />
           </div>
         </div>
       ),
@@ -127,7 +171,28 @@ const AltaReport = () => {
             <span>Thời gian cấp</span>
           </div>
           <div>
-            <Image src={sort} preview={false} />
+            <Image
+              src={sort}
+              preview={false}
+              style={{ cursor: "pointer", position: "relative" }}
+            />
+            <Select
+              style={{
+                position: "absolute",
+                opacity: "0",
+                marginLeft: "-190px",
+                marginTop: "0px",
+                width: "21.5%",
+              }}
+              options={[
+                {
+                  label: "Tất cả",
+                  value: "Tất cả",
+                },
+                ...optionGrantTime,
+              ]}
+              onChange={setActiveGrantTime}
+            />
           </div>
         </div>
       ),
@@ -151,8 +216,8 @@ const AltaReport = () => {
               style={{
                 position: "absolute",
                 opacity: "0",
-                marginLeft: "-35px",
-                marginTop: "-5px",
+                marginLeft: "-170px",
+                width: "19.3%",
               }}
               options={[
                 {
@@ -209,8 +274,8 @@ const AltaReport = () => {
               style={{
                 position: "absolute",
                 opacity: "0",
-                marginLeft: "-35px",
-                marginTop: "-5px",
+                marginLeft: "-166px",
+                width: "18.8%",
               }}
               options={[
                 {

@@ -26,6 +26,9 @@ import {
 import { fetchDataService, selectDataSV } from "../../feature/service/service";
 import { selectCurrentUser } from "../../app/selectors";
 const AltaLevelNumber = () => {
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+
   const data = useSelector(selectDataLvNB);
   const currentUser = useSelector(selectCurrentUser);
   const error = useSelector(selectError);
@@ -40,6 +43,7 @@ const AltaLevelNumber = () => {
   const [powerSupply, setPowerSupply] = useState("Tất cả");
   const [searchKeyword, setSearchKeyword] = useState("");
   const dataService = useSelector(selectDataSV);
+
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchKeyword(event.target.value);
   };
@@ -310,6 +314,7 @@ const AltaLevelNumber = () => {
                     border: "1.5px solid #D4D4D7",
                     borderRadius: "8px",
                   }}
+                  format={"DD/MM/YYYY"}
                 />
                 <Image src={arrowRight} preview={false} />
                 <DatePicker
@@ -319,6 +324,7 @@ const AltaLevelNumber = () => {
                     border: "1.5px solid #D4D4D7",
                     borderRadius: "8px",
                   }}
+                  format={"DD/MM/YYYY"}
                 />
               </div>
             </div>

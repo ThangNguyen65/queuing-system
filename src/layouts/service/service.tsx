@@ -45,6 +45,7 @@ const AltaService = () => {
   const filteredData = dataSv.filter((item: any) => {
     const isActiveMatch =
       activeStatus === "Tất cả" || item.StatusActive === activeStatus;
+    const id = item.suffix + item.IdService;
     const isSearchMatch =
       searchKeyword.trim() === "" ||
       item.IdService.toLowerCase().includes(searchKeyword.toLowerCase()) ||
@@ -52,6 +53,7 @@ const AltaService = () => {
       item.DescribeService.toLowerCase().includes(
         searchKeyword.toLowerCase()
       ) ||
+      id.toLowerCase().includes(searchKeyword.toLowerCase()) ||
       item.StatusActive.toLowerCase().includes(searchKeyword.toLowerCase());
     return isActiveMatch && isSearchMatch;
   });
